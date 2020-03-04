@@ -2,4 +2,8 @@ language: java
 jdk:
  - oraclejdk13
 script:
+- cd sftXCore
 - ./mvnw clean install -B
+
+notifications:
+  email: false
