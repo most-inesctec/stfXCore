@@ -38,26 +38,9 @@ public class Storyboard {
 
     public Storyboard(Dataset dataset) {
         rigidTransformations = new ArrayList<>();
-        computeTransformations(dataset);
     }
 
-    /**
-     * Compute the transformations by calling the algorithm enpoint
-     */
-    // TODO: A model calling an endpoint? Hmmmm
-    private void computeTransformations(Dataset dataset) {
-        //String uri = env.getProperty("PSR_endpoint") + "/cpd";
-        String uri = "http://localhost:5000/cpd";
-        ArrayList<ArrayList<ArrayList<Float>>> snapshots = dataset.getDataset();
-
-        // Making it synchronous for now
-        for (int i = 0; i < snapshots.size() - 1; ++i) {
-            RestTemplate restTemplate = new RestTemplate();
-            rigidTransformations.add(
-                restTemplate.postForObject(
-                        uri,
-                        new Snapshot(snapshots.get(i), snapshots.get(i + 1)),
-                        RigidTransformation.class));
-        }
+    public void addRigidTransformation(RigidTransformation rt) {
+        rigidTransformations.add(rt);
     }
 }
