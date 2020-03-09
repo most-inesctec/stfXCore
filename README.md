@@ -72,3 +72,12 @@ And the respective output:
 ```
 
 The API definition is avaiable in [Swagger](https://app.swaggerhub.com/apis/EdgarACarneiro/thesis/1.0.0).
+
+
+## Utils
+
+This folder contains some useful scripts for the overall framework. A more detailed insight of each one is given below:
+
+| Name | Functionality |
+|:-|:-|
+| __SPTDataLabParser__ | Parser of the format outputted by the _SPTDataLab_, to a valid json file. |
