@@ -25,7 +25,7 @@ public class StoryboardController {
      */
     private void computeTransformations(Dataset dataset, Storyboard storyboard) {
         //String uri = env.getProperty("PSR_endpoint") + "/cpd";
-        String uri = "http://localhost:5000/cpd";
+        String methodUri = "http://localhost:5000/cpd";
         ArrayList<ArrayList<ArrayList<Float>>> snapshots = dataset.getDataset();
 
         // Making it synchronous for now
@@ -33,7 +33,7 @@ public class StoryboardController {
             RestTemplate restTemplate = new RestTemplate();
             storyboard.addRigidTransformation(
                     restTemplate.postForObject(
-                            uri,
+                            methodUri,
                             new Snapshot(snapshots.get(i), snapshots.get(i + 1)),
                             RigidTransformation.class));
         }
@@ -41,10 +41,9 @@ public class StoryboardController {
 
     @PostMapping("/storyboard")
     public Long newStoryboard(@RequestBody Dataset dataset) {
-        System.out.print(dataset);
         Storyboard storyboard = new Storyboard(dataset);
         computeTransformations(dataset, storyboard);
-        return repository.save(new Storyboard(dataset)).getId();
+        return repository.save(storyboard).getId();
     }
 
 //    @PostMapping("/storyboard/{id}")
