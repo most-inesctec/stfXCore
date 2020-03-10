@@ -7,6 +7,7 @@ import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.Storyboard;
 import stfXCore.Models.Storyboard.StoryboardNotFoundException;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
+import stfXCore.Models.Storyboard.Thresholds.ThresholdsWrapper;
 import stfXCore.Repositories.StoryboardRepository;
 import stfXCore.Services.RigidTransformation;
 
@@ -52,7 +53,7 @@ public class StoryboardController {
     }
 
     @PostMapping("/storyboard/{id}")
-    public void getEventsOfInterest(@PathVariable Long id, @RequestBody Thresholds thresholds) {
+    public void getEventsOfInterest(@PathVariable Long id, @RequestBody ThresholdsWrapper thresholds) {
         Storyboard storyboard = repository.findById(id)
                 .orElseThrow(() -> new StoryboardNotFoundException(id));
 

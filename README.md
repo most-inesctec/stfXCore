@@ -59,8 +59,8 @@ An example call to this is endpoint is:
       "absoluteAcc": 45
     },
     "scale": {
-      "delta": [0.2, 0.1],
-      "acc": [0.5, 0.3]
+      "delta":  0.05,
+      "directedAcc": 0.3
     }
   }
 }

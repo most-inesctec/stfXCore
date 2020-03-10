@@ -1,12 +1,6 @@
 package stfXCore.Models.Storyboard.Thresholds;
 
-public class RotationThresholds {
-
-    private Float delta;
-
-    private Float directedAcc;
-
-    private Float absoluteAcc;
+public class RotationThresholds extends GenericThreshold<Float> {
 
     RotationThresholds() {}
 }

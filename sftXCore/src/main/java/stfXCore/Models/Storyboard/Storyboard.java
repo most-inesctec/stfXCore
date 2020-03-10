@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.Column;
 import java.util.ArrayList;
 
 /**
@@ -27,11 +26,7 @@ public class Storyboard {
     @GeneratedValue
     private Long id;
 
-    /**
-     * For storing rigid transformations as CLOBs
-     */
     @Lob
-    @Column(name = "rigidTransformations", columnDefinition = "CLOB")
     private ArrayList<RigidTransformation> rigidTransformations;
 
     public Storyboard() { }
