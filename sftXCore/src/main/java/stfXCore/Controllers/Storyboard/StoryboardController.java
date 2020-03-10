@@ -5,6 +5,8 @@ import org.springframework.web.client.RestTemplate;
 import stfXCore.Models.Storyboard.Dataset;
 import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.Storyboard;
+import stfXCore.Models.Storyboard.StoryboardNotFoundException;
+import stfXCore.Models.Storyboard.Thresholds.Thresholds;
 import stfXCore.Repositories.StoryboardRepository;
 import stfXCore.Services.RigidTransformation;
 
@@ -12,6 +14,9 @@ import java.util.ArrayList;
 
 @RestController
 public class StoryboardController {
+
+//    @Autowired
+//    private Environment env;
 
     private final StoryboardRepository repository;
 
@@ -46,11 +51,14 @@ public class StoryboardController {
         return repository.save(storyboard).getId();
     }
 
-//    @PostMapping("/storyboard/{id}")
-//    public
-//
-//
-//
+    @PostMapping("/storyboard/{id}")
+    public void getEventsOfInterest(@PathVariable Long id, @RequestBody Thresholds thresholds) {
+        Storyboard storyboard = repository.findById(id)
+                .orElseThrow(() -> new StoryboardNotFoundException(id));
+
+        // TODO
+        System.out.print(thresholds);
+    }
 
     @DeleteMapping("/storyboard/{id}")
     void deleteStoryboard(@PathVariable Long id) {

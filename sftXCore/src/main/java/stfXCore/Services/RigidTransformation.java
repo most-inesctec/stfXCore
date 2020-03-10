@@ -2,8 +2,10 @@ package stfXCore.Services;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class RigidTransformation {
+public class RigidTransformation implements Serializable {
 
     private float rotation;
 
@@ -14,5 +16,5 @@ public class RigidTransformation {
      */
     private float scale;
 
-    RigidTransformation() {}
+    public RigidTransformation() {}
 }

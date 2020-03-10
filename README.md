@@ -11,7 +11,7 @@ To provide stfX with a new storyboard one must call the `/storyboard` endpoint.
 An example call to this endpoint is:
 ```json
 {
-  'dataset': [
+  "dataset": [
     [
       [0 ,0],
       [0, 10],
@@ -47,20 +47,20 @@ For getting the information of interest of a storyboard, one must call the `/sto
 An example call to this is endpoint is:
 ```json
 {
-  'thresholds': {
-    'translation': {
-      'delta': [1, 1],
-      'directed_acc': [5, 3],
-      'absolute_acc': [10, 10]
+  "thresholds": {
+    "translation": {
+      "delta": [1, 1],
+      "directedAcc": [5, 3],
+      "absoluteAcc": [10, 10]
     },
-    'rotation': {
-      'delta': 5,
-      'directed_acc': 30,
-      'absolute_acc': 45
+    "rotation": {
+      "delta": 5,
+      "directedAcc": 30,
+      "absoluteAcc": 45
     },
-    'scale': {
-      'delta': [0.2, 0.1],
-      'acc': [0.5, 0.3]
+    "scale": {
+      "delta": [0.2, 0.1],
+      "acc": [0.5, 0.3]
     }
   }
 }

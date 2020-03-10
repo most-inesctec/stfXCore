@@ -1,15 +1,13 @@
 package stfXCore.Models.Storyboard;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.client.RestTemplate;
 import stfXCore.Services.RigidTransformation;
-import org.springframework.core.env.Environment;
-
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Column;
 import java.util.ArrayList;
 
 /**
@@ -28,11 +26,13 @@ public class Storyboard {
     @Id
     @GeneratedValue
     private Long id;
+
+    /**
+     * For storing rigid transformations as CLOBs
+     */
+    @Lob
+    @Column(name = "rigidTransformations", columnDefinition = "CLOB")
     private ArrayList<RigidTransformation> rigidTransformations;
-
-//    @Autowired
-//    private Environment env;
-
 
     public Storyboard() { }
 
