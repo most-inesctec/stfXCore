@@ -10,4 +10,6 @@ public abstract class GenericThreshold<T> {
     private T directedAcc;
 
     private T absoluteAcc;
+
+//    public abstract Float typeParser(T value);
 }

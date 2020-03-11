@@ -58,7 +58,6 @@ public class StoryboardController {
                 .orElseThrow(() -> new StoryboardNotFoundException(id));
 
         EventsFilter.filter(storyboard.getRigidTransformations(), thresholdsWrapper.getThresholds());
-
     }
 
     @DeleteMapping("/storyboard/{id}")
