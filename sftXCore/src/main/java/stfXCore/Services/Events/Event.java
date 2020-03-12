@@ -1,4 +1,4 @@
-package stfXCore.Services;
+package stfXCore.Services.Events;
 
 import lombok.Data;
 

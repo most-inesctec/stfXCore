@@ -10,8 +10,8 @@ import stfXCore.Models.Storyboard.Storyboard;
 import stfXCore.Models.Storyboard.StoryboardNotFoundException;
 import stfXCore.Models.Storyboard.Thresholds.ThresholdsWrapper;
 import stfXCore.Repositories.StoryboardRepository;
-import stfXCore.Services.Event;
-import stfXCore.Services.EventsFilter;
+import stfXCore.Services.Events.Event;
+import stfXCore.Services.Events.EventsFilter;
 import stfXCore.Services.Transformations.RigidTransformation;
 
 import java.util.ArrayList;
