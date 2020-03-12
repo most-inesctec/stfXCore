@@ -1,4 +1,4 @@
-package stfXCore.Services;
+package stfXCore.Services.Transformations;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 @Data
-public class RigidTransformation implements Serializable {
+public class RigidTransformation extends Transformation implements Serializable {
 
     private float rotation;
 

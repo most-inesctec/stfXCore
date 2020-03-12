@@ -1,5 +1,8 @@
 package stfXCore.Services;
 
+import lombok.Data;
+
+@Data
 public class Event {
 
     public enum ThresholdTrigger {

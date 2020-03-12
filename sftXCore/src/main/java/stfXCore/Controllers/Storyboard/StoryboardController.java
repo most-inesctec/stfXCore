@@ -10,8 +10,9 @@ import stfXCore.Models.Storyboard.Storyboard;
 import stfXCore.Models.Storyboard.StoryboardNotFoundException;
 import stfXCore.Models.Storyboard.Thresholds.ThresholdsWrapper;
 import stfXCore.Repositories.StoryboardRepository;
+import stfXCore.Services.Event;
 import stfXCore.Services.EventsFilter;
-import stfXCore.Services.RigidTransformation;
+import stfXCore.Services.Transformations.RigidTransformation;
 
 import java.util.ArrayList;
 
@@ -30,20 +31,24 @@ public class StoryboardController {
 
     /**
      * Compute the transformations by calling the algorithm enpoint
+     *
+     * @param dataset The input dataset
+     * @param storyboard The storyboard that stores the computed transformations
      */
     private void computeTransformations(Dataset dataset, Storyboard storyboard) {
-        String methodUri = env.getProperty("PSR_endpoint");
-
         ArrayList<ArrayList<ArrayList<Float>>> snapshots = dataset.getDataset();
+        String methodUri = env.getProperty("PSR_endpoint");
 
         // Making it synchronous for now
         for (int i = 0; i < snapshots.size() - 1; ++i) {
             RestTemplate restTemplate = new RestTemplate();
-            storyboard.addRigidTransformation(
-                    restTemplate.postForObject(
-                            methodUri,
-                            new Snapshot(snapshots.get(i), snapshots.get(i + 1)),
-                            RigidTransformation.class));
+
+            Snapshot snapshot = new Snapshot(snapshots.get(i), snapshots.get(i + 1));
+            RigidTransformation rt = restTemplate.postForObject(
+                    methodUri, snapshot, RigidTransformation.class);
+            rt.setSnapshot(snapshot);
+
+            storyboard.addRigidTransformation(rt);
         }
     }
 
@@ -55,11 +60,11 @@ public class StoryboardController {
     }
 
     @PostMapping("/storyboard/{id}")
-    public void getEventsOfInterest(@PathVariable Long id, @RequestBody ThresholdsWrapper thresholdsWrapper) {
+    public ArrayList<Event> getEventsOfInterest(@PathVariable Long id, @RequestBody ThresholdsWrapper thresholdsWrapper) {
         Storyboard storyboard = repository.findById(id)
                 .orElseThrow(() -> new StoryboardNotFoundException(id));
 
-        EventsFilter.filter(storyboard.getRigidTransformations(), thresholdsWrapper.getThresholds());
+        return EventsFilter.filter(storyboard.getRigidTransformations(), thresholdsWrapper.getThresholds());
     }
 
     @DeleteMapping("/storyboard/{id}")

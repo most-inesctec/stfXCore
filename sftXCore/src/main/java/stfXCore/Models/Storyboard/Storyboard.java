@@ -1,7 +1,7 @@
 package stfXCore.Models.Storyboard;
 
 import lombok.Data;
-import stfXCore.Services.RigidTransformation;
+import stfXCore.Services.Transformations.RigidTransformation;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

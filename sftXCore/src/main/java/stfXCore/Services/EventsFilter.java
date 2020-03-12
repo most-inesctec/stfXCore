@@ -2,6 +2,7 @@ package stfXCore.Services;
 
 import stfXCore.Models.Storyboard.Thresholds.GenericThreshold;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
+import stfXCore.Services.Transformations.RigidTransformation;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
