@@ -20,7 +20,6 @@ public class Event {
 
     private float triggerValue;
 
-    // TODO: float or Generic type T?
     Event(ThresholdTrigger trigger, Transformation type, float triggerValue) {
         this.trigger = trigger;
         this.type = type;

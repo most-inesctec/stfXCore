@@ -1,5 +1,7 @@
 package stfXCore.Controllers.Storyboard;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import stfXCore.Models.Storyboard.Dataset;
@@ -16,8 +18,8 @@ import java.util.ArrayList;
 @RestController
 public class StoryboardController {
 
-//    @Autowired
-//    private Environment env;
+    @Autowired
+    private Environment env;
 
     private final StoryboardRepository repository;
 
@@ -30,8 +32,8 @@ public class StoryboardController {
      * Compute the transformations by calling the algorithm enpoint
      */
     private void computeTransformations(Dataset dataset, Storyboard storyboard) {
-        //String uri = env.getProperty("PSR_endpoint") + "/cpd";
-        String methodUri = "http://localhost:5000/cpd";
+        String methodUri = env.getProperty("PSR_endpoint");
+
         ArrayList<ArrayList<ArrayList<Float>>> snapshots = dataset.getDataset();
 
         // Making it synchronous for now
