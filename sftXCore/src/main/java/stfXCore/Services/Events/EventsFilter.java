@@ -11,19 +11,26 @@ import java.util.stream.Collectors;
 
 public class EventsFilter {
 
+    private enum Direction {
+        FORWARD,
+        BACKWARD,
+        NONE
+    }
+
     // TODO: Pair<initialState, float>
     private float accDirected = 0;
     // TODO:  as enum -> 0 for no direction, 1 for positive, -1 for negative
-    private int direction = 0;
+    private Direction direction = Direction.NONE;
     private float accAbsolute = 0;
+
 
     EventsFilter() {
     }
 
     private void resetDeltas() {
         accDirected = 0;
-        direction = 0;
         accAbsolute = 0;
+        direction = Direction.NONE;
     }
 
     private Event computeDelta(Float transformation, Float threshold, Event.Transformation type) {
@@ -35,9 +42,9 @@ public class EventsFilter {
     private Event computeAccDirected(Float transformation, Float threshold, Event.Transformation type) {
         // TODO: Change with enum
         // If direction are different from current, reset
-        if (!((direction == 1 && transformation >= 0) ||
-                (direction == -1 && transformation < 0))) {
-            direction = transformation >= 0 ? 1 : -1;
+        if (!((direction == Direction.FORWARD && transformation >= 0) ||
+                (direction == Direction.BACKWARD && transformation < 0))) {
+            direction = transformation > 0 ? Direction.FORWARD : Direction.BACKWARD;
             accDirected = 0;
         }
 
