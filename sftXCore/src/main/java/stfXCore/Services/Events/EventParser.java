@@ -1,15 +1,14 @@
 package stfXCore.Services.Events;
 
 import stfXCore.Models.Storyboard.Thresholds.GenericThreshold;
-import stfXCore.Models.Storyboard.Thresholds.Thresholds;
+import stfXCore.Models.Storyboard.Thresholds.ThresholdParameters;
 import stfXCore.Services.Transformations.RigidTransformation;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class EventsFilter {
+public abstract class EventParser {
 
     private enum Direction {
         FORWARD,
@@ -17,20 +16,19 @@ public class EventsFilter {
         NONE
     }
 
+    private Direction direction = Direction.NONE;
     // TODO: Pair<initialState, float>
     private float accDirected = 0;
-    // TODO:  as enum -> 0 for no direction, 1 for positive, -1 for negative
-    private Direction direction = Direction.NONE;
     private float accAbsolute = 0;
 
 
-    EventsFilter() {
+    EventParser() {
     }
 
     private void resetDeltas() {
+        direction = Direction.NONE;
         accDirected = 0;
         accAbsolute = 0;
-        direction = Direction.NONE;
     }
 
     private Event computeDelta(Float transformation, Float threshold, Event.Transformation type) {
@@ -40,7 +38,6 @@ public class EventsFilter {
     }
 
     private Event computeAccDirected(Float transformation, Float threshold, Event.Transformation type) {
-        // TODO: Change with enum
         // If direction are different from current, reset
         if (!((direction == Direction.FORWARD && transformation >= 0) ||
                 (direction == Direction.BACKWARD && transformation < 0))) {
@@ -78,7 +75,7 @@ public class EventsFilter {
      * @param threshold       The thresholds to use
      * @param type            The type of the transformation being analyzed
      */
-    private ArrayList<Event> filterThreshold(List<Float> transformations, GenericThreshold<Float> threshold, Event.Transformation type) {
+    protected ArrayList<Event> filterThreshold(List<Float> transformations, GenericThreshold<Float> threshold, Event.Transformation type) {
         ArrayList<Event> eventsOfInterest = new ArrayList<>();
 
         for (Float transformation : transformations) {
@@ -110,30 +107,23 @@ public class EventsFilter {
         return eventsOfInterest;
     }
 
-    public static ArrayList<Event> filter(@NotNull ArrayList<RigidTransformation> rigidTransformations, @NotNull Thresholds thresholds) {
-        EventsFilter ev = new EventsFilter();
+    protected abstract ArrayList<Event> parse(@NotNull ArrayList<RigidTransformation> rigidTransformations, @NotNull GenericThreshold<Float> threshold);
 
-        // Calls the filter threshold function
-        ArrayList<Event> eventsOfInterest = new ArrayList<>(ev.filterThreshold(
-                rigidTransformations.stream().map(rt -> rt.getRotation()).collect(Collectors.toList()),
-                thresholds.getRotation(),
-                Event.Transformation.ROTATION));
+    public static ArrayList<Event> parseTransformations(@NotNull ArrayList<RigidTransformation> rigidTransformations, @NotNull ThresholdParameters thresholds) {
+        ArrayList<Event> eventsOfInterest = new ArrayList<>();
 
-        eventsOfInterest.addAll(ev.filterThreshold(
-                rigidTransformations.stream().map(
-                        rt -> {
-                            ArrayList<Float> translation = rt.getTranslation();
-                            return (float) Math.sqrt(translation.stream().reduce(
-                                    0f, (acc, el) -> acc + (float) Math.pow(el, 2)));
-                        }).collect(Collectors.toList()),
-                thresholds.getTranslation(),
-                Event.Transformation.TRANSLATION));
+        // TODO: Parsing can be concurrent
+        if (thresholds.getTranslation() != null)
+            eventsOfInterest.addAll(
+                    new TranslationParser().parse(rigidTransformations, thresholds.getTranslation()));
 
-        eventsOfInterest.addAll(ev.filterThreshold(
-                rigidTransformations.stream().map(rt -> rt.getScale()).collect(Collectors.toList()),
-                thresholds.getScale(),
-                Event.Transformation.UNIFORM_SCALE));
-        // What is the return type?
+        if (thresholds.getRotation() != null)
+            eventsOfInterest.addAll(
+                    new RotationParser().parse(rigidTransformations, thresholds.getRotation()));
+
+        if (thresholds.getScale() != null)
+            eventsOfInterest.addAll(
+                    new UniformScaleParser().parse(rigidTransformations, thresholds.getScale()));
 
         //TODO: Apply reorder to map to each time unit the operation ocurring
 

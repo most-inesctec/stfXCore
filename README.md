@@ -47,7 +47,7 @@ For getting the information of interest of a storyboard, one must call the `/sto
 An example call to this is endpoint is:
 ```json
 {
-  "thresholds": {
+  "parameters": {
     "translation": {
       "delta": [1, 1],
       "directedAcc": [5, 3],

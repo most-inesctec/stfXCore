@@ -8,10 +8,10 @@ import stfXCore.Models.Storyboard.Dataset;
 import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.Storyboard;
 import stfXCore.Models.Storyboard.StoryboardNotFoundException;
-import stfXCore.Models.Storyboard.Thresholds.ThresholdsWrapper;
+import stfXCore.Models.Storyboard.Thresholds.Thresholds;
 import stfXCore.Repositories.StoryboardRepository;
 import stfXCore.Services.Events.Event;
-import stfXCore.Services.Events.EventsFilter;
+import stfXCore.Services.Events.EventParser;
 import stfXCore.Services.Transformations.RigidTransformation;
 
 import java.util.ArrayList;
@@ -60,11 +60,11 @@ public class StoryboardController {
     }
 
     @PostMapping("/storyboard/{id}")
-    public ArrayList<Event> getEventsOfInterest(@PathVariable Long id, @RequestBody ThresholdsWrapper thresholdsWrapper) {
+    public ArrayList<Event> getEventsOfInterest(@PathVariable Long id, @RequestBody Thresholds thresholds) {
         Storyboard storyboard = repository.findById(id)
                 .orElseThrow(() -> new StoryboardNotFoundException(id));
 
-        return EventsFilter.filter(storyboard.getRigidTransformations(), thresholdsWrapper.getThresholds());
+        return EventParser.parseTransformations(storyboard.getRigidTransformations(), thresholds.getParameters());
     }
 
     @DeleteMapping("/storyboard/{id}")
