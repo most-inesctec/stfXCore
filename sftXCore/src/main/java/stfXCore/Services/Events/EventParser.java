@@ -31,6 +31,10 @@ public abstract class EventParser {
         accAbsolute = 0;
     }
 
+    private boolean verifyNullTransformation(Float accumulator, Float transformation) {
+        return accumulator == 0 && transformation == 0;
+    }
+
     protected Event computeDelta(Float transformation, Float threshold, Event.Transformation type) {
         if (transformation >= threshold)
             return new Event(Event.ThresholdTrigger.DELTA, type, transformation);
@@ -38,8 +42,11 @@ public abstract class EventParser {
     }
 
     protected Event computeAccDirected(Float transformation, Float threshold, Event.Transformation type) {
+        if (verifyNullTransformation(accDirected, transformation))
+            return null;
+
         // If direction is different from current, reset
-        if (!((direction == Direction.FORWARD && transformation >= 0) ||
+        if (!((direction == Direction.FORWARD && transformation > 0) ||
                 (direction == Direction.BACKWARD && transformation < 0))) {
             direction = transformation > 0 ? Direction.FORWARD : Direction.BACKWARD;
             accDirected = 0;
@@ -55,6 +62,9 @@ public abstract class EventParser {
     }
 
     protected Event computeAccAbsolute(Float transformation, Float threshold, Event.Transformation type) {
+        if (verifyNullTransformation(accAbsolute, transformation))
+            return null;
+
         accAbsolute += Math.abs(transformation);
 
         if (accAbsolute >= threshold)
