@@ -10,16 +10,16 @@ import java.util.List;
 
 public abstract class EventParser {
 
-    private enum Direction {
+    protected enum Direction {
         FORWARD,
         BACKWARD,
         NONE
     }
 
-    private Direction direction = Direction.NONE;
+    protected Direction direction = Direction.NONE;
     // TODO: Pair<initialState, float>
-    private float accDirected = 0;
-    private float accAbsolute = 0;
+    protected float accDirected = 0;
+    protected float accAbsolute = 0;
 
 
     EventParser() {
@@ -31,40 +31,36 @@ public abstract class EventParser {
         accAbsolute = 0;
     }
 
-    private Event computeDelta(Float transformation, Float threshold, Event.Transformation type) {
+    protected Event computeDelta(Float transformation, Float threshold, Event.Transformation type) {
         if (transformation >= threshold)
             return new Event(Event.ThresholdTrigger.DELTA, type, transformation);
         return null;
     }
 
-    private Event computeAccDirected(Float transformation, Float threshold, Event.Transformation type) {
-        // If direction are different from current, reset
+    protected Event computeAccDirected(Float transformation, Float threshold, Event.Transformation type) {
+        // If direction is different from current, reset
         if (!((direction == Direction.FORWARD && transformation >= 0) ||
                 (direction == Direction.BACKWARD && transformation < 0))) {
             direction = transformation > 0 ? Direction.FORWARD : Direction.BACKWARD;
             accDirected = 0;
         }
 
-        accDirected += Math.abs(transformation);
+        accDirected += transformation;
 
-        if (accDirected >= threshold) {
-            accDirected = 0;
+        if (Math.abs(accDirected) >= threshold)
             return new Event(Event.ThresholdTrigger.DIRECTED_ACC,
                     type,
                     accDirected);
-        }
         return null;
     }
 
-    private Event computeAccAbsolute(Float transformation, Float threshold, Event.Transformation type) {
+    protected Event computeAccAbsolute(Float transformation, Float threshold, Event.Transformation type) {
         accAbsolute += Math.abs(transformation);
 
-        if (accAbsolute >= threshold) {
-            accAbsolute = 0;
+        if (accAbsolute >= threshold)
             return new Event(Event.ThresholdTrigger.ABSOLUTE_ACC,
                     type,
                     accAbsolute);
-        }
         return null;
     }
 
