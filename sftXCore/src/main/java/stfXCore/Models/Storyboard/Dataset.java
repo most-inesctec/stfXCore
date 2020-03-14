@@ -16,5 +16,7 @@ public class Dataset {
 
     private ArrayList<ArrayList<ArrayList<Float>>> dataset;
 
+    private DatasetMetadata metadata;
+
     public Dataset() {}
 }

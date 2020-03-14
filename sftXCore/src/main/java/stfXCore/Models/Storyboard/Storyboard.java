@@ -26,6 +26,9 @@ public class Storyboard {
     @GeneratedValue
     private Long id;
 
+    /**
+     * Attribute stored as BLOB
+     */
     @Lob
     private ArrayList<RigidTransformation> rigidTransformations;
 

@@ -31,7 +31,10 @@ An example call to this endpoint is:
       [110, 160],
       [110, 150]
     ]
-  ]
+  ],
+  "metadata": {
+    "timePeriod": 3
+  }
 }
 ```
 

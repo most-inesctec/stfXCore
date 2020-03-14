@@ -32,18 +32,22 @@ public class StoryboardController {
     /**
      * Compute the transformations by calling the algorithm enpoint
      *
-     * @param dataset The input dataset
+     * @param dataset    The input dataset
      * @param storyboard The storyboard that stores the computed transformations
      */
     private void computeTransformations(Dataset dataset, Storyboard storyboard) {
         ArrayList<ArrayList<ArrayList<Float>>> snapshots = dataset.getDataset();
         String methodUri = env.getProperty("PSR_endpoint");
+        float timePeriod = dataset.getMetadata().getTimePeriod();
 
         // Making it synchronous for now
         for (int i = 0; i < snapshots.size() - 1; ++i) {
             RestTemplate restTemplate = new RestTemplate();
 
-            Snapshot snapshot = new Snapshot(snapshots.get(i), snapshots.get(i + 1));
+            Snapshot snapshot = new Snapshot(
+                    snapshots.get(i),
+                    snapshots.get(i + 1),
+                    new float[]{timePeriod * i, timePeriod * (i + 1)});
             RigidTransformation rt = restTemplate.postForObject(
                     methodUri, snapshot, RigidTransformation.class);
             rt.setSnapshot(snapshot);
