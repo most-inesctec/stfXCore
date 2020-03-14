@@ -7,16 +7,19 @@ import java.util.ArrayList;
 @Data
 public class Snapshot {
 
-    private ArrayList<ArrayList<Float>> X;
-    private ArrayList<ArrayList<Float>> Y;
-    private float[] validTime;
+    private State X;
+    private State Y;
 
-    Snapshot() {}
+    public Snapshot() {}
 
-    public Snapshot(ArrayList<ArrayList<Float>> X, ArrayList<ArrayList<Float>> Y, float[] validTime) {
-        this.X = X;
-        this.Y = Y;
-        this.validTime = validTime;
+    public Snapshot setX(ArrayList<ArrayList<Float>> X, float timestamp) {
+        this.X = new State(X, timestamp);
+        return this;
+    }
+
+    public Snapshot setY(ArrayList<ArrayList<Float>> Y, float timestamp) {
+        this.Y = new State(Y, timestamp);
+        return this;
     }
 
 }

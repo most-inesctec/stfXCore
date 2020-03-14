@@ -44,10 +44,9 @@ public class StoryboardController {
         for (int i = 0; i < snapshots.size() - 1; ++i) {
             RestTemplate restTemplate = new RestTemplate();
 
-            Snapshot snapshot = new Snapshot(
-                    snapshots.get(i),
-                    snapshots.get(i + 1),
-                    new float[]{timePeriod * i, timePeriod * (i + 1)});
+            Snapshot snapshot = new Snapshot()
+                    .setX(snapshots.get(i), timePeriod * i)
+                    .setY(snapshots.get(i + 1), timePeriod * (i+1));
             RigidTransformation rt = restTemplate.postForObject(
                     methodUri, snapshot, RigidTransformation.class);
             rt.setSnapshot(snapshot);
