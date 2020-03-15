@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import stfXCore.Models.Storyboard.Dataset;
-import stfXCore.Models.Storyboard.Snapshot;
-import stfXCore.Models.Storyboard.Storyboard;
-import stfXCore.Models.Storyboard.StoryboardNotFoundException;
+import stfXCore.Models.Storyboard.*;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
 import stfXCore.Repositories.StoryboardRepository;
 import stfXCore.Services.Events.Event;
@@ -48,7 +45,7 @@ public class StoryboardController {
                     .setX(snapshots.get(i), timePeriod * i)
                     .setY(snapshots.get(i + 1), timePeriod * (i+1));
             RigidTransformation rt = restTemplate.postForObject(
-                    methodUri, snapshot, RigidTransformation.class);
+                    methodUri, new TimelessSnapshot(snapshot), RigidTransformation.class);
             rt.setSnapshot(snapshot);
 
             storyboard.addRigidTransformation(rt);

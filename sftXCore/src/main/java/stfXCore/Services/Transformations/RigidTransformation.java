@@ -1,12 +1,20 @@
 package stfXCore.Services.Transformations;
 
+import lombok.Builder;
 import lombok.Data;
+import stfXCore.Models.Storyboard.Snapshot;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Lob;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 @Data
-public class RigidTransformation extends Transformation implements Serializable {
+public class RigidTransformation implements Serializable {
+
+    protected Snapshot snapshot;
 
     private float rotation;
 
@@ -17,5 +25,6 @@ public class RigidTransformation extends Transformation implements Serializable 
      */
     private float scale;
 
+    @Builder
     public RigidTransformation() {}
 }

@@ -1,12 +1,16 @@
 package stfXCore.Services.Events;
 
+import stfXCore.Models.Storyboard.Snapshot;
+import stfXCore.Models.Storyboard.State;
 import stfXCore.Models.Storyboard.Thresholds.GenericThreshold;
 import stfXCore.Models.Storyboard.Thresholds.ThresholdParameters;
 import stfXCore.Services.Transformations.RigidTransformation;
+import stfXCore.Utils.Pair;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public abstract class EventParser {
 
@@ -17,9 +21,8 @@ public abstract class EventParser {
     }
 
     protected Direction direction = Direction.NONE;
-    // TODO: Pair<initialState, float>
-    protected float accDirected = 0;
-    protected float accAbsolute = 0;
+    protected Pair<State, Float> accDirected;
+    protected Pair<State, Float> accAbsolute;
 
 
     EventParser() {
@@ -27,50 +30,70 @@ public abstract class EventParser {
 
     private void resetDeltas() {
         direction = Direction.NONE;
-        accDirected = 0;
-        accAbsolute = 0;
+        accDirected = null;
+        accAbsolute = null;
     }
 
-    private boolean verifyNullTransformation(Float accumulator, Float transformation) {
-        return accumulator == 0 && transformation == 0;
+    private boolean verifyNullTransformation(Pair<State, Float> accumulator, Float transformation) {
+        return accumulator == null && transformation == 0;
     }
 
-    protected Event computeDelta(Float transformation, Float threshold, Event.Transformation type) {
-        if (transformation >= threshold)
-            return new Event(Event.ThresholdTrigger.DELTA, type, transformation);
+    protected Event computeDelta(Pair<Snapshot, Float> transformation, Float threshold, Event.Transformation type) {
+        if (transformation.getSecond() >= threshold) {
+            Event event = new Event(Event.ThresholdTrigger.DELTA, type, transformation.getSecond());
+            event.setPhenomena(transformation.getFirst());
+            return event;
+        }
         return null;
     }
 
-    protected Event computeAccDirected(Float transformation, Float threshold, Event.Transformation type) {
-        if (verifyNullTransformation(accDirected, transformation))
+    protected Event computeAccDirected(Pair<Snapshot, Float> transformation, Float threshold, Event.Transformation type) {
+        Float transformationValue = transformation.getSecond();
+
+        if (verifyNullTransformation(accDirected, transformationValue))
             return null;
 
         // If direction is different from current, reset
-        if (!((direction == Direction.FORWARD && transformation > 0) ||
-                (direction == Direction.BACKWARD && transformation < 0))) {
-            direction = transformation > 0 ? Direction.FORWARD : Direction.BACKWARD;
-            accDirected = 0;
+        if (!((direction == Direction.FORWARD && transformationValue > 0) ||
+                (direction == Direction.BACKWARD && transformationValue < 0))) {
+            direction = transformationValue > 0 ? Direction.FORWARD : Direction.BACKWARD;
+            accDirected = new Pair<State, Float>(transformation.getFirst().getX(), transformationValue);
         }
 
-        accDirected += transformation;
+        accDirected.setSecond(accDirected.getSecond() + transformationValue);
 
-        if (Math.abs(accDirected) >= threshold)
-            return new Event(Event.ThresholdTrigger.DIRECTED_ACC,
+        if (Math.abs(accDirected.getSecond()) >= threshold) {
+            Event event = new Event(
+                    Event.ThresholdTrigger.DIRECTED_ACC,
                     type,
-                    accDirected);
+                    accDirected.getSecond());
+            event.setPhenomena(
+                    new Snapshot(accDirected.getFirst(), transformation.getFirst().getY()));
+            return event;
+        }
         return null;
     }
 
-    protected Event computeAccAbsolute(Float transformation, Float threshold, Event.Transformation type) {
-        if (verifyNullTransformation(accAbsolute, transformation))
+    protected Event computeAccAbsolute(Pair<Snapshot, Float> transformation, Float threshold, Event.Transformation type) {
+        Float transformationValue = transformation.getSecond();
+
+        if (verifyNullTransformation(accAbsolute, transformationValue))
             return null;
 
-        accAbsolute += Math.abs(transformation);
+        if (accAbsolute == null)
+            accAbsolute = new Pair<State, Float>(transformation.getFirst().getX(), transformationValue);
+        else
+            accAbsolute.setSecond(accAbsolute.getSecond() + transformationValue);
 
-        if (accAbsolute >= threshold)
-            return new Event(Event.ThresholdTrigger.ABSOLUTE_ACC,
+        if (accAbsolute.getSecond() >= threshold) {
+            Event event = new Event(
+                    Event.ThresholdTrigger.ABSOLUTE_ACC,
                     type,
-                    accAbsolute);
+                    accAbsolute.getSecond());
+            event.setPhenomena(
+                    new Snapshot(accAbsolute.getFirst(), transformation.getFirst().getY()));
+            return event;
+        }
         return null;
     }
 
@@ -81,10 +104,10 @@ public abstract class EventParser {
      * @param threshold       The thresholds to use
      * @param type            The type of the transformation being analyzed
      */
-    protected ArrayList<Event> filterThreshold(List<Float> transformations, GenericThreshold<Float> threshold, Event.Transformation type) {
+    protected ArrayList<Event> filterThreshold(List<Pair<Snapshot, Float>> transformations, GenericThreshold<Float> threshold, Event.Transformation type) {
         ArrayList<Event> eventsOfInterest = new ArrayList<>();
 
-        for (Float transformation : transformations) {
+        for (Pair<Snapshot, Float> transformation : transformations) {
             Event event = computeDelta(transformation, threshold.getDelta(), type);
             if (event != null) {
                 eventsOfInterest.add(event);

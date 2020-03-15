@@ -3,11 +3,10 @@ package stfXCore.Models.Storyboard;
 import lombok.Data;
 import stfXCore.Services.Transformations.RigidTransformation;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Lombok annotation to create all the getters, setters, equals, hash, and toString methods, based on the fields
@@ -41,4 +40,5 @@ public class Storyboard {
     public void addRigidTransformation(RigidTransformation rt) {
         rigidTransformations.add(rt);
     }
+
 }

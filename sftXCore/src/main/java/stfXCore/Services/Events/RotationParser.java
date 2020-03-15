@@ -1,7 +1,9 @@
 package stfXCore.Services.Events;
 
+import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.Thresholds.GenericThreshold;
 import stfXCore.Services.Transformations.RigidTransformation;
+import stfXCore.Utils.Pair;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -14,7 +16,9 @@ public class RotationParser extends EventParser {
 
     public ArrayList<Event> parse(@NotNull ArrayList<RigidTransformation> rigidTransformations, GenericThreshold<Float> threshold) {
         return new ArrayList<>(filterThreshold(
-                rigidTransformations.stream().map(rt -> rt.getRotation()).collect(Collectors.toList()),
+                rigidTransformations.stream().map(
+                        rt -> new Pair<Snapshot, Float>(rt.getSnapshot(), rt.getRotation()))
+                        .collect(Collectors.toList()),
                 threshold,
                 Event.Transformation.ROTATION));
     }
