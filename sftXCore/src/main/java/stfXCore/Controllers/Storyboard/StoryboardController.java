@@ -5,6 +5,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import stfXCore.Models.Storyboard.*;
+import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardMissingInformationException;
+import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardNotFoundException;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
 import stfXCore.Repositories.StoryboardRepository;
 import stfXCore.Services.Events.Event;
@@ -55,6 +57,9 @@ public class StoryboardController {
     @PostMapping("/storyboard")
     public Long newStoryboard(@RequestBody Dataset dataset) {
         Storyboard storyboard = new Storyboard(dataset);
+        if (dataset.getDataset() == null || dataset.getMetadata() == null)
+            throw new StoryboardMissingInformationException();
+
         computeTransformations(dataset, storyboard);
         return repository.save(storyboard).getId();
     }

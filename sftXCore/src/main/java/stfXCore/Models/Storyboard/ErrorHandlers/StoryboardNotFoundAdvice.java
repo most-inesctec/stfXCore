@@ -1,4 +1,4 @@
-package stfXCore.Models.Storyboard;
+package stfXCore.Models.Storyboard.ErrorHandlers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
