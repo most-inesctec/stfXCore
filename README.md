@@ -69,9 +69,76 @@ An example call to this is endpoint is:
 }
 ```
 
-And the respective output:
+And a possible respective output:
 ```json
-
+[
+  {
+    "trigger": "DIRECTED_ACC",
+    "type": "TRANSLATION",
+    "triggerValue": 3.4333267,
+    "phenomena": {
+      "x": {
+        "representation": [
+          [
+            0,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "timestamp": 0
+      },
+      "y": {
+        "representation": [
+          [
+            1.9964514,
+            2.0043077
+          ],
+          [
+            4.0878925,
+            2.0016356
+          ],
+          [
+            4.099334,
+            4.0789633
+          ],
+          [
+            3.0316966,
+            4.146358
+          ],
+          [
+            1.9781165,
+            4.0863123
+          ],
+          [
+            1.9964514,
+            2.0043077
+          ]
+        ],
+        "timestamp": 12
+      }
+    }
+  },
+  ...
+]
 ```
 
 The API definition is avaiable in [Swagger](https://app.swaggerhub.com/apis/EdgarACarneiro/thesis/1.0.0).
