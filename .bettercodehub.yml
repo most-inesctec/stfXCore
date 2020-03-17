@@ -2,4 +2,4 @@ component_depth: 3
 languages:
 - java
 exclude:
-- /sftXCore/.mvn/*
+- /stfXXore/.mvn/.*
