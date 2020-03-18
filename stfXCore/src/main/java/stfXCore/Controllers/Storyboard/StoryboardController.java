@@ -69,6 +69,9 @@ public class StoryboardController {
         Storyboard storyboard = repository.findById(id)
                 .orElseThrow(() -> new StoryboardNotFoundException(id));
 
+        if (thresholds.getParameters() == null)
+            throw new StoryboardMissingInformationException();
+
         return EventParser.parseTransformations(storyboard.getRigidTransformations(), thresholds.getParameters());
     }
 

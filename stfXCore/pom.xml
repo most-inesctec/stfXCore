@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>sftX</artifactId>
+	<artifactId>stfX</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>sftXCore</name>
+	<name>stfXCore</name>
 	<description>Core microservice of the SpatioTemporal Feature eXtractor</description>
 
 	<properties>
