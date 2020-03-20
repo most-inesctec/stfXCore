@@ -3,7 +3,7 @@ jdk:
  - oraclejdk13
 
 script:
-- cd sftXCore
+- cd stfXCore
 - ./mvnw clean install
 - ./mvnw test
 
