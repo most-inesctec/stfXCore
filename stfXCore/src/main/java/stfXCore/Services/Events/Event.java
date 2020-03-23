@@ -2,6 +2,9 @@ package stfXCore.Services.Events;
 
 import lombok.Data;
 import stfXCore.Models.Storyboard.Snapshot;
+import stfXCore.Models.Storyboard.State;
+
+import java.util.ArrayList;
 
 @Data
 public class Event {
@@ -24,7 +27,7 @@ public class Event {
 
     private float triggerValue;
 
-    private Snapshot phenomena;
+    private ArrayList<State> phenomena;
 
     Event(ThresholdTrigger trigger, Transformation type, float triggerValue) {
         this.trigger = trigger;
