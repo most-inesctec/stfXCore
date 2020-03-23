@@ -11,7 +11,8 @@ public class Snapshot implements Serializable {
     private State X;
     private State Y;
 
-    public Snapshot() {}
+    public Snapshot() {
+    }
 
     public Snapshot(State X, State Y) {
         this.X = X;
@@ -26,5 +27,12 @@ public class Snapshot implements Serializable {
     public Snapshot setY(ArrayList<ArrayList<Float>> Y, float timestamp) {
         this.Y = new State(Y, timestamp);
         return this;
+    }
+
+    public ArrayList<State> getStates() {
+        ArrayList<State> states = new ArrayList<>();
+        states.add(X);
+        states.add(Y);
+        return states;
     }
 }
