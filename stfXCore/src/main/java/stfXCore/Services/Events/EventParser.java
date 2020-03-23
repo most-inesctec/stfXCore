@@ -87,7 +87,7 @@ public abstract class EventParser {
         if (accAbsolute == null) {
             ArrayList<State> states = new ArrayList<>();
             states.add(transformation.getFirst().getX());
-            accDirected = new Pair<>(states, transformationValue);
+            accAbsolute = new Pair<>(states, transformationValue);
         } else {
             accAbsolute.getFirst().add(transformation.getFirst().getX());
             accAbsolute.setSecond(accAbsolute.getSecond() + transformationValue);
@@ -98,8 +98,8 @@ public abstract class EventParser {
                     Event.ThresholdTrigger.ABSOLUTE_ACC,
                     type,
                     accAbsolute.getSecond());
-            accDirected.getFirst().add(transformation.getFirst().getY());
-            event.setPhenomena(accDirected.getFirst());
+            accAbsolute.getFirst().add(transformation.getFirst().getY());
+            event.setPhenomena(accAbsolute.getFirst());
             return event;
         }
         return null;
