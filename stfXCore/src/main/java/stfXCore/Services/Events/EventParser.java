@@ -4,6 +4,7 @@ import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.State;
 import stfXCore.Models.Storyboard.Thresholds.GenericThreshold;
 import stfXCore.Models.Storyboard.Thresholds.ThresholdParameters;
+import stfXCore.Services.TemporalFrames.FramedDataset;
 import stfXCore.Services.Transformations.RigidTransformation;
 import stfXCore.Utils.Pair;
 
@@ -160,9 +161,6 @@ public abstract class EventParser {
         if (thresholds.getScale() != null)
             eventsOfInterest.addAll(
                     new UniformScaleParser().parse(rigidTransformations, thresholds.getScale()));
-
-        //TODO: Apply reorder to map to each time unit the operation ocurring
-
 
         return eventsOfInterest;
     }
