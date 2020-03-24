@@ -13,6 +13,16 @@ public class Frame {
 
     private ArrayList<EventData> events;
 
+    Frame(ArrayList<State> phenomena)  {
+        this.phenomena = phenomena;
+        this.events = new ArrayList<>();
+    }
+
+    Frame addEvent(EventData event) {
+        events.add(event);
+        return this;
+    }
+
     public Pair<Float, Float> getTemporalRange() {
         return new Pair<Float, Float>(
                 this.phenomena.get(0).getTimestamp(),
