@@ -34,4 +34,13 @@ public class Event {
         this.type = type;
         this.triggerValue = triggerValue;
     }
+
+    public ArrayList<EventWrapper> getWrappers() {
+        return new EventWrapper[]{
+                new StartEventWrapper(this).setTimestamp(
+                        this.phenomena.get(0).getTimestamp()),
+                new EndEventWrapper(this).setTimestamp(
+                        this.phenomena.get(this.phenomena.size() - 1).getTimestamp())
+        };
+    }
 }

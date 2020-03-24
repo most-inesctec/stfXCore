@@ -145,9 +145,8 @@ public abstract class EventParser {
 
     protected abstract ArrayList<Event> parse(@NotNull ArrayList<RigidTransformation> rigidTransformations, @NotNull GenericThreshold<Float> threshold);
 
-    public static PriorityQueue<Event> parseTransformations(@NotNull ArrayList<RigidTransformation> rigidTransformations, @NotNull ThresholdParameters thresholds) {
-        PriorityQueue<Event> eventsOfInterest = new PriorityQueue<Event>(
-                (event1, event2) -> Math.round(event1.getPhenomena().get(0).getTimestamp() - event2.getPhenomena().get(0).getTimestamp()));
+    public static ArrayList<Event> parseTransformations(@NotNull ArrayList<RigidTransformation> rigidTransformations, @NotNull ThresholdParameters thresholds) {
+        ArrayList<Event> eventsOfInterest = new ArrayList<>();
 
         // TODO: Parsing can be concurrent
         if (thresholds.getTranslation() != null)
