@@ -8,9 +8,7 @@ import stfXCore.Services.Transformations.RigidTransformation;
 import stfXCore.Utils.Pair;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class EventParser {
 
@@ -146,8 +144,9 @@ public abstract class EventParser {
 
     protected abstract ArrayList<Event> parse(@NotNull ArrayList<RigidTransformation> rigidTransformations, @NotNull GenericThreshold<Float> threshold);
 
-    public static ArrayList<Event> parseTransformations(@NotNull ArrayList<RigidTransformation> rigidTransformations, @NotNull ThresholdParameters thresholds) {
-        ArrayList<Event> eventsOfInterest = new ArrayList<>();
+    public static PriorityQueue<Event> parseTransformations(@NotNull ArrayList<RigidTransformation> rigidTransformations, @NotNull ThresholdParameters thresholds) {
+        PriorityQueue<Event> eventsOfInterest = new PriorityQueue<Event>(
+                (event1, event2) -> Math.round(event1.getPhenomena().get(0).getTimestamp() - event2.getPhenomena().get(0).getTimestamp()));
 
         // TODO: Parsing can be concurrent
         if (thresholds.getTranslation() != null)
@@ -163,6 +162,7 @@ public abstract class EventParser {
                     new UniformScaleParser().parse(rigidTransformations, thresholds.getScale()));
 
         //TODO: Apply reorder to map to each time unit the operation ocurring
+
 
         return eventsOfInterest;
     }

@@ -14,6 +14,7 @@ import stfXCore.Services.Events.EventParser;
 import stfXCore.Services.Transformations.RigidTransformation;
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 @RestController
 public class StoryboardController {
@@ -65,7 +66,7 @@ public class StoryboardController {
     }
 
     @PostMapping("/storyboard/{id}")
-    public ArrayList<Event> getEventsOfInterest(@PathVariable Long id, @RequestBody Thresholds thresholds) {
+    public PriorityQueue<Event> getEventsOfInterest(@PathVariable Long id, @RequestBody Thresholds thresholds) {
         Storyboard storyboard = repository.findById(id)
                 .orElseThrow(() -> new StoryboardNotFoundException(id));
 
