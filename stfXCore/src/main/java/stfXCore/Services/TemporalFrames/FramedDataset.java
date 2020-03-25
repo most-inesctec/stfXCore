@@ -22,7 +22,7 @@ public class FramedDataset {
 
         // Priority Queue of start and end events
         PriorityQueue<EventWrapper> orderedEvents = new PriorityQueue<EventWrapper>(
-                (e1, e2) -> e1.getTimestamp() - e2.getTimestamp());
+                (e1, e2) -> Math.round(e1.getTimestamp() - e2.getTimestamp()));
         for (Event event: eventsOfInterest)
             orderedEvents.addAll(event.getWrappers());
 
@@ -34,7 +34,7 @@ public class FramedDataset {
 
             Frame f = new Frame(null);
             for (Event e: validEvents)
-                f.addEvent(e);
+                f.addEvent(e.getData());
 
             if (eventWrapper.getType() == START_WRAPPER)
                 validEvents.add(eventWrapper.getEvent());

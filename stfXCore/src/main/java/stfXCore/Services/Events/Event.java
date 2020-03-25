@@ -3,6 +3,7 @@ package stfXCore.Services.Events;
 import lombok.Data;
 import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.State;
+import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
 
@@ -21,26 +22,26 @@ public class Event {
         UNIFORM_SCALE
     }
 
-    private ThresholdTrigger trigger;
+    private EventData data;
 
-    private Transformation type;
+    Event(ThresholdTrigger trigger, Transformation type) {
+        this.data = new EventData(trigger, type);
+    }
 
-    private float triggerValue;
-
-    private ArrayList<State> phenomena;
-
-    Event(ThresholdTrigger trigger, Transformation type, float triggerValue) {
-        this.trigger = trigger;
-        this.type = type;
-        this.triggerValue = triggerValue;
+    public Event setValues(ArrayList<Pair<Float, Float>> values) {
+        data.setValues(values);
+        return this;
     }
 
     public ArrayList<EventWrapper> getWrappers() {
-        return new EventWrapper[]{
+        ArrayList<EventWrapper> wrappers = new ArrayList<>();
+        ArrayList<Pair<Float, Float>> values = this.data.getValues();
+        wrappers.add(
                 new StartEventWrapper(this).setTimestamp(
-                        this.phenomena.get(0).getTimestamp()),
+                        values.get(0).getFirst()));
+        wrappers.add(
                 new EndEventWrapper(this).setTimestamp(
-                        this.phenomena.get(this.phenomena.size() - 1).getTimestamp())
-        };
+                        values.get(values.size() - 1).getFirst()));
+        return wrappers;
     }
 }

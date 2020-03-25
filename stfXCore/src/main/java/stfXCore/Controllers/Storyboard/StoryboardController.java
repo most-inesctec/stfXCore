@@ -66,7 +66,7 @@ public class StoryboardController {
     }
 
     @PostMapping("/storyboard/{id}")
-    public PriorityQueue<Frame> getEventsOfInterest(@PathVariable Long id, @RequestBody Thresholds thresholds) {
+    public ArrayList<Frame> getEventsOfInterest(@PathVariable Long id, @RequestBody Thresholds thresholds) {
         Storyboard storyboard = repository.findById(id)
                 .orElseThrow(() -> new StoryboardNotFoundException(id));
 

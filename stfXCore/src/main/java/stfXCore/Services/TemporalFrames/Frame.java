@@ -2,6 +2,7 @@ package stfXCore.Services.TemporalFrames;
 
 import lombok.Data;
 import stfXCore.Models.Storyboard.State;
+import stfXCore.Services.Events.EventData;
 import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
