@@ -1,7 +1,6 @@
 package stfXCore.Services.TemporalFrames;
 
 import lombok.Data;
-import net.minidev.json.annotate.JsonIgnore;
 import stfXCore.Models.Storyboard.State;
 import stfXCore.Services.Events.EventDataWithTrigger;
 

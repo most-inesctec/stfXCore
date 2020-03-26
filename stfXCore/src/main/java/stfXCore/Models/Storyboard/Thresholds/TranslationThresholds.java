@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class TranslationThresholds extends GenericThreshold<Float> {
 
-    TranslationThresholds() {}
+    public TranslationThresholds() {}
 
 //    @Override
 //    public Float typeParser(ArrayList<Float> value) {
