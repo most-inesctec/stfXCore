@@ -132,7 +132,7 @@ public class GetFramesTests {
         event = frame3.getEvents().get(2);
         Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(event.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(event.getTriggerValue(), 0.3f);
+        Assertions.assertEquals(Math.round(event.getTriggerValue() * 10) / 10f, 0.3f);
 
         Frame frame4 = frames.get(3);
         Assertions.assertArrayEquals(frame4.getTemporalRange().toArray(new Float[frame4.getTemporalRange().size()]), new Float[]{10f, 15f});
@@ -144,7 +144,7 @@ public class GetFramesTests {
         event = frame4.getEvents().get(1);
         Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(event.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(event.getTriggerValue(), 0.5f);
+        Assertions.assertEquals(Math.round(event.getTriggerValue() * 10) / 10f, 0.5f);
 
 
         Frame frame5 = frames.get(4);

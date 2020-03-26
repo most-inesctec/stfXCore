@@ -39,6 +39,9 @@ public class FramedDataset {
             else
                 validEvents.remove(eventWrapper.getEvent());
 
+            if (validEvents.size() == 0)
+                continue;
+
             // Polling all events with equal timestamp
             EventWrapper test = orderedEvents.peek();
             while (orderedEvents.peek() != null &&
