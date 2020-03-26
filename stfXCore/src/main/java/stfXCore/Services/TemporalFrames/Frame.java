@@ -1,6 +1,7 @@
 package stfXCore.Services.TemporalFrames;
 
 import lombok.Data;
+import net.minidev.json.annotate.JsonIgnore;
 import stfXCore.Models.Storyboard.State;
 import stfXCore.Services.Events.EventDataWithTrigger;
 
@@ -10,14 +11,12 @@ import java.util.List;
 @Data
 public class Frame {
 
-    private static final int UPPER_BOUND_INDEX = 2;
-
-    private List<State> phenomena;
-
     private ArrayList<EventDataWithTrigger> events;
 
     // Saving redudant data and as an array, for json
     private ArrayList<Float> temporalRange;
+
+    private List<State> phenomena;
 
     Frame(List<State> phenomena)  {
         this.phenomena = phenomena;
@@ -31,7 +30,7 @@ public class Frame {
         events.add(event);
     }
 
-    public Float getUpperBound() {
-        return this.temporalRange.get(UPPER_BOUND_INDEX);
+    public Float upperBound() {
+        return this.temporalRange.get(1);
     }
 }

@@ -34,6 +34,22 @@ public class FramedDataset {
         while (!orderedEvents.isEmpty()) {
             EventWrapper eventWrapper = orderedEvents.poll();
 
+            if (eventWrapper.getType() == START_WRAPPER)
+                validEvents.add(eventWrapper.getEvent());
+            else
+                validEvents.remove(eventWrapper.getEvent());
+
+            // Polling all events with equal timestamp
+            EventWrapper test = orderedEvents.peek();
+            while (orderedEvents.peek() != null &&
+                    orderedEvents.peek().getTimestamp().equals(eventWrapper.getTimestamp())) {
+                eventWrapper = orderedEvents.poll();
+                if (eventWrapper.getType() == START_WRAPPER)
+                    validEvents.add(eventWrapper.getEvent());
+                else
+                    validEvents.remove(eventWrapper.getEvent());
+            }
+
             Frame frame;
             if (!orderedEvents.isEmpty()) {
                 frame = new Frame(states.getStates(
@@ -47,12 +63,9 @@ public class FramedDataset {
                 frame.addEvent(new EventDataWithTrigger(
                         validEvent.getData(),
                         // TODO Watch out to the null this function can return
-                        validEvent.getTriggerValue(frame.getUpperBound())));
+                        validEvent.getTriggerValue(frame.upperBound())));
 
-            if (eventWrapper.getType() == START_WRAPPER)
-                validEvents.add(eventWrapper.getEvent());
-            else
-                validEvents.remove(eventWrapper.getEvent());
+            framedDataset.add(frame);
         }
 
         return framedDataset;

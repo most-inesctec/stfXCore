@@ -22,7 +22,7 @@ public class StateList {
     public ArrayList<State> getStates(Float lowerBound) {
         int lowerIndex = -1;
         for (int i = 0; i < states.size(); ++i) {
-            if (states.get(i).getTimestamp() == lowerBound)
+            if (lowerBound.equals(states.get(i).getTimestamp()))
                 lowerIndex = i;
         }
 
@@ -34,9 +34,9 @@ public class StateList {
         int upperIndex = -1;
 
         for (int i = 0; i < states.size(); ++i) {
-            if (states.get(i).getTimestamp() == lowerBound)
+            if (lowerBound.equals(states.get(i).getTimestamp()))
                 lowerIndex = i;
-            else if (states.get(i).getTimestamp() == upperBound)
+            else if (upperBound.equals(states.get(i).getTimestamp()))
                 upperIndex = i + 1;
         }
 
