@@ -14,6 +14,7 @@ import java.util.ArrayList;
 @Data
 public class RigidTransformation implements Serializable {
 
+    // TODO: This should not be here. The Storyboard should rather store a ArrayList<Pair<Snapshot, Transformation>>
     protected Snapshot snapshot;
 
     private float rotation;

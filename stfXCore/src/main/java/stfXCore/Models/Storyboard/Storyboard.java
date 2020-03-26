@@ -31,7 +31,8 @@ public class Storyboard {
     @Lob
     private ArrayList<RigidTransformation> rigidTransformations;
 
-    public Storyboard() { }
+    public Storyboard() {
+    }
 
     public Storyboard(Dataset dataset) {
         rigidTransformations = new ArrayList<>();
@@ -39,6 +40,16 @@ public class Storyboard {
 
     public void addRigidTransformation(RigidTransformation rt) {
         rigidTransformations.add(rt);
+    }
+
+    public ArrayList<State> getSnapshots(Float lowerBound) {
+        // TODO getStates from lowertBound to end
+        return null;
+    }
+
+    public ArrayList<State> getSnapshots(Float lowerBound, Float upperBound) {
+        // TODO getStates from lowertBound to upperBound
+        return null;
     }
 
 }
