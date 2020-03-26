@@ -40,15 +40,7 @@ public class Storyboard {
         rigidTransformations.add(new Pair<>(snapshot, rt));
     }
 
-    public ArrayList<State> getSnapshots(Float lowerBound) {
-
-        // TODO getStates from lowertBound to end
-        return null;
+    public StateList getStates() {
+        return new StateList(rigidTransformations);
     }
-
-    public ArrayList<State> getSnapshots(Float lowerBound, Float upperBound) {
-        // TODO getStates from lowertBound to upperBound
-        return null;
-    }
-
 }

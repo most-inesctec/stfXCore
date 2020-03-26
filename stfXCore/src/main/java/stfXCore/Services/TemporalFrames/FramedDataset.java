@@ -1,5 +1,6 @@
 package stfXCore.Services.TemporalFrames;
 
+import stfXCore.Models.Storyboard.StateList;
 import stfXCore.Models.Storyboard.Storyboard;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
 import stfXCore.Services.Events.Event;
@@ -8,7 +9,6 @@ import stfXCore.Services.Events.EventParser;
 import stfXCore.Services.Events.EventWrapper;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.PriorityQueue;
 
 import static stfXCore.Services.Events.EventWrapper.EventType.START_WRAPPER;
@@ -22,24 +22,25 @@ public class FramedDataset {
         );
 
         // Priority Queue of start and end events
-        PriorityQueue<EventWrapper> orderedEvents = new PriorityQueue<EventWrapper>(
+        PriorityQueue<EventWrapper> orderedEvents = new PriorityQueue<>(
                 (e1, e2) -> Math.round(e1.getTimestamp() - e2.getTimestamp()));
         for (Event event : eventsOfInterest)
             orderedEvents.addAll(event.getWrappers());
 
         ArrayList<Event> validEvents = new ArrayList<>();
         ArrayList<Frame> framedDataset = new ArrayList<>();
+        StateList states = storyboard.getStates();
 
         while (!orderedEvents.isEmpty()) {
             EventWrapper eventWrapper = orderedEvents.poll();
 
             Frame frame;
             if (!orderedEvents.isEmpty()) {
-                frame = new Frame(storyboard.getSnapshots(
+                frame = new Frame(states.getStates(
                         eventWrapper.getTimestamp(),
                         orderedEvents.peek().getTimestamp()));
             } else {
-                frame = new Frame(storyboard.getSnapshots(
+                frame = new Frame(states.getStates(
                         eventWrapper.getTimestamp()));
             }
             for (Event validEvent : validEvents)
