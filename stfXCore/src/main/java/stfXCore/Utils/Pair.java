@@ -1,6 +1,8 @@
 package stfXCore.Utils;
 
-public class Pair <K, V> {
+import java.io.Serializable;
+
+public class Pair<K, V> implements Serializable {
 
     private K first;
 
@@ -17,9 +19,5 @@ public class Pair <K, V> {
 
     public V getSecond() {
         return this.second;
-    }
-
-    public void setSecond(V second) {
-        this.second = second;
     }
 }

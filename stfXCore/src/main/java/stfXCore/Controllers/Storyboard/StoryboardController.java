@@ -14,7 +14,6 @@ import stfXCore.Services.TemporalFrames.FramedDataset;
 import stfXCore.Services.Transformations.RigidTransformation;
 
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 @RestController
 public class StoryboardController {
@@ -46,18 +45,15 @@ public class StoryboardController {
 
             Snapshot snapshot = new Snapshot()
                     .setX(snapshots.get(i), timePeriod * i)
-                    .setY(snapshots.get(i + 1), timePeriod * (i+1));
-            RigidTransformation rt = restTemplate.postForObject(
-                    methodUri, new TimelessSnapshot(snapshot), RigidTransformation.class);
-            rt.setSnapshot(snapshot);
-
-            storyboard.addRigidTransformation(rt);
+                    .setY(snapshots.get(i + 1), timePeriod * (i + 1));
+            storyboard.addRigidTransformation(snapshot, restTemplate.postForObject(
+                    methodUri, new TimelessSnapshot(snapshot), RigidTransformation.class));
         }
     }
 
     @PostMapping("/storyboard")
     public Long newStoryboard(@RequestBody Dataset dataset) {
-        Storyboard storyboard = new Storyboard(dataset);
+        Storyboard storyboard = new Storyboard();
         if (dataset.getDataset() == null || dataset.getMetadata() == null)
             throw new StoryboardMissingInformationException();
 

@@ -14,13 +14,13 @@ public class TranslationParser extends EventParser {
     TranslationParser() {
     }
 
-    public ArrayList<Event> parse(@NotNull ArrayList<RigidTransformation> rigidTransformations, @NotNull GenericThreshold<Float> threshold) {
+    public ArrayList<Event> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold) {
         return new ArrayList<>(filterThreshold(
                 rigidTransformations.stream().map(
-                        rt -> {
-                            ArrayList<Float> translation = rt.getTranslation();
+                        pair -> {
+                            ArrayList<Float> translation = pair.getSecond().getTranslation();
                             // Using Magnitude for evaluating translation
-                            return new Pair<Snapshot, Float>(rt.getSnapshot(),
+                            return new Pair<>(pair.getFirst(),
                                     (float) Math.sqrt(translation.stream().reduce(
                                             0f, (acc, el) -> acc + (float) Math.pow(el, 2))));
                         })

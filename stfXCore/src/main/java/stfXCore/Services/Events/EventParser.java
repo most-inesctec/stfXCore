@@ -145,9 +145,9 @@ public abstract class EventParser {
         return eventsOfInterest;
     }
 
-    protected abstract ArrayList<Event> parse(@NotNull ArrayList<RigidTransformation> rigidTransformations, @NotNull GenericThreshold<Float> threshold);
+    protected abstract ArrayList<Event> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold);
 
-    public static ArrayList<Event> parseTransformations(@NotNull ArrayList<RigidTransformation> rigidTransformations, @NotNull ThresholdParameters thresholds) {
+    public static ArrayList<Event> parseTransformations(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull ThresholdParameters thresholds) {
         ArrayList<Event> eventsOfInterest = new ArrayList<>();
 
         // TODO: Parsing can be concurrent
