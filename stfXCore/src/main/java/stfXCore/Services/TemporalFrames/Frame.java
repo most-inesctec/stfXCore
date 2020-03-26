@@ -10,6 +10,9 @@ import java.util.List;
 @Data
 public class Frame {
 
+    private static final int LOWER_BOUND_INDEX = 0;
+    private static final int UPPER_BOUND_INDEX = 1;
+
     private ArrayList<EventDataWithTrigger> events;
 
     // Saving redudant data and as an array, for json
@@ -17,7 +20,7 @@ public class Frame {
 
     private List<State> phenomena;
 
-    Frame(List<State> phenomena)  {
+    Frame(List<State> phenomena) {
         this.phenomena = phenomena;
         this.temporalRange = new ArrayList<>();
         temporalRange.add(this.phenomena.get(0).getTimestamp());
@@ -29,7 +32,11 @@ public class Frame {
         events.add(event);
     }
 
+    public Float lowerBound() {
+        return this.temporalRange.get(LOWER_BOUND_INDEX);
+    }
+
     public Float upperBound() {
-        return this.temporalRange.get(1);
+        return this.temporalRange.get(UPPER_BOUND_INDEX);
     }
 }

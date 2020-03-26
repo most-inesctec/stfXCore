@@ -20,27 +20,27 @@ public class GetFramesTests {
     @Test
     void verifyFramesParser() {
         RigidTransformation translation = new RigidTransformation();
-        translation.setScale(0f);
+        translation.setScale(1f);
         translation.setTranslation(new ArrayList<>(Arrays.asList(0f, 1f)));
         translation.setRotation(0f);
 
         RigidTransformation rotation = new RigidTransformation();
-        rotation.setScale(0f);
+        rotation.setScale(1f);
         rotation.setTranslation(new ArrayList<>(Arrays.asList(0f, 0f)));
         rotation.setRotation(1f);
 
         RigidTransformation translationAndRotation = new RigidTransformation();
-        translationAndRotation.setScale(0f);
+        translationAndRotation.setScale(1f);
         translationAndRotation.setTranslation(new ArrayList<>(Arrays.asList(1f, 0f)));
         translationAndRotation.setRotation(1f);
 
         RigidTransformation rotationAndScale = new RigidTransformation();
-        rotationAndScale.setScale(1f);
+        rotationAndScale.setScale(1.1f);
         rotationAndScale.setTranslation(new ArrayList<>(Arrays.asList(0f, 0f)));
         rotationAndScale.setRotation(-1f);
 
         RigidTransformation translationAndScaleAndRotation = new RigidTransformation();
-        translationAndScaleAndRotation.setScale(1f);
+        translationAndScaleAndRotation.setScale(1.1f);
         translationAndScaleAndRotation.setTranslation(new ArrayList<>(Arrays.asList(0f, 1f)));
         translationAndScaleAndRotation.setRotation(1f);
 
@@ -82,9 +82,9 @@ public class GetFramesTests {
         rThreshold.setAbsoluteAcc(15f);
 
         UniformScaleThresholds sThreshold = new UniformScaleThresholds();
-        sThreshold.setDelta(2f);
-        sThreshold.setDirectedAcc(8f);
-        sThreshold.setAbsoluteAcc(10f);
+        sThreshold.setDelta(0.2f);
+        sThreshold.setDirectedAcc(0.8f);
+        sThreshold.setAbsoluteAcc(1f);
 
         ThresholdParameters parameters = new ThresholdParameters();
         parameters.setTranslation(tThreshold);
@@ -95,10 +95,12 @@ public class GetFramesTests {
         thresholds.setParameters(parameters);
 
         ArrayList<Frame> frames = FramedDataset.getFrames(storyboard, thresholds);
+        Assertions.assertEquals(frames.size(), 5);
 
         // Verify retrivied frames
         Frame frame1 = frames.get(0);
         Assertions.assertArrayEquals(frame1.getTemporalRange().toArray(new Float[frame1.getTemporalRange().size()]), new Float[]{0f, 5f});
+        Assertions.assertEquals(frame1.getEvents().size(), 1);
         EventDataWithTrigger event = frame1.getEvents().get(0);
         Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(event.getType(), Event.Transformation.TRANSLATION);
@@ -106,6 +108,7 @@ public class GetFramesTests {
 
         Frame frame2 = frames.get(1);
         Assertions.assertArrayEquals(frame2.getTemporalRange().toArray(new Float[frame2.getTemporalRange().size()]), new Float[]{5f, 7f});
+        Assertions.assertEquals(frame2.getEvents().size(), 2);
         event = frame2.getEvents().get(0);
         Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(event.getType(), Event.Transformation.TRANSLATION);
@@ -117,6 +120,7 @@ public class GetFramesTests {
 
         Frame frame3 = frames.get(2);
         Assertions.assertArrayEquals(frame3.getTemporalRange().toArray(new Float[frame3.getTemporalRange().size()]), new Float[]{7f, 10f});
+        Assertions.assertEquals(frame3.getEvents().size(), 3);
         event = frame3.getEvents().get(0);
         Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(event.getType(), Event.Transformation.TRANSLATION);
@@ -128,10 +132,11 @@ public class GetFramesTests {
         event = frame3.getEvents().get(2);
         Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(event.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(event.getTriggerValue(), 3f);
+        Assertions.assertEquals(event.getTriggerValue(), 0.3f);
 
         Frame frame4 = frames.get(3);
         Assertions.assertArrayEquals(frame4.getTemporalRange().toArray(new Float[frame4.getTemporalRange().size()]), new Float[]{10f, 15f});
+        Assertions.assertEquals(frame4.getEvents().size(), 2);
         event = frame4.getEvents().get(0);
         Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.ABSOLUTE_ACC);
         Assertions.assertEquals(event.getType(), Event.Transformation.ROTATION);
@@ -139,11 +144,12 @@ public class GetFramesTests {
         event = frame4.getEvents().get(1);
         Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(event.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(event.getTriggerValue(), 5f);
+        Assertions.assertEquals(event.getTriggerValue(), 0.5f);
 
 
         Frame frame5 = frames.get(4);
         Assertions.assertArrayEquals(frame5.getTemporalRange().toArray(new Float[frame5.getTemporalRange().size()]), new Float[]{15f, 20f});
+        Assertions.assertEquals(frame5.getEvents().size(), 1);
         event = frame5.getEvents().get(0);
         Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.ABSOLUTE_ACC);
         Assertions.assertEquals(event.getType(), Event.Transformation.ROTATION);

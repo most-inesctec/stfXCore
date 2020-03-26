@@ -49,7 +49,7 @@ public abstract class EventParser {
     }
 
     protected Event computeDelta(Pair<Snapshot, Float> transformation, Float threshold, Event.Transformation type) {
-        if (transformation.getSecond() >= threshold) {
+        if (Math.abs(transformation.getSecond()) >= threshold) {
             ArrayList<Pair<Float, Float>> values = new ArrayList<>();
             values.add(getValue(transformation.getFirst().getX(), 0f));
             values.add(getValue(transformation.getFirst().getY(), transformation.getSecond()));
@@ -85,7 +85,7 @@ public abstract class EventParser {
     }
 
     protected Event computeAccAbsolute(Pair<Snapshot, Float> transformation, Float threshold, Event.Transformation type) {
-        Float transformationValue = transformation.getSecond();
+        Float transformationValue = Math.abs(transformation.getSecond());
 
         if (verifyNullTransformation(accAbsolute, transformationValue))
             return null;

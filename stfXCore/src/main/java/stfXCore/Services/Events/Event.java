@@ -53,11 +53,15 @@ public class Event {
     /**
      * Get the triggerValue associated to the given timestamp
      */
-    public Float getTriggerValue(Float timestamp) {
-        for(Pair<Float, Float> pair: values) {
-            if (pair.getFirst().equals(timestamp))
-                return pair.getSecond();
+    public Float getTriggerValue(Float fromTimestamp, Float toTimestamp) {
+        Float fromValue = 0f, toValue = 0f;
+
+        for (Pair<Float, Float> pair : values) {
+            if (pair.getFirst().equals(fromTimestamp))
+                fromValue = pair.getSecond();
+            else if (pair.getFirst().equals(toTimestamp))
+                toValue = pair.getSecond();
         }
-        return null;
+        return toValue - fromValue;
     }
 }

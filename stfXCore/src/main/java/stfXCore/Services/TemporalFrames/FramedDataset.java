@@ -63,7 +63,7 @@ public class FramedDataset {
                 frame.addEvent(new EventDataWithTrigger(
                         validEvent.getData(),
                         // TODO Watch out to the null this function can return
-                        validEvent.getTriggerValue(frame.upperBound())));
+                        validEvent.getTriggerValue(frame.lowerBound(), frame.upperBound())));
 
             framedDataset.add(frame);
         }
