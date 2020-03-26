@@ -3,6 +3,7 @@ package stfXCore.Services.Events;
 import lombok.Data;
 import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.State;
+import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
 
@@ -21,17 +22,46 @@ public class Event {
         UNIFORM_SCALE
     }
 
-    private ThresholdTrigger trigger;
+    private EventData data;
 
-    private Transformation type;
+    /**
+     * First Element are timestamps
+     * Second Element are triggerValues
+     */
+    private ArrayList<Pair<Float, Float>> values;
 
-    private float triggerValue;
+    Event(ThresholdTrigger trigger, Transformation type) {
+        this.data = new EventData(trigger, type);
+    }
 
-    private ArrayList<State> phenomena;
+    public Event setValues(ArrayList<Pair<Float, Float>> values) {
+        this.values = values;
+        return this;
+    }
 
-    Event(ThresholdTrigger trigger, Transformation type, float triggerValue) {
-        this.trigger = trigger;
-        this.type = type;
-        this.triggerValue = triggerValue;
+    public ArrayList<EventWrapper> getWrappers() {
+        ArrayList<EventWrapper> wrappers = new ArrayList<>();
+        wrappers.add(
+                new StartEventWrapper(this).setTimestamp(
+                        values.get(0).getFirst()));
+        wrappers.add(
+                new EndEventWrapper(this).setTimestamp(
+                        values.get(values.size() - 1).getFirst()));
+        return wrappers;
+    }
+
+    /**
+     * Get the triggerValue associated to the given timestamp
+     */
+    public Float getTriggerValue(Float fromTimestamp, Float toTimestamp) {
+        Float fromValue = 0f, toValue = 0f;
+
+        for (Pair<Float, Float> pair : values) {
+            if (pair.getFirst().equals(fromTimestamp))
+                fromValue = pair.getSecond();
+            else if (pair.getFirst().equals(toTimestamp))
+                toValue = pair.getSecond();
+        }
+        return toValue - fromValue;
     }
 }

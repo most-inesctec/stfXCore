@@ -11,5 +11,5 @@ public class ThresholdParameters {
 
     private UniformScaleThresholds scale;
 
-    ThresholdParameters() {}
+    public ThresholdParameters() {}
 }

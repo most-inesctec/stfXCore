@@ -9,8 +9,8 @@ import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardMissingInformationExce
 import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardNotFoundException;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
 import stfXCore.Repositories.StoryboardRepository;
-import stfXCore.Services.Events.Event;
-import stfXCore.Services.Events.EventParser;
+import stfXCore.Services.TemporalFrames.Frame;
+import stfXCore.Services.TemporalFrames.FramedDataset;
 import stfXCore.Services.Transformations.RigidTransformation;
 
 import java.util.ArrayList;
@@ -45,18 +45,15 @@ public class StoryboardController {
 
             Snapshot snapshot = new Snapshot()
                     .setX(snapshots.get(i), timePeriod * i)
-                    .setY(snapshots.get(i + 1), timePeriod * (i+1));
-            RigidTransformation rt = restTemplate.postForObject(
-                    methodUri, new TimelessSnapshot(snapshot), RigidTransformation.class);
-            rt.setSnapshot(snapshot);
-
-            storyboard.addRigidTransformation(rt);
+                    .setY(snapshots.get(i + 1), timePeriod * (i + 1));
+            storyboard.addRigidTransformation(snapshot, restTemplate.postForObject(
+                    methodUri, new TimelessSnapshot(snapshot), RigidTransformation.class));
         }
     }
 
     @PostMapping("/storyboard")
     public Long newStoryboard(@RequestBody Dataset dataset) {
-        Storyboard storyboard = new Storyboard(dataset);
+        Storyboard storyboard = new Storyboard();
         if (dataset.getDataset() == null || dataset.getMetadata() == null)
             throw new StoryboardMissingInformationException();
 
@@ -65,14 +62,14 @@ public class StoryboardController {
     }
 
     @PostMapping("/storyboard/{id}")
-    public ArrayList<Event> getEventsOfInterest(@PathVariable Long id, @RequestBody Thresholds thresholds) {
+    public ArrayList<Frame> getEventsOfInterest(@PathVariable Long id, @RequestBody Thresholds thresholds) {
         Storyboard storyboard = repository.findById(id)
                 .orElseThrow(() -> new StoryboardNotFoundException(id));
 
         if (thresholds.getParameters() == null)
             throw new StoryboardMissingInformationException();
 
-        return EventParser.parseTransformations(storyboard.getRigidTransformations(), thresholds.getParameters());
+        return FramedDataset.getFrames(storyboard, thresholds);
     }
 
     @DeleteMapping("/storyboard/{id}")

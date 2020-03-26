@@ -2,7 +2,7 @@ package stfXCore.Models.Storyboard.Thresholds;
 
 public class UniformScaleThresholds extends GenericThreshold<Float> {
 
-    UniformScaleThresholds() {}
+    public UniformScaleThresholds() {}
 
 //    @Override
 //    public Float typeParser(Float value) {

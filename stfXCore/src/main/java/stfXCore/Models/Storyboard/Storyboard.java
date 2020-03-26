@@ -2,6 +2,7 @@ package stfXCore.Models.Storyboard;
 
 import lombok.Data;
 import stfXCore.Services.Transformations.RigidTransformation;
+import stfXCore.Utils.Pair;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,16 +30,17 @@ public class Storyboard {
      * Attribute stored as BLOB
      */
     @Lob
-    private ArrayList<RigidTransformation> rigidTransformations;
+    private ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations;
 
-    public Storyboard() { }
-
-    public Storyboard(Dataset dataset) {
+    public Storyboard() {
         rigidTransformations = new ArrayList<>();
     }
 
-    public void addRigidTransformation(RigidTransformation rt) {
-        rigidTransformations.add(rt);
+    public void addRigidTransformation(Snapshot snapshot, RigidTransformation rt) {
+        rigidTransformations.add(new Pair<>(snapshot, rt));
     }
 
+    public StateList getStates() {
+        return new StateList(rigidTransformations);
+    }
 }

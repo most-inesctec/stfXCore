@@ -7,5 +7,5 @@ public class Thresholds {
 
     private ThresholdParameters parameters;
 
-    Thresholds() {}
+    public Thresholds() {}
 }

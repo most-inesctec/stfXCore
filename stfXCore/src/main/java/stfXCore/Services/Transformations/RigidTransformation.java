@@ -14,8 +14,6 @@ import java.util.ArrayList;
 @Data
 public class RigidTransformation implements Serializable {
 
-    protected Snapshot snapshot;
-
     private float rotation;
 
     private ArrayList<Float> translation;
