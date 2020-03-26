@@ -45,6 +45,7 @@ public class FramedDataset {
             for (Event validEvent : validEvents)
                 frame.addEvent(new EventDataWithTrigger(
                         validEvent.getData(),
+                        // TODO Watch out to the null this function can return
                         validEvent.getTriggerValue(frame.getUpperBound())));
 
             if (eventWrapper.getType() == START_WRAPPER)

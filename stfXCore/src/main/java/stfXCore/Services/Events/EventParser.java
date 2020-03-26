@@ -69,7 +69,7 @@ public abstract class EventParser {
         if (!((direction == Direction.FORWARD && transformationValue > 0) ||
                 (direction == Direction.BACKWARD && transformationValue < 0))) {
             direction = transformationValue > 0 ? Direction.FORWARD : Direction.BACKWARD;
-            ArrayList<Pair<Float, Float>> accDirected = new ArrayList<>();
+            accDirected = new ArrayList<>();
             accDirected.add(getValue(transformation.getFirst().getX(), 0f));
             accDirected.add(getValue(transformation.getFirst().getY(), transformationValue));
         } else
@@ -91,7 +91,7 @@ public abstract class EventParser {
             return null;
 
         if (accAbsolute == null) {
-            ArrayList<Pair<Float, Float>> accAbsolute = new ArrayList<>();
+            accAbsolute = new ArrayList<>();
             accAbsolute.add(getValue(transformation.getFirst().getX(), 0f));
             accAbsolute.add(getValue(transformation.getFirst().getY(), transformationValue));
         } else
