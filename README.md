@@ -5,6 +5,8 @@
 
 The core microservice of the [___SpatioTemporal Feature eXtractor (stfX)___](https://github.com/EdgarACarneiro/stfX), contanining the Spring server that is presented to the end-user as an interface.
 
+This server's updated API can be consulte [here](https://app.swaggerhub.com/apis-docs/EdgarACarneiro/thesis/2.0.0#/).
+
 ## Example requests
 
 To provide stfX with a new storyboard one must call the `/storyboard` endpoint.
