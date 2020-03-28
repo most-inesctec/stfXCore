@@ -56,7 +56,9 @@ public class StoryboardController {
     @PostMapping("/storyboard")
     public Long newStoryboard(@RequestBody Dataset dataset) {
         Storyboard storyboard = new Storyboard();
-        if (dataset.getDataset() == null || dataset.getMetadata() == null)
+        if (dataset.getDataset() == null ||
+                dataset.getMetadata() == null ||
+                dataset.getMetadata().getTimePeriod() == null)
             throw new StoryboardMissingInformationException();
 
         computeTransformations(dataset, storyboard);
