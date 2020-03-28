@@ -9,11 +9,14 @@ import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardMissingInformationExce
 import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardNotFoundException;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
 import stfXCore.Repositories.StoryboardRepository;
+import stfXCore.Services.SnapshotsBuilder;
 import stfXCore.Services.TemporalFrames.Frame;
 import stfXCore.Services.TemporalFrames.FramedDataset;
 import stfXCore.Services.Transformations.RigidTransformation;
+import stfXCore.Services.Transformations.TransformationList;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @RestController
 public class StoryboardController {
@@ -35,20 +38,19 @@ public class StoryboardController {
      * @param storyboard The storyboard that stores the computed transformations
      */
     private void computeTransformations(Dataset dataset, Storyboard storyboard) {
-        ArrayList<ArrayList<ArrayList<Float>>> snapshots = dataset.getDataset();
         String methodUri = env.getProperty("PSR_endpoint");
-        float timePeriod = dataset.getMetadata().getTimePeriod();
+        ArrayList<Snapshot> snapshots = SnapshotsBuilder.createSnapshots(dataset);
+        ArrayList<TimelessSnapshot> representations = snapshots.stream()
+                .map(TimelessSnapshot::new)
+                .collect(Collectors.toCollection(ArrayList::new));
 
-        // Making it synchronous for now
-        for (int i = 0; i < snapshots.size() - 1; ++i) {
-            RestTemplate restTemplate = new RestTemplate();
+        // For each snapshot exists a transformation
+        ArrayList<RigidTransformation> transformations = new RestTemplate().postForObject(
+                methodUri, representations, TransformationList.class).getTransformations();
 
-            Snapshot snapshot = new Snapshot()
-                    .setX(snapshots.get(i), timePeriod * i)
-                    .setY(snapshots.get(i + 1), timePeriod * (i + 1));
-            storyboard.addRigidTransformation(snapshot, restTemplate.postForObject(
-                    methodUri, new TimelessSnapshot(snapshot), RigidTransformation.class));
-        }
+        // Rather have two n loops than performing n request to the API
+        for (int i = 0; i < snapshots.size(); ++i)
+            storyboard.addRigidTransformation(snapshots.get(i), transformations.get(i));
     }
 
     @PostMapping("/storyboard")

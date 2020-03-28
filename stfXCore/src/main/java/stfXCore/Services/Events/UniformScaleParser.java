@@ -15,11 +15,11 @@ public class UniformScaleParser extends EventParser {
     }
 
     public ArrayList<Event> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold) {
-        return new ArrayList<>(filterThreshold(
+        return filterThreshold(
                 rigidTransformations.stream().map(
                         pair -> new Pair<Snapshot, Float>(pair.getFirst(), pair.getSecond().getScale() - 1))
                         .collect(Collectors.toList()),
                 threshold,
-                Event.Transformation.UNIFORM_SCALE));
+                Event.Transformation.UNIFORM_SCALE);
     }
 }
