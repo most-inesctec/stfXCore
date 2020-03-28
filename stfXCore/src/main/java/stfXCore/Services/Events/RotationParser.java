@@ -15,11 +15,11 @@ public class RotationParser extends EventParser {
     }
 
     public ArrayList<Event> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, GenericThreshold<Float> threshold) {
-        return new ArrayList<>(filterThreshold(
+        return filterThreshold(
                 rigidTransformations.stream().map(
                         pair -> new Pair<Snapshot, Float>(pair.getFirst(), pair.getSecond().getRotation()))
                         .collect(Collectors.toList()),
                 threshold,
-                Event.Transformation.ROTATION));
+                Event.Transformation.ROTATION);
     }
 }

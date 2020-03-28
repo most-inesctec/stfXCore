@@ -55,9 +55,9 @@ An example call to this is endpoint is:
 {
   "parameters": {
     "translation": {
-      "delta": [1, 1],
-      "directedAcc": [5, 3],
-      "absoluteAcc": [10, 10]
+      "delta": 1,
+      "directedAcc": 5,
+      "absoluteAcc": 10,
     },
     "rotation": {
       "delta": 5,
@@ -75,7 +75,7 @@ An example call to this is endpoint is:
 And a possible respective output:
 ```json
 [
-{
+  {
     "events": [
       {
         "trigger": "DIRECTED_ACC",

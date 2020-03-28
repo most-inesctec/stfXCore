@@ -15,7 +15,7 @@ public class TranslationParser extends EventParser {
     }
 
     public ArrayList<Event> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold) {
-        return new ArrayList<>(filterThreshold(
+        return filterThreshold(
                 rigidTransformations.stream().map(
                         pair -> {
                             ArrayList<Float> translation = pair.getSecond().getTranslation();
@@ -26,6 +26,6 @@ public class TranslationParser extends EventParser {
                         })
                         .collect(Collectors.toList()),
                 threshold,
-                Event.Transformation.TRANSLATION));
+                Event.Transformation.TRANSLATION);
     }
 }
