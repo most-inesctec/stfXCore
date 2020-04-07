@@ -280,6 +280,13 @@ And a possible respective output:
 
 The API definition is avaiable in [Swagger](https://app.swaggerhub.com/apis/EdgarACarneiro/thesis/1.0.0).
 
+## Dockerization
+
+To run a container with the application, in a standalone manner, use:
+```shell
+sh docker-build.sh
+docker run -p 8080:8080 stfx-core
+```
 
 ## Utils
 
