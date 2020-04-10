@@ -1,8 +1,7 @@
-package stfXCore.Services.TemporalFrames;
+package stfXCore.Models.Storyboard;
 
 import lombok.Data;
-import stfXCore.Models.Storyboard.State;
-import stfXCore.Services.Events.EventDataWithTrigger;
+import stfXCore.Models.Storyboard.Events.EventDataWithTrigger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class Frame {
 
     private List<State> phenomena;
 
-    Frame(List<State> phenomena) {
+    public Frame(List<State> phenomena) {
         this.phenomena = phenomena;
         this.temporalRange = new ArrayList<>();
         temporalRange.add(this.phenomena.get(0).getTimestamp());
@@ -28,7 +27,7 @@ public class Frame {
         this.events = new ArrayList<>();
     }
 
-    void addEvent(EventDataWithTrigger event) {
+    public void addEvent(EventDataWithTrigger event) {
         events.add(event);
     }
 

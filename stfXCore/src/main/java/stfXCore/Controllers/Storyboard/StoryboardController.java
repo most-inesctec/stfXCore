@@ -10,10 +10,10 @@ import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardNotFoundException;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
 import stfXCore.Repositories.StoryboardRepository;
 import stfXCore.Services.SnapshotsBuilder;
-import stfXCore.Services.TemporalFrames.Frame;
-import stfXCore.Services.TemporalFrames.FramedDataset;
-import stfXCore.Services.Transformations.RigidTransformation;
-import stfXCore.Services.Transformations.TransformationList;
+import stfXCore.Models.Storyboard.Frame;
+import stfXCore.Services.FramedDataset;
+import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
+import stfXCore.Models.Storyboard.Transformations.TransformationList;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;

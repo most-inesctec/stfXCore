@@ -1,13 +1,12 @@
 package stfXCore.Models.Storyboard;
 
 import lombok.Data;
-import stfXCore.Services.Transformations.RigidTransformation;
+import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
+import stfXCore.Services.StateList;
 import stfXCore.Utils.Pair;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Lombok annotation to create all the getters, setters, equals, hash, and toString methods, based on the fields

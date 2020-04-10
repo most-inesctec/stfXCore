@@ -1,4 +1,4 @@
-package stfXCore.Services.Transformations;
+package stfXCore.Models.Storyboard.Transformations;
 
 import lombok.Data;
 
