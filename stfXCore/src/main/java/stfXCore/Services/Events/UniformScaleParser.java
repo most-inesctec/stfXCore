@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class UniformScaleParser extends EventParser {
+public class UniformScaleParser extends TransformationsParser {
 
     UniformScaleParser() {
     }

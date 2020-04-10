@@ -11,7 +11,7 @@ import stfXCore.Utils.Pair;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-public abstract class EventParser <T> {
+public abstract class TransformationsParser<T> {
 
     /**
      * First Element are timestamps
@@ -21,7 +21,7 @@ public abstract class EventParser <T> {
     protected ArrayList<Pair<Float, T>> accAbsolute;
     protected Float accAbsoluteValue;
 
-    EventParser() {
+    TransformationsParser() {
     }
 
     private void resetDeltas() {
@@ -38,7 +38,7 @@ public abstract class EventParser <T> {
 
     protected abstract boolean changeDirection(T value, T previousValue);
 
-    protected abstract void addValues(T value1, T value2);
+    protected abstract T addValues(T value1, T value2);
 
     private boolean verifyNullTransformation(ArrayList<Pair<Float, T>> accumulator, T transformation) {
         return accumulator == null && verifyNull(transformation);

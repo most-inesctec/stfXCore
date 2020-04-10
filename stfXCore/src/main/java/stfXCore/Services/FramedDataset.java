@@ -4,7 +4,7 @@ import stfXCore.Models.Storyboard.Storyboard;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
 import stfXCore.Models.Storyboard.Events.Event;
 import stfXCore.Models.Storyboard.Events.EventDataWithTrigger;
-import stfXCore.Services.Events.EventParser;
+import stfXCore.Services.Events.TransformationsParser;
 import stfXCore.Models.Storyboard.Events.EventWrapper;
 import stfXCore.Models.Storyboard.Frame;
 
@@ -16,7 +16,7 @@ import static stfXCore.Models.Storyboard.Events.EventWrapper.EventType.START_WRA
 public class FramedDataset {
 
     public static ArrayList<Frame> getFrames(Storyboard storyboard, Thresholds thresholds) {
-        ArrayList<Event> eventsOfInterest = EventParser.parseTransformations(
+        ArrayList<Event> eventsOfInterest = TransformationsParser.parseTransformations(
                 storyboard.getRigidTransformations(),
                 thresholds.getParameters()
         );
