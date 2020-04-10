@@ -1,13 +1,8 @@
-package stfXCore.Services.Transformations;
+package stfXCore.Models.Storyboard.Transformations;
 
 import lombok.Builder;
 import lombok.Data;
-import stfXCore.Models.Storyboard.Snapshot;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
 import java.io.Serializable;
 import java.util.ArrayList;
 

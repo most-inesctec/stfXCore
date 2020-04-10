@@ -1,8 +1,9 @@
 package stfXCore.Services.Events;
 
+import stfXCore.Models.Storyboard.Events.Event;
 import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.Thresholds.GenericThreshold;
-import stfXCore.Services.Transformations.RigidTransformation;
+import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Utils.Pair;
 
 import javax.validation.constraints.NotNull;

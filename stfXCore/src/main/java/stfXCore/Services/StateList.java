@@ -1,17 +1,18 @@
-package stfXCore.Models.Storyboard;
+package stfXCore.Services;
 
-import stfXCore.Services.Transformations.RigidTransformation;
+import stfXCore.Models.Storyboard.Snapshot;
+import stfXCore.Models.Storyboard.State;
+import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-// TODO This seems more like a service than a model
 public class StateList {
 
     private ArrayList<State> states;
 
-    StateList(ArrayList<Pair<Snapshot, RigidTransformation>> transformations) {
+    public StateList(ArrayList<Pair<Snapshot, RigidTransformation>> transformations) {
         this.states = transformations.stream()
                 .map(pair -> pair.getFirst().getX())
                 .collect(Collectors.toCollection(ArrayList::new));

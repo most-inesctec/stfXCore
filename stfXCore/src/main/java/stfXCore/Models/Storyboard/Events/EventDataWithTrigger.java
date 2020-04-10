@@ -1,4 +1,4 @@
-package stfXCore.Services.Events;
+package stfXCore.Models.Storyboard.Events;
 
 import lombok.Data;
 

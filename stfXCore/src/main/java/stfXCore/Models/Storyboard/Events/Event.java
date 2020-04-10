@@ -1,8 +1,6 @@
-package stfXCore.Services.Events;
+package stfXCore.Models.Storyboard.Events;
 
 import lombok.Data;
-import stfXCore.Models.Storyboard.Snapshot;
-import stfXCore.Models.Storyboard.State;
 import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ public class Event {
      */
     private ArrayList<Pair<Float, Float>> values;
 
-    Event(ThresholdTrigger trigger, Transformation type) {
+    public Event(ThresholdTrigger trigger, Transformation type) {
         this.data = new EventData(trigger, type);
     }
 
