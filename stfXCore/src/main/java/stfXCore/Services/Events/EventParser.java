@@ -11,47 +11,51 @@ import stfXCore.Utils.Pair;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-public abstract class EventParser {
+public abstract class EventParser <T> {
 
-    protected enum Direction {
-        FORWARD,
-        BACKWARD,
-        NONE
-    }
-
-    protected Direction direction = Direction.NONE;
     /**
      * First Element are timestamps
      * Second Element are triggerValues
      */
-    protected ArrayList<Pair<Float, Float>> accDirected;
-    protected ArrayList<Pair<Float, Float>> accAbsolute;
+    protected ArrayList<Pair<Float, T>> accDirected;
+    protected ArrayList<Pair<Float, T>> accAbsolute;
+    protected Float accAbsoluteValue;
 
     EventParser() {
     }
 
     private void resetDeltas() {
-        direction = Direction.NONE;
         accDirected = null;
         accAbsolute = null;
+        accAbsoluteValue = 0f;
     }
 
-    private boolean verifyNullTransformation(ArrayList<Pair<Float, Float>> accumulator, Float transformation) {
-        return accumulator == null && transformation == 0;
+    protected abstract boolean verifyNull(T value);
+
+    protected abstract T getNullValue();
+
+    protected abstract Float getValue(T value);
+
+    protected abstract boolean changeDirection(T value, T previousValue);
+
+    protected abstract void addValues(T value1, T value2);
+
+    private boolean verifyNullTransformation(ArrayList<Pair<Float, T>> accumulator, T transformation) {
+        return accumulator == null && verifyNull(transformation);
     }
 
     private Pair<Float, Float> getValue(State state, Float increment) {
         return new Pair<Float, Float>(state.getTimestamp(), increment);
     }
 
-    private Float getLastSecond(ArrayList<Pair<Float, Float>> list) {
+    private T getLastSecond(ArrayList<Pair<Float, T>> list) {
         return list.get(list.size() - 1).getSecond();
     }
 
-    protected Event computeDelta(Pair<Snapshot, Float> transformation, Float threshold, Event.Transformation type) {
-        if (Math.abs(transformation.getSecond()) >= threshold) {
-            ArrayList<Pair<Float, Float>> values = new ArrayList<>();
-            values.add(getValue(transformation.getFirst().getX(), 0f));
+    protected Event computeDelta(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
+        if (Math.abs(getValue(transformation.getSecond())) >= threshold) {
+            ArrayList<Pair<Float, T>> values = new ArrayList<>();
+            values.add(getValue(transformation.getFirst().getX(), getNullValue()));
             values.add(getValue(transformation.getFirst().getY(), transformation.getSecond()));
             return new Event(Event.ThresholdTrigger.DELTA, type).setValues(values);
         }
@@ -59,33 +63,30 @@ public abstract class EventParser {
         return null;
     }
 
-    protected Event computeAccDirected(Pair<Snapshot, Float> transformation, Float threshold, Event.Transformation type) {
-        Float transformationValue = transformation.getSecond();
+    protected Event computeAccDirected(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
+        T transformationValue = transformation.getSecond();
 
         if (verifyNullTransformation(accDirected, transformationValue))
             return null;
 
-        // If direction is different from current, reset
-        if (!((direction == Direction.FORWARD && transformationValue > 0) ||
-                (direction == Direction.BACKWARD && transformationValue < 0))) {
-            direction = transformationValue > 0 ? Direction.FORWARD : Direction.BACKWARD;
+        if (accDirected == null || changeDirection(transformationValue, getLastSecond(accDirected))) {
             accDirected = new ArrayList<>();
-            accDirected.add(getValue(transformation.getFirst().getX(), 0f));
+            accDirected.add(getValue(transformation.getFirst().getX(), getNullValue()));
             accDirected.add(getValue(transformation.getFirst().getY(), transformationValue));
         } else
             accDirected.add(getValue(
                     transformation.getFirst().getY(),
-                    getLastSecond(accDirected) + transformationValue));
+                    addValues(getLastSecond(accDirected), transformationValue)));
 
-        if (Math.abs(getLastSecond(accDirected)) >= threshold)
+        if (Math.abs(getValue(getLastSecond(accDirected))) >= threshold)
             return new Event(Event.ThresholdTrigger.DIRECTED_ACC, type)
                     .setValues(accDirected);
 
         return null;
     }
 
-    protected Event computeAccAbsolute(Pair<Snapshot, Float> transformation, Float threshold, Event.Transformation type) {
-        Float transformationValue = Math.abs(transformation.getSecond());
+    protected Event computeAccAbsolute(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
+        T transformationValue = transformation.getSecond();
 
         if (verifyNullTransformation(accAbsolute, transformationValue))
             return null;
@@ -94,12 +95,15 @@ public abstract class EventParser {
             accAbsolute = new ArrayList<>();
             accAbsolute.add(getValue(transformation.getFirst().getX(), 0f));
             accAbsolute.add(getValue(transformation.getFirst().getY(), transformationValue));
-        } else
+            accAbsoluteValue = Math.abs(getValue(transformationValue));
+        } else {
             accAbsolute.add(getValue(
                     transformation.getFirst().getY(),
-                    getLastSecond(accAbsolute) + transformationValue));
+                    addValues(getLastSecond(accAbsolute), transformationValue)));
+            accAbsoluteValue += Math.abs(getValue(transformationValue));
+        }
 
-        if (getLastSecond(accAbsolute) >= threshold)
+        if (accAbsoluteValue >= threshold)
             return new Event(Event.ThresholdTrigger.ABSOLUTE_ACC, type)
                     .setValues(accAbsolute);
 
