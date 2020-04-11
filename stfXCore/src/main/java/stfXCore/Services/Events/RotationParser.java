@@ -11,16 +11,16 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class RotationParser extends TransformationsParser<FloatTransformation> {
+public class RotationParser extends FloatTransformationsParser {
 
     RotationParser() {
     }
 
     @Override
-    public ArrayList<Event> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, GenericThreshold<Float> threshold) {
+    public ArrayList<Event<?, ?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, GenericThreshold<Float> threshold) {
         return filterThreshold(
                 rigidTransformations.stream().map(
-                        pair -> new Pair<Snapshot, Float>(pair.getFirst(), pair.getSecond().getRotation()))
+                        pair -> new Pair<>(pair.getFirst(), new FloatTransformation(pair.getSecond().getRotation())))
                         .collect(Collectors.toList()),
                 threshold,
                 Event.Transformation.ROTATION);

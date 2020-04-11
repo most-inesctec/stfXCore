@@ -11,16 +11,16 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class TranslationParser extends TransformationsParser<ArrayFloatTransformation> {
+public class TranslationParser extends ArrayFloatTransformationsParser {
 
     TranslationParser() {
     }
 
     @Override
-    public ArrayList<Event> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold) {
+    public ArrayList<Event<?, ?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold) {
         return filterThreshold(
                 rigidTransformations.stream().map(
-                        pair -> new Pair<Snapshot, Float>(pair.getFirst(), pair.getSecond().getTranslation()))
+                        pair -> new Pair<>(pair.getFirst(), new ArrayFloatTransformation(pair.getSecond().getTranslation())))
                         .collect(Collectors.toList()),
                 threshold,
                 Event.Transformation.TRANSLATION);

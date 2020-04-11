@@ -10,13 +10,13 @@ public abstract class TransformationDataType<T> {
 
     public abstract boolean verifyNull();
 
-    public abstract T getNullValue();
+    public T getTransformation() {
+        return transformation;
+    }
 
     public abstract float getValue();
 
-    public abstract boolean changeDirection(T transformation);
+    public abstract TransformationDataType<T> add(T transformation);
 
-    public abstract T add(T transformation);
-
-    public abstract T subtract(T transformation);
+    public abstract TransformationDataType<T> subtract(T transformation);
 }

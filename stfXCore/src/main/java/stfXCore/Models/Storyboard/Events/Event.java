@@ -7,7 +7,7 @@ import stfXCore.Utils.Pair;
 import java.util.ArrayList;
 
 @Data
-public class Event<T extends TransformationDataType> {
+public class Event<T extends TransformationDataType<G>, G> {
 
     public enum ThresholdTrigger {
         DELTA,
@@ -33,7 +33,7 @@ public class Event<T extends TransformationDataType> {
         this.data = new EventData(trigger, type);
     }
 
-    public Event<T> setValues(ArrayList<Pair<Float, T>> values) {
+    public Event<T, G> setValues(ArrayList<Pair<Float, T>> values) {
         this.values = values;
         return this;
     }
@@ -63,6 +63,6 @@ public class Event<T extends TransformationDataType> {
                 toValue = pair.getSecond();
         }
 
-        return (T) toValue.subtract(fromValue);
+        return (T) toValue.subtract(fromValue.getTransformation());
     }
 }
