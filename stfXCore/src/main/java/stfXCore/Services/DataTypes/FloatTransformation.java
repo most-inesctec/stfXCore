@@ -1,6 +1,6 @@
 package stfXCore.Services.DataTypes;
 
-public class FloatTransformation extends ITransformationDataType<Float> {
+public class FloatTransformation extends TransformationDataType<Float> {
 
     FloatTransformation(Float transformation) {
         super(transformation);

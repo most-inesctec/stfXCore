@@ -16,7 +16,8 @@ public class RotationParser extends TransformationsParser<FloatTransformation> {
     RotationParser() {
     }
 
-    public ArrayList<Event<FloatTransformation>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, GenericThreshold<Float> threshold) {
+    @Override
+    public ArrayList<Event> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, GenericThreshold<Float> threshold) {
         return filterThreshold(
                 rigidTransformations.stream().map(
                         pair -> new Pair<Snapshot, Float>(pair.getFirst(), pair.getSecond().getRotation()))

@@ -1,10 +1,10 @@
 package stfXCore.Services.DataTypes;
 
-public abstract class ITransformationDataType<T> {
+public abstract class TransformationDataType<T> {
 
     protected T transformation;
 
-    ITransformationDataType(T transformation) {
+    TransformationDataType(T transformation) {
         this.transformation = transformation;
     }
 

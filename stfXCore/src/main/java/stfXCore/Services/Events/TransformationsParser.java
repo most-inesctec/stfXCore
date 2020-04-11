@@ -6,13 +6,13 @@ import stfXCore.Models.Storyboard.State;
 import stfXCore.Models.Storyboard.Thresholds.GenericThreshold;
 import stfXCore.Models.Storyboard.Thresholds.ThresholdParameters;
 import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
-import stfXCore.Services.DataTypes.ITransformationDataType;
+import stfXCore.Services.DataTypes.TransformationDataType;
 import stfXCore.Utils.Pair;
 
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-public abstract class TransformationsParser<T extends ITransformationDataType> {
+public abstract class TransformationsParser<T extends TransformationDataType> {
 
     /**
      * First Element are timestamps

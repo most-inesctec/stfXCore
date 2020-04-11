@@ -1,13 +1,13 @@
 package stfXCore.Models.Storyboard.Events;
 
 import lombok.Data;
-import stfXCore.Services.DataTypes.ITransformationDataType;
+import stfXCore.Services.DataTypes.TransformationDataType;
 import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
 
 @Data
-public class Event<T extends ITransformationDataType> {
+public class Event<T extends TransformationDataType> {
 
     public enum ThresholdTrigger {
         DELTA,

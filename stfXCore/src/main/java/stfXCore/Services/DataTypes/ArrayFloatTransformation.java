@@ -3,7 +3,7 @@ package stfXCore.Services.DataTypes;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ArrayFloatTransformation extends ITransformationDataType<ArrayList<Float>> {
+public class ArrayFloatTransformation extends TransformationDataType<ArrayList<Float>> {
 
     private static final Float DIRECTION_THRESHOLD = (float) Math.PI / 4;
 
