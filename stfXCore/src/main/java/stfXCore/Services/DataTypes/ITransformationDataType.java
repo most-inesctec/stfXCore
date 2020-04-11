@@ -1,16 +1,22 @@
 package stfXCore.Services.DataTypes;
 
-public interface ITransformationDataType<T> {
+public abstract class ITransformationDataType<T> {
 
-    public boolean verifyNull(T transformation);
+    protected T transformation;
 
-    public T getNullValue();
+    ITransformationDataType(T transformation) {
+        this.transformation = transformation;
+    }
 
-    public float getValue(T transformation);
+    public abstract boolean verifyNull();
 
-    public boolean changeDirection(T transformation1, T transformation2);
+    public abstract T getNullValue();
 
-    public T add(T transformation1, T transformation2);
+    public abstract float getValue();
 
-    public T subtract(T transformation1, T transformation2);
+    public abstract boolean changeDirection(T transformation);
+
+    public abstract T add(T transformation);
+
+    public abstract T subtract(T transformation);
 }

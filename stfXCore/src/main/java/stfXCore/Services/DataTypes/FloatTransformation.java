@@ -1,10 +1,14 @@
 package stfXCore.Services.DataTypes;
 
-public class FloatTransformation implements ITransformationDataType<Float> {
+public class FloatTransformation extends ITransformationDataType<Float> {
+
+    FloatTransformation(Float transformation) {
+        super(transformation);
+    }
 
     @Override
-    public boolean verifyNull(Float value) {
-        return value == 0;
+    public boolean verifyNull() {
+        return this.transformation == 0;
     }
 
     @Override
@@ -13,22 +17,22 @@ public class FloatTransformation implements ITransformationDataType<Float> {
     }
 
     @Override
-    public float getValue(Float value) {
-        return value;
+    public float getValue() {
+        return this.transformation;
     }
 
     @Override
-    public boolean changeDirection(Float value, Float previousValue) {
-        return (value > 0 && previousValue < 0) || (value < 0 && previousValue > 0);
+    public boolean changeDirection(Float transformation) {
+        return (this.transformation > 0 && transformation < 0) || (this.transformation < 0 && transformation > 0);
     }
 
     @Override
-    public Float add(Float value1, Float value2) {
-        return value1 + value2;
+    public Float add(Float transformation) {
+        return this.transformation + transformation;
     }
 
     @Override
-    public Float subtract(Float transformation1, Float transformation2) {
-        return transformation1 - transformation2;
+    public Float subtract(Float transformation) {
+        return this.transformation - transformation;
     }
 }

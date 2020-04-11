@@ -6,12 +6,13 @@ import stfXCore.Models.Storyboard.State;
 import stfXCore.Models.Storyboard.Thresholds.GenericThreshold;
 import stfXCore.Models.Storyboard.Thresholds.ThresholdParameters;
 import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
+import stfXCore.Services.DataTypes.ITransformationDataType;
 import stfXCore.Utils.Pair;
 
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-public abstract class TransformationsParser<T> {
+public abstract class TransformationsParser<T extends ITransformationDataType> {
 
     /**
      * First Element are timestamps
@@ -30,18 +31,8 @@ public abstract class TransformationsParser<T> {
         accAbsoluteValue = 0f;
     }
 
-    protected abstract boolean verifyNull(T value);
-
-    protected abstract T getNullValue();
-
-    protected abstract Float getValue(T value);
-
-    protected abstract boolean changeDirection(T value, T previousValue);
-
-    protected abstract T addValues(T value1, T value2);
-
     private boolean verifyNullTransformation(ArrayList<Pair<Float, T>> accumulator, T transformation) {
-        return accumulator == null && verifyNull(transformation);
+        return accumulator == null && transformation.verifyNull();
     }
 
     private Pair<Float, Float> getValue(State state, Float increment) {
@@ -53,7 +44,7 @@ public abstract class TransformationsParser<T> {
     }
 
     protected Event<T> computeDelta(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
-        if (Math.abs(getValue(transformation.getSecond())) >= threshold) {
+        if (Math.abs(transformation.getSecond().getValue()) >= threshold) {
             ArrayList<Pair<Float, T>> values = new ArrayList<>();
             values.add(getValue(transformation.getFirst().getX(), getNullValue()));
             values.add(getValue(transformation.getFirst().getY(), transformation.getSecond()));
@@ -78,7 +69,7 @@ public abstract class TransformationsParser<T> {
                     transformation.getFirst().getY(),
                     addValues(getLastSecond(accDirected), transformationValue)));
 
-        if (Math.abs(getValue(getLastSecond(accDirected))) >= threshold)
+        if (Math.abs(getLastSecond(accDirected).getValue()) >= threshold)
             return new Event<T>(Event.ThresholdTrigger.DIRECTED_ACC, type).setValues(accDirected);
 
         return null;
@@ -94,12 +85,12 @@ public abstract class TransformationsParser<T> {
             accAbsolute = new ArrayList<>();
             accAbsolute.add(getValue(transformation.getFirst().getX(), 0f));
             accAbsolute.add(getValue(transformation.getFirst().getY(), transformationValue));
-            accAbsoluteValue = Math.abs(getValue(transformationValue));
+            accAbsoluteValue = Math.abs(transformationValue.getValue());
         } else {
             accAbsolute.add(getValue(
                     transformation.getFirst().getY(),
                     addValues(getLastSecond(accAbsolute), transformationValue)));
-            accAbsoluteValue += Math.abs(getValue(transformationValue));
+            accAbsoluteValue += Math.abs(transformationValue.getValue());
         }
 
         if (accAbsoluteValue >= threshold)
