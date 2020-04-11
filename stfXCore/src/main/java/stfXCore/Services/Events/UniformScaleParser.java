@@ -16,7 +16,7 @@ public class UniformScaleParser extends TransformationsParser<FloatTransformatio
     UniformScaleParser() {
     }
 
-    public ArrayList<Event> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold) {
+    public ArrayList<Event<FloatTransformation>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold) {
         return filterThreshold(
                 rigidTransformations.stream().map(
                         pair -> new Pair<Snapshot, Float>(pair.getFirst(), pair.getSecond().getScale() - 1))

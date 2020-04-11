@@ -1,12 +1,13 @@
 package stfXCore.Models.Storyboard.Events;
 
 import lombok.Data;
+import stfXCore.Services.DataTypes.ITransformationDataType;
 import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
 
 @Data
-public class Event<T> {
+public class Event<T extends ITransformationDataType> {
 
     public enum ThresholdTrigger {
         DELTA,
@@ -52,7 +53,8 @@ public class Event<T> {
      * Get the triggerValue associated to the given timestamp
      */
     public T getTriggerValue(Float fromTimestamp, Float toTimestamp) {
-        T fromValue = null, toValue = null;
+        T fromValue = null;
+        T toValue = null;
 
         for (Pair<Float, T> pair : values) {
             if (pair.getFirst().equals(fromTimestamp))
@@ -60,6 +62,7 @@ public class Event<T> {
             else if (pair.getFirst().equals(toTimestamp))
                 toValue = pair.getSecond();
         }
-        return toValue - fromValue;
+
+        return (T) toValue.subtract(fromValue);
     }
 }
