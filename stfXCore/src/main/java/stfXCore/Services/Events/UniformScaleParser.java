@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class UniformScaleParser extends TransformationsParser {
+public class UniformScaleParser extends FloatTransformationsParser {
 
     UniformScaleParser() {
     }
