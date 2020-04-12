@@ -1,6 +1,7 @@
 package stfXCore.Services.DataTypes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ArrayFloatTransformation extends TransformationDataType<ArrayList<Float>> {
 
@@ -8,6 +9,11 @@ public class ArrayFloatTransformation extends TransformationDataType<ArrayList<F
 
     public ArrayFloatTransformation(ArrayList<Float> transformation) {
         super(transformation);
+    }
+
+    @Override
+    public ArrayFloatTransformation getNullValue() {
+        return new ArrayFloatTransformation(new ArrayList<>(Arrays.asList(0f, 0f)));
     }
 
     @Override
@@ -43,5 +49,18 @@ public class ArrayFloatTransformation extends TransformationDataType<ArrayList<F
             res.add(this.transformation.get(i) - transformation.get(i));
 
         return new ArrayFloatTransformation(res);
+    }
+
+    @Override
+    public boolean changeDirection(TransformationDataType<ArrayList<Float>> transformation) {
+        float dotProduct = 0f;
+        ArrayList<Float> values = transformation.getTransformation(),
+                previousValues = this.getTransformation();
+
+        for (int i = 0; i < values.size(); i++)
+            dotProduct += values.get(i) * previousValues.get(i);
+
+        // If angle between two vectors > 45º say direction changed
+        return Math.acos(dotProduct / (transformation.value() * this.value())) > DIRECTION_THRESHOLD;
     }
 }

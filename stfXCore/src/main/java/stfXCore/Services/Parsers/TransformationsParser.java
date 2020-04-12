@@ -1,4 +1,4 @@
-package stfXCore.Services.Events;
+package stfXCore.Services.Parsers;
 
 import stfXCore.Models.Storyboard.Events.Event;
 import stfXCore.Models.Storyboard.Snapshot;
@@ -31,11 +31,6 @@ public abstract class TransformationsParser<T extends TransformationDataType> {
         accAbsoluteValue = 0f;
     }
 
-    protected abstract T getNullValue();
-
-    protected abstract boolean changeDirection(T value, T previousValue);
-
-
     private boolean verifyNullTransformation(ArrayList<Pair<Float, T>> accumulator, T transformation) {
         return accumulator == null && transformation.verifyNull();
     }
@@ -51,7 +46,7 @@ public abstract class TransformationsParser<T extends TransformationDataType> {
     protected Event<T> computeDelta(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
         if (Math.abs(transformation.getSecond().value()) >= threshold) {
             ArrayList<Pair<Float, T>> values = new ArrayList<>();
-            values.add(createPair(transformation.getFirst().getX(), getNullValue()));
+            values.add(createPair(transformation.getFirst().getX(), (T) transformation.getSecond().getNullValue()));
             values.add(createPair(transformation.getFirst().getY(), transformation.getSecond()));
             return new Event<T>(Event.ThresholdTrigger.DELTA, type).setValues(values);
         }
@@ -65,9 +60,9 @@ public abstract class TransformationsParser<T extends TransformationDataType> {
         if (verifyNullTransformation(accDirected, transformationValue))
             return null;
 
-        if (accDirected == null || changeDirection(getLastSecond(accDirected), transformationValue)) {
+        if (accDirected == null || transformationValue.changeDirection(getLastSecond(accDirected))) { //changeDirection(getLastSecond(accDirected), transformationValue)) {
             accDirected = new ArrayList<>();
-            accDirected.add(createPair(transformation.getFirst().getX(), getNullValue()));
+            accDirected.add(createPair(transformation.getFirst().getX(), (T) transformationValue.getNullValue()));
             accDirected.add(createPair(transformation.getFirst().getY(), transformationValue));
         } else
             accDirected.add(createPair(
@@ -88,7 +83,7 @@ public abstract class TransformationsParser<T extends TransformationDataType> {
 
         if (accAbsolute == null) {
             accAbsolute = new ArrayList<>();
-            accAbsolute.add(createPair(transformation.getFirst().getX(), getNullValue()));
+            accAbsolute.add(createPair(transformation.getFirst().getX(), (T) transformationValue.getNullValue()));
             accAbsolute.add(createPair(transformation.getFirst().getY(), transformationValue));
             accAbsoluteValue = Math.abs(transformationValue.value());
         } else {

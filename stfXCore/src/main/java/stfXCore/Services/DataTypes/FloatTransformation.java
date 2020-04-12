@@ -12,6 +12,11 @@ public class FloatTransformation extends TransformationDataType<Float> {
     }
 
     @Override
+    public FloatTransformation getNullValue() {
+        return new FloatTransformation(0f);
+    }
+
+    @Override
     public float value() {
         return this.transformation;
     }
@@ -24,5 +29,11 @@ public class FloatTransformation extends TransformationDataType<Float> {
     @Override
     public FloatTransformation subtract(Float transformation) {
         return new FloatTransformation(this.transformation - transformation);
+    }
+
+    @Override
+    public boolean changeDirection(TransformationDataType<Float> value) {
+        return (value.value() > 0 && this.value() < 0) ||
+                (value.value() < 0 && this.value() > 0);
     }
 }

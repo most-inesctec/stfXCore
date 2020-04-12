@@ -4,7 +4,7 @@ import stfXCore.Models.Storyboard.Storyboard;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
 import stfXCore.Models.Storyboard.Events.Event;
 import stfXCore.Models.Storyboard.Events.EventDataWithTrigger;
-import stfXCore.Services.Events.TransformationsParser;
+import stfXCore.Services.Parsers.TransformationsParser;
 import stfXCore.Models.Storyboard.Events.EventWrapper;
 import stfXCore.Models.Storyboard.Frame;
 
