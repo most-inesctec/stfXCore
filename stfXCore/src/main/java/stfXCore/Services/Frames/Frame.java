@@ -1,7 +1,8 @@
-package stfXCore.Models.Storyboard;
+package stfXCore.Services.Frames;
 
 import lombok.Data;
-import stfXCore.Models.Storyboard.Events.EventDataWithTrigger;
+import stfXCore.Models.Storyboard.State;
+import stfXCore.Services.Events.EventDataWithTrigger;
 
 import java.util.ArrayList;
 import java.util.List;

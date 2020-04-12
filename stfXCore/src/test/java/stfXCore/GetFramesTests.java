@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.Storyboard;
 import stfXCore.Models.Storyboard.Thresholds.*;
-import stfXCore.Models.Storyboard.Events.Event;
-import stfXCore.Models.Storyboard.Events.EventDataWithTrigger;
-import stfXCore.Models.Storyboard.Frame;
+import stfXCore.Services.Events.Event;
+import stfXCore.Services.Events.EventDataWithTrigger;
+import stfXCore.Services.Frames.Frame;
 import stfXCore.Services.DataTypes.ArrayFloatTransformation;
 import stfXCore.Services.DataTypes.FloatTransformation;
-import stfXCore.Services.FramedDataset;
+import stfXCore.Services.Frames.FramedDataset;
 import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Utils.Pair;
 

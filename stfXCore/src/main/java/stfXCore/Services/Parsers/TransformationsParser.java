@@ -1,6 +1,6 @@
 package stfXCore.Services.Parsers;
 
-import stfXCore.Models.Storyboard.Events.Event;
+import stfXCore.Services.Events.Event;
 import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.State;
 import stfXCore.Models.Storyboard.Thresholds.GenericThreshold;

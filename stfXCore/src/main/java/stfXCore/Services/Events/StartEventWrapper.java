@@ -1,4 +1,4 @@
-package stfXCore.Models.Storyboard.Events;
+package stfXCore.Services.Events;
 
 public class StartEventWrapper extends EventWrapper {
 

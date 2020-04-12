@@ -1,17 +1,17 @@
-package stfXCore.Services;
+package stfXCore.Services.Frames;
 
 import stfXCore.Models.Storyboard.Storyboard;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
-import stfXCore.Models.Storyboard.Events.Event;
-import stfXCore.Models.Storyboard.Events.EventDataWithTrigger;
+import stfXCore.Services.Events.Event;
+import stfXCore.Services.Events.EventDataWithTrigger;
 import stfXCore.Services.Parsers.TransformationsParser;
-import stfXCore.Models.Storyboard.Events.EventWrapper;
-import stfXCore.Models.Storyboard.Frame;
+import stfXCore.Services.Events.EventWrapper;
+import stfXCore.Services.StateList;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
-import static stfXCore.Models.Storyboard.Events.EventWrapper.EventType.START_WRAPPER;
+import static stfXCore.Services.Events.EventWrapper.EventType.START_WRAPPER;
 
 public class FramedDataset {
 
