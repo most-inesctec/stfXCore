@@ -12,7 +12,7 @@ import stfXCore.Utils.Pair;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-public abstract class TransformationsParser<T extends TransformationDataType<G>, G> {
+public abstract class TransformationsParser<T extends TransformationDataType> {
 
     /**
      * First Element are timestamps
@@ -48,18 +48,18 @@ public abstract class TransformationsParser<T extends TransformationDataType<G>,
         return list.get(list.size() - 1).getSecond();
     }
 
-    protected Event<T, G> computeDelta(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
+    protected Event<T> computeDelta(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
         if (Math.abs(transformation.getSecond().value()) >= threshold) {
             ArrayList<Pair<Float, T>> values = new ArrayList<>();
             values.add(createPair(transformation.getFirst().getX(), getNullValue()));
             values.add(createPair(transformation.getFirst().getY(), transformation.getSecond()));
-            return new Event<T, G>(Event.ThresholdTrigger.DELTA, type).setValues(values);
+            return new Event<T>(Event.ThresholdTrigger.DELTA, type).setValues(values);
         }
 
         return null;
     }
 
-    protected Event<T, G> computeAccDirected(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
+    protected Event<T> computeAccDirected(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
         T transformationValue = transformation.getSecond();
 
         if (verifyNullTransformation(accDirected, transformationValue))
@@ -75,12 +75,12 @@ public abstract class TransformationsParser<T extends TransformationDataType<G>,
                     (T) getLastSecond(accDirected).add(transformationValue.getTransformation())));
 
         if (Math.abs(getLastSecond(accDirected).value()) >= threshold)
-            return new Event<T, G>(Event.ThresholdTrigger.DIRECTED_ACC, type).setValues(accDirected);
+            return new Event<T>(Event.ThresholdTrigger.DIRECTED_ACC, type).setValues(accDirected);
 
         return null;
     }
 
-    protected Event<T, G> computeAccAbsolute(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
+    protected Event<T> computeAccAbsolute(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
         T transformationValue = transformation.getSecond();
 
         if (verifyNullTransformation(accAbsolute, transformationValue))
@@ -99,7 +99,7 @@ public abstract class TransformationsParser<T extends TransformationDataType<G>,
         }
 
         if (accAbsoluteValue >= threshold)
-            return new Event<T, G>(Event.ThresholdTrigger.ABSOLUTE_ACC, type).setValues(accAbsolute);
+            return new Event<T>(Event.ThresholdTrigger.ABSOLUTE_ACC, type).setValues(accAbsolute);
 
         return null;
     }
@@ -111,11 +111,11 @@ public abstract class TransformationsParser<T extends TransformationDataType<G>,
      * @param threshold       The thresholds to use
      * @param type            The type of the transformation being analyzed
      */
-    protected ArrayList<Event<?, ?>> filterThreshold(List<Pair<Snapshot, T>> transformations, GenericThreshold<Float> threshold, Event.Transformation type) {
-        ArrayList<Event<?, ?>> eventsOfInterest = new ArrayList<>();
+    protected ArrayList<Event<?>> filterThreshold(List<Pair<Snapshot, T>> transformations, GenericThreshold<Float> threshold, Event.Transformation type) {
+        ArrayList<Event<?>> eventsOfInterest = new ArrayList<>();
 
         for (Pair<Snapshot, T> transformation : transformations) {
-            Event<T, G> event = computeDelta(transformation, threshold.getDelta(), type);
+            Event<T> event = computeDelta(transformation, threshold.getDelta(), type);
             if (event != null) {
                 eventsOfInterest.add(event);
                 resetDeltas();
@@ -143,10 +143,10 @@ public abstract class TransformationsParser<T extends TransformationDataType<G>,
         return eventsOfInterest;
     }
 
-    protected abstract ArrayList<Event<?, ?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold);
+    protected abstract ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold);
 
-    public static ArrayList<Event<?, ?>> parseTransformations(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull ThresholdParameters thresholds) {
-        ArrayList<Event<?, ?>> eventsOfInterest = new ArrayList<>();
+    public static ArrayList<Event<?>> parseTransformations(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull ThresholdParameters thresholds) {
+        ArrayList<Event<?>> eventsOfInterest = new ArrayList<>();
 
         // TODO: Parsing can be concurrent
         if (thresholds.getTranslation() != null)

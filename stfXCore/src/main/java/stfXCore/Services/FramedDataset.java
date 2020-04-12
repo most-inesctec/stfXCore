@@ -16,7 +16,7 @@ import static stfXCore.Models.Storyboard.Events.EventWrapper.EventType.START_WRA
 public class FramedDataset {
 
     public static ArrayList<Frame> getFrames(Storyboard storyboard, Thresholds thresholds) {
-        ArrayList<Event<?, ?>> eventsOfInterest = TransformationsParser.parseTransformations(
+        ArrayList<Event<?>> eventsOfInterest = TransformationsParser.parseTransformations(
                 storyboard.getRigidTransformations(),
                 thresholds.getParameters()
         );
@@ -24,10 +24,10 @@ public class FramedDataset {
         // Priority Queue of start and end events
         PriorityQueue<EventWrapper> orderedEvents = new PriorityQueue<>(
                 (e1, e2) -> Math.round(e1.getTimestamp() - e2.getTimestamp()));
-        for (Event<?, ?> event : eventsOfInterest)
+        for (Event<?> event : eventsOfInterest)
             orderedEvents.addAll(event.getWrappers());
 
-        ArrayList<Event<?, ?>> validEvents = new ArrayList<>();
+        ArrayList<Event<?>> validEvents = new ArrayList<>();
         ArrayList<Frame> framedDataset = new ArrayList<>();
         StateList states = storyboard.getStates();
 
@@ -60,7 +60,7 @@ public class FramedDataset {
                 frame = new Frame(states.getStates(
                         eventWrapper.getTimestamp()));
             }
-            for (Event<?, ?> validEvent : validEvents)
+            for (Event<?> validEvent : validEvents)
                 frame.addEvent(new EventDataWithTrigger(
                         validEvent.getData(),
                         validEvent.getTriggerValue(frame.lowerBound(), frame.upperBound())));

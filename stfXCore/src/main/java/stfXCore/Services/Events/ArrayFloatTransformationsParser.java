@@ -5,7 +5,7 @@ import stfXCore.Services.DataTypes.ArrayFloatTransformation;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public abstract class ArrayFloatTransformationsParser extends TransformationsParser<ArrayFloatTransformation, ArrayList<Float>> {
+public abstract class ArrayFloatTransformationsParser extends TransformationsParser<ArrayFloatTransformation> {
 
     private static final Float DIRECTION_THRESHOLD = (float) Math.PI / 4;
 

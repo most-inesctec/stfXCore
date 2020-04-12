@@ -17,7 +17,7 @@ public class TranslationParser extends ArrayFloatTransformationsParser {
     }
 
     @Override
-    public ArrayList<Event<?, ?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold) {
+    public ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold) {
         return filterThreshold(
                 rigidTransformations.stream().map(
                         pair -> new Pair<>(pair.getFirst(), new ArrayFloatTransformation(pair.getSecond().getTranslation())))

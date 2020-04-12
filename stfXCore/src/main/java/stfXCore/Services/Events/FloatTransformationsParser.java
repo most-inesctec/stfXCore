@@ -2,7 +2,7 @@ package stfXCore.Services.Events;
 
 import stfXCore.Services.DataTypes.FloatTransformation;
 
-public abstract class FloatTransformationsParser extends TransformationsParser<FloatTransformation, Float> {
+public abstract class FloatTransformationsParser extends TransformationsParser<FloatTransformation> {
 
     @Override
     protected FloatTransformation getNullValue() {
