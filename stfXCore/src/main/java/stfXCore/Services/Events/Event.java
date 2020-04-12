@@ -1,12 +1,13 @@
-package stfXCore.Models.Storyboard.Events;
+package stfXCore.Services.Events;
 
 import lombok.Data;
+import stfXCore.Services.DataTypes.TransformationDataType;
 import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
 
 @Data
-public class Event {
+public class Event<T extends TransformationDataType> {
 
     public enum ThresholdTrigger {
         DELTA,
@@ -26,13 +27,13 @@ public class Event {
      * First Element are timestamps
      * Second Element are triggerValues
      */
-    private ArrayList<Pair<Float, Float>> values;
+    private ArrayList<Pair<Float, T>> values;
 
     public Event(ThresholdTrigger trigger, Transformation type) {
         this.data = new EventData(trigger, type);
     }
 
-    public Event setValues(ArrayList<Pair<Float, Float>> values) {
+    public Event<T> setValues(ArrayList<Pair<Float, T>> values) {
         this.values = values;
         return this;
     }
@@ -51,15 +52,17 @@ public class Event {
     /**
      * Get the triggerValue associated to the given timestamp
      */
-    public Float getTriggerValue(Float fromTimestamp, Float toTimestamp) {
-        Float fromValue = 0f, toValue = 0f;
+    public T getTriggerValue(Float fromTimestamp, Float toTimestamp) {
+        T fromValue = null;
+        T toValue = null;
 
-        for (Pair<Float, Float> pair : values) {
+        for (Pair<Float, T> pair : values) {
             if (pair.getFirst().equals(fromTimestamp))
                 fromValue = pair.getSecond();
             else if (pair.getFirst().equals(toTimestamp))
                 toValue = pair.getSecond();
         }
-        return toValue - fromValue;
+
+        return (T) toValue.subtract(fromValue.getTransformation());
     }
 }

@@ -5,10 +5,12 @@ import org.junit.jupiter.api.Test;
 import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.Storyboard;
 import stfXCore.Models.Storyboard.Thresholds.*;
-import stfXCore.Models.Storyboard.Events.Event;
-import stfXCore.Models.Storyboard.Events.EventDataWithTrigger;
-import stfXCore.Models.Storyboard.Frame;
-import stfXCore.Services.FramedDataset;
+import stfXCore.Services.Events.Event;
+import stfXCore.Services.Events.EventDataWithTrigger;
+import stfXCore.Services.Frames.Frame;
+import stfXCore.Services.DataTypes.ArrayFloatTransformation;
+import stfXCore.Services.DataTypes.FloatTransformation;
+import stfXCore.Services.Frames.FramedDataset;
 import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Utils.Pair;
 
@@ -21,7 +23,7 @@ public class GetFramesTests {
     void verifyFramesParser() {
         RigidTransformation translation = new RigidTransformation();
         translation.setScale(1f);
-        translation.setTranslation(new ArrayList<>(Arrays.asList(0f, 1f)));
+        translation.setTranslation(new ArrayList<>(Arrays.asList(1f, 0f)));
         translation.setRotation(0f);
 
         RigidTransformation rotation = new RigidTransformation();
@@ -41,7 +43,7 @@ public class GetFramesTests {
 
         RigidTransformation translationAndScaleAndRotation = new RigidTransformation();
         translationAndScaleAndRotation.setScale(1.1f);
-        translationAndScaleAndRotation.setTranslation(new ArrayList<>(Arrays.asList(0f, 1f)));
+        translationAndScaleAndRotation.setTranslation(new ArrayList<>(Arrays.asList(1f, 0f)));
         translationAndScaleAndRotation.setRotation(1f);
 
         ArrayList<Pair<Snapshot, RigidTransformation>> data = new ArrayList<>(Arrays.asList(
@@ -101,58 +103,61 @@ public class GetFramesTests {
         Frame frame1 = frames.get(0);
         Assertions.assertArrayEquals(frame1.getTemporalRange().toArray(new Float[frame1.getTemporalRange().size()]), new Float[]{0f, 5f});
         Assertions.assertEquals(frame1.getEvents().size(), 1);
-        EventDataWithTrigger event = frame1.getEvents().get(0);
-        Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.DIRECTED_ACC);
-        Assertions.assertEquals(event.getType(), Event.Transformation.TRANSLATION);
-        Assertions.assertEquals(event.getTriggerValue(), 5f);
+        EventDataWithTrigger<ArrayFloatTransformation> eventAF = frame1.getEvents().get(0);
+        Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
+        Assertions.assertEquals(eventAF.getType(), Event.Transformation.TRANSLATION);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(0), 5f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(1), 0f);
 
         Frame frame2 = frames.get(1);
         Assertions.assertArrayEquals(frame2.getTemporalRange().toArray(new Float[frame2.getTemporalRange().size()]), new Float[]{5f, 7f});
         Assertions.assertEquals(frame2.getEvents().size(), 2);
-        event = frame2.getEvents().get(0);
-        Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.DIRECTED_ACC);
-        Assertions.assertEquals(event.getType(), Event.Transformation.TRANSLATION);
-        Assertions.assertEquals(event.getTriggerValue(), 2f);
-        event = frame2.getEvents().get(1);
-        Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.ABSOLUTE_ACC);
-        Assertions.assertEquals(event.getType(), Event.Transformation.ROTATION);
-        Assertions.assertEquals(event.getTriggerValue(), 2f);
+        eventAF = frame2.getEvents().get(0);
+        Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
+        Assertions.assertEquals(eventAF.getType(), Event.Transformation.TRANSLATION);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(0), 2f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(1), 0f);
+        EventDataWithTrigger<FloatTransformation> eventF = frame2.getEvents().get(1);
+        Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
+        Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), 2f);
 
         Frame frame3 = frames.get(2);
         Assertions.assertArrayEquals(frame3.getTemporalRange().toArray(new Float[frame3.getTemporalRange().size()]), new Float[]{7f, 10f});
         Assertions.assertEquals(frame3.getEvents().size(), 3);
-        event = frame3.getEvents().get(0);
-        Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.DIRECTED_ACC);
-        Assertions.assertEquals(event.getType(), Event.Transformation.TRANSLATION);
-        Assertions.assertEquals(event.getTriggerValue(), 3f);
-        event = frame3.getEvents().get(1);
-        Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.ABSOLUTE_ACC);
-        Assertions.assertEquals(event.getType(), Event.Transformation.ROTATION);
-        Assertions.assertEquals(event.getTriggerValue(), 3f);
-        event = frame3.getEvents().get(2);
-        Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.DIRECTED_ACC);
-        Assertions.assertEquals(event.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(Math.round(event.getTriggerValue() * 10) / 10f, 0.3f);
+        eventAF = frame3.getEvents().get(0);
+        Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
+        Assertions.assertEquals(eventAF.getType(), Event.Transformation.TRANSLATION);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(0), 3f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(1), 0f);
+        eventF = frame3.getEvents().get(1);
+        Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
+        Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), 3f);
+        eventF = frame3.getEvents().get(2);
+        Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
+        Assertions.assertEquals(eventF.getType(), Event.Transformation.UNIFORM_SCALE);
+        Assertions.assertEquals(Math.round(eventF.getTrigger().getTransformation() * 10) / 10f, 0.3f);
 
         Frame frame4 = frames.get(3);
         Assertions.assertArrayEquals(frame4.getTemporalRange().toArray(new Float[frame4.getTemporalRange().size()]), new Float[]{10f, 15f});
         Assertions.assertEquals(frame4.getEvents().size(), 2);
-        event = frame4.getEvents().get(0);
-        Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.ABSOLUTE_ACC);
-        Assertions.assertEquals(event.getType(), Event.Transformation.ROTATION);
-        Assertions.assertEquals(event.getTriggerValue(), 5f);
-        event = frame4.getEvents().get(1);
-        Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.DIRECTED_ACC);
-        Assertions.assertEquals(event.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(Math.round(event.getTriggerValue() * 10) / 10f, 0.5f);
+        eventF = frame4.getEvents().get(0);
+        Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
+        Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), -5f);
+        eventF = frame4.getEvents().get(1);
+        Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
+        Assertions.assertEquals(eventF.getType(), Event.Transformation.UNIFORM_SCALE);
+        Assertions.assertEquals(Math.round(eventF.getTrigger().getTransformation() * 10) / 10f, 0.5f);
 
 
         Frame frame5 = frames.get(4);
         Assertions.assertArrayEquals(frame5.getTemporalRange().toArray(new Float[frame5.getTemporalRange().size()]), new Float[]{15f, 20f});
         Assertions.assertEquals(frame5.getEvents().size(), 1);
-        event = frame5.getEvents().get(0);
-        Assertions.assertEquals(event.getTrigger(), Event.ThresholdTrigger.ABSOLUTE_ACC);
-        Assertions.assertEquals(event.getType(), Event.Transformation.ROTATION);
-        Assertions.assertEquals(event.getTriggerValue(), 5f);
+        eventF = frame5.getEvents().get(0);
+        Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
+        Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), 5f);
     }
 }

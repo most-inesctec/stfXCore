@@ -10,8 +10,8 @@ import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardNotFoundException;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
 import stfXCore.Repositories.StoryboardRepository;
 import stfXCore.Services.SnapshotsBuilder;
-import stfXCore.Models.Storyboard.Frame;
-import stfXCore.Services.FramedDataset;
+import stfXCore.Services.Frames.Frame;
+import stfXCore.Services.Frames.FramedDataset;
 import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Models.Storyboard.Transformations.TransformationList;
 
