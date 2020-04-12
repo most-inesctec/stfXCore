@@ -11,8 +11,8 @@ public abstract class FloatTransformationsParser extends TransformationsParser<F
 
     @Override
     protected boolean changeDirection(FloatTransformation value, FloatTransformation previousValue) {
-        return (value.getValue() > 0 && previousValue.getValue() < 0) ||
-                (value.getValue() < 0 && previousValue.getValue() > 0);
+        return (value.value() > 0 && previousValue.value() < 0) ||
+                (value.value() < 0 && previousValue.value() > 0);
     }
 
 }

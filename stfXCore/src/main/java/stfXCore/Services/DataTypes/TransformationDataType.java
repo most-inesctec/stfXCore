@@ -14,7 +14,7 @@ public abstract class TransformationDataType<T> {
         return transformation;
     }
 
-    public abstract float getValue();
+    public abstract float value();
 
     public abstract TransformationDataType<T> add(T transformation);
 

@@ -26,6 +26,6 @@ public abstract class ArrayFloatTransformationsParser extends TransformationsPar
             dotProduct += values.get(i) * previousValues.get(i);
 
         // If angle between two vectors > 45º say direction changed
-        return Math.acos(dotProduct / (transformation1.getValue() * transformation2.getValue())) > DIRECTION_THRESHOLD;
+        return Math.acos(dotProduct / (transformation1.value() * transformation2.value())) > DIRECTION_THRESHOLD;
     }
 }

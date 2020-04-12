@@ -49,7 +49,7 @@ public abstract class TransformationsParser<T extends TransformationDataType<G>,
     }
 
     protected Event<T, G> computeDelta(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
-        if (Math.abs(transformation.getSecond().getValue()) >= threshold) {
+        if (Math.abs(transformation.getSecond().value()) >= threshold) {
             ArrayList<Pair<Float, T>> values = new ArrayList<>();
             values.add(createPair(transformation.getFirst().getX(), getNullValue()));
             values.add(createPair(transformation.getFirst().getY(), transformation.getSecond()));
@@ -74,7 +74,7 @@ public abstract class TransformationsParser<T extends TransformationDataType<G>,
                     transformation.getFirst().getY(),
                     (T) getLastSecond(accDirected).add(transformationValue.getTransformation())));
 
-        if (Math.abs(getLastSecond(accDirected).getValue()) >= threshold)
+        if (Math.abs(getLastSecond(accDirected).value()) >= threshold)
             return new Event<T, G>(Event.ThresholdTrigger.DIRECTED_ACC, type).setValues(accDirected);
 
         return null;
@@ -90,12 +90,12 @@ public abstract class TransformationsParser<T extends TransformationDataType<G>,
             accAbsolute = new ArrayList<>();
             accAbsolute.add(createPair(transformation.getFirst().getX(), getNullValue()));
             accAbsolute.add(createPair(transformation.getFirst().getY(), transformationValue));
-            accAbsoluteValue = Math.abs(transformationValue.getValue());
+            accAbsoluteValue = Math.abs(transformationValue.value());
         } else {
             accAbsolute.add(createPair(
                     transformation.getFirst().getY(),
                     (T) getLastSecond(accAbsolute).add(transformationValue.getTransformation())));
-            accAbsoluteValue += Math.abs(transformationValue.getValue());
+            accAbsoluteValue += Math.abs(transformationValue.value());
         }
 
         if (accAbsoluteValue >= threshold)

@@ -19,7 +19,7 @@ public class ArrayFloatTransformation extends TransformationDataType<ArrayList<F
     }
 
     @Override
-    public float getValue() {
+    public float value() {
         return (float) Math.sqrt(transformation.stream().reduce(
                 0f, (acc, el) -> acc + (float) Math.pow(el, 2)));
     }

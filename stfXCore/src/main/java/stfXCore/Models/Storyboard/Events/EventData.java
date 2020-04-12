@@ -5,12 +5,12 @@ import lombok.Data;
 @Data
 public class EventData {
 
-    private Event.ThresholdTrigger trigger;
+    private Event.ThresholdTrigger threshold;
 
     private Event.Transformation type;
 
-    EventData(Event.ThresholdTrigger trigger, Event.Transformation type) {
-        this.trigger = trigger;
+    EventData(Event.ThresholdTrigger threshold, Event.Transformation type) {
+        this.threshold = threshold;
         this.type = type;
     }
 }

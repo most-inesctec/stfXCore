@@ -12,7 +12,7 @@ public class FloatTransformation extends TransformationDataType<Float> {
     }
 
     @Override
-    public float getValue() {
+    public float value() {
         return this.transformation;
     }
 

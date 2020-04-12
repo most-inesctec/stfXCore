@@ -5,11 +5,11 @@ import lombok.Data;
 @Data
 public class EventDataWithTrigger<T> extends EventData {
 
-    private T triggerValue;
+    private T trigger;
 
-    public EventDataWithTrigger(EventData data, T triggerValue) {
-        super(data.getTrigger(), data.getType());
-        this.triggerValue = triggerValue;
+    public EventDataWithTrigger(EventData data, T trigger) {
+        super(data.getThreshold(), data.getType());
+        this.trigger = trigger;
     }
 
 }
