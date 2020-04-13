@@ -31,7 +31,12 @@ public class Storyboard {
     @Lob
     private ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations;
 
-    public Storyboard() {
+    private DatasetMetadata metadata;
+
+    public Storyboard() {}
+
+    public Storyboard(DatasetMetadata metadata) {
+        this.metadata = metadata;
         rigidTransformations = new ArrayList<>();
     }
 
