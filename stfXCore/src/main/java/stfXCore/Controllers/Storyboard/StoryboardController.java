@@ -76,7 +76,7 @@ public class StoryboardController {
         return FramedDataset.getFrames(storyboard, thresholds);
     }
 
-    @GetMapping("/storyboard/metadat/{id}")
+    @GetMapping("/storyboard/metadata/{id}")
     public DatasetMetadata getMetadata(@PathVariable Long id) {
         Storyboard storyboard = repository.findById(id)
                 .orElseThrow(() -> new StoryboardNotFoundException(id));
