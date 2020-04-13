@@ -65,6 +65,14 @@ public class StoryboardController {
         return repository.save(storyboard).getId();
     }
 
+    @GetMapping("/storyboard/metadata/{id}")
+    public DatasetMetadata getMetadata(@PathVariable Long id) {
+        Storyboard storyboard = repository.findById(id)
+                .orElseThrow(() -> new StoryboardNotFoundException(id));
+
+        return storyboard.getMetadata();
+    }
+
     @PostMapping("/storyboard/{id}")
     public ArrayList<Frame> getEventsOfInterest(@PathVariable Long id, @RequestBody Thresholds thresholds) {
         Storyboard storyboard = repository.findById(id)
@@ -74,14 +82,6 @@ public class StoryboardController {
             throw new StoryboardMissingInformationException();
 
         return FramedDataset.getFrames(storyboard, thresholds);
-    }
-
-    @GetMapping("/storyboard/metadata/{id}")
-    public DatasetMetadata getMetadata(@PathVariable Long id) {
-        Storyboard storyboard = repository.findById(id)
-                .orElseThrow(() -> new StoryboardNotFoundException(id));
-
-        return storyboard.getMetadata();
     }
 
     @DeleteMapping("/storyboard/{id}")

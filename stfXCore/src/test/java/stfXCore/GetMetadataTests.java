@@ -27,7 +27,7 @@ public class GetMetadataTests extends MockTemplate {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"timePeriod\": 3.0, \"name\": \"DatasetName\"}"));
+                .andExpect(content().string("{\"timePeriod\":3.0,\"name\":\"DatasetName\"}"));
     }
 
     @Test
