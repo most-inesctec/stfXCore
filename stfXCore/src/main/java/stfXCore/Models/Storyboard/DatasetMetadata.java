@@ -2,8 +2,10 @@ package stfXCore.Models.Storyboard;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class DatasetMetadata {
+public class DatasetMetadata implements Serializable {
 
     private Float timePeriod;
 

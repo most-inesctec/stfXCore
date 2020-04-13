@@ -55,12 +55,12 @@ public class StoryboardController {
 
     @PostMapping("/storyboard")
     public Long newStoryboard(@RequestBody Dataset dataset) {
-        Storyboard storyboard = new Storyboard();
         if (dataset.getDataset() == null ||
                 dataset.getMetadata() == null ||
                 dataset.getMetadata().getTimePeriod() == null)
             throw new StoryboardMissingInformationException();
 
+        Storyboard storyboard = new Storyboard(dataset.getMetadata());
         computeTransformations(dataset, storyboard);
         return repository.save(storyboard).getId();
     }
@@ -74,6 +74,14 @@ public class StoryboardController {
             throw new StoryboardMissingInformationException();
 
         return FramedDataset.getFrames(storyboard, thresholds);
+    }
+
+    @GetMapping("/storyboard/metadat/{id}")
+    public DatasetMetadata getMetadata(@PathVariable Long id) {
+        Storyboard storyboard = repository.findById(id)
+                .orElseThrow(() -> new StoryboardNotFoundException(id));
+
+        return storyboard.getMetadata();
     }
 
     @DeleteMapping("/storyboard/{id}")
