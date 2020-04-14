@@ -1,10 +1,16 @@
 package stfXCore.Controllers.Storyboard;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+
 import stfXCore.Models.Storyboard.*;
+import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardBadFileException;
 import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardMissingInformationException;
 import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardNotFoundException;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
@@ -15,6 +21,8 @@ import stfXCore.Services.Frames.FramedDataset;
 import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Models.Storyboard.Transformations.TransformationList;
 
+import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -29,6 +37,26 @@ public class StoryboardController {
     // Not adding Assembler for now, IMO it might not make sense
     StoryboardController(StoryboardRepository repository) {
         this.repository = repository;
+    }
+
+    private Dataset loadAndVerifyDataset(Dataset dataset, MultipartFile datasetFile) {
+        Dataset loadedDataset;
+
+        if (datasetFile == null || datasetFile.isEmpty())
+            loadedDataset = dataset;
+        else try {
+            loadedDataset = new Gson().fromJson(
+                    new String(datasetFile.getBytes()), Dataset.class);
+        } catch (IOException e) {
+            throw new StoryboardBadFileException();
+        }
+
+        if (loadedDataset.getDataset() == null ||
+                loadedDataset.getMetadata() == null ||
+                loadedDataset.getMetadata().getTimePeriod() == null)
+            throw new StoryboardMissingInformationException();
+
+        return loadedDataset;
     }
 
     /**
@@ -54,14 +82,11 @@ public class StoryboardController {
     }
 
     @PostMapping("/storyboard")
-    public Long newStoryboard(@RequestBody Dataset dataset) {
-        if (dataset.getDataset() == null ||
-                dataset.getMetadata() == null ||
-                dataset.getMetadata().getTimePeriod() == null)
-            throw new StoryboardMissingInformationException();
-
-        Storyboard storyboard = new Storyboard(dataset.getMetadata());
-        computeTransformations(dataset, storyboard);
+    public Long newStoryboard(@Valid Dataset dataset,
+                              @RequestParam(name = "file", required = false) MultipartFile datasetFile) {
+        Dataset verifiedDataset = loadAndVerifyDataset(dataset, datasetFile);
+        Storyboard storyboard = new Storyboard(verifiedDataset.getMetadata());
+        computeTransformations(verifiedDataset, storyboard);
         return repository.save(storyboard).getId();
     }
 
