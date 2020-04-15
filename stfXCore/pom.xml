@@ -15,7 +15,7 @@
     <description>Core microservice of the SpatioTemporal Feature eXtractor</description>
 
     <properties>
-        <java.version>13</java.version>
+        <java.version>8</java.version>
     </properties>
 
     <dependencies>
