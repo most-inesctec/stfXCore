@@ -41,7 +41,13 @@ An example call to this endpoint is:
 }
 ```
 
-And the respective example output (the storyboard ID):
+Storyboards can also be created using a file, rather than the raw json as the request body. An example of a call to the respective endpoint is presented below:
+```shell
+curl -F "dataset=@<absolute-path-to-json-dataset-and-metadata>" -X POST http://localhost:8080/storyboard/file
+``` 
+
+
+The respective example output (the storyboard ID):
 ```json
 1
 ```

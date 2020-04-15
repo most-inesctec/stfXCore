@@ -2,8 +2,6 @@ package stfXCore.Controllers.Storyboard;
 
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
-import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -21,7 +19,6 @@ import stfXCore.Services.Frames.FramedDataset;
 import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Models.Storyboard.Transformations.TransformationList;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -79,7 +76,7 @@ public class StoryboardController {
 
     @PostMapping("/storyboard/file")
     public Long newStoryboardFromFile(@RequestParam("dataset") MultipartFile datasetFile) {
-        if (datasetFile == null || datasetFile.isEmpty())
+        if (datasetFile.isEmpty())
             throw new StoryboardMissingInformationException();
         try {
             return createStoryboard(
