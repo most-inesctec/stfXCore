@@ -39,26 +39,6 @@ public class StoryboardController {
         this.repository = repository;
     }
 
-    private Dataset loadAndVerifyDataset(Dataset dataset, MultipartFile datasetFile) {
-        Dataset loadedDataset;
-
-        if (datasetFile == null || datasetFile.isEmpty())
-            loadedDataset = dataset;
-        else try {
-            loadedDataset = new Gson().fromJson(
-                    new String(datasetFile.getBytes()), Dataset.class);
-        } catch (IOException e) {
-            throw new StoryboardBadFileException();
-        }
-
-        if (loadedDataset.getDataset() == null ||
-                loadedDataset.getMetadata() == null ||
-                loadedDataset.getMetadata().getTimePeriod() == null)
-            throw new StoryboardMissingInformationException();
-
-        return loadedDataset;
-    }
-
     /**
      * Compute the transformations by calling the algorithm enpoint
      *
@@ -81,13 +61,33 @@ public class StoryboardController {
             storyboard.addRigidTransformation(snapshots.get(i), transformations.get(i));
     }
 
-    @PostMapping("/storyboard")
-    public Long newStoryboard(@Valid Dataset dataset,
-                              @RequestParam(name = "file", required = false) MultipartFile datasetFile) {
-        Dataset verifiedDataset = loadAndVerifyDataset(dataset, datasetFile);
-        Storyboard storyboard = new Storyboard(verifiedDataset.getMetadata());
-        computeTransformations(verifiedDataset, storyboard);
+    private Long createStoryboard(Dataset dataset) {
+        if (dataset.getDataset() == null ||
+                dataset.getMetadata() == null ||
+                dataset.getMetadata().getTimePeriod() == null)
+            throw new StoryboardMissingInformationException();
+
+        Storyboard storyboard = new Storyboard(dataset.getMetadata());
+        computeTransformations(dataset, storyboard);
         return repository.save(storyboard).getId();
+    }
+
+    @PostMapping("/storyboard")
+    public Long newStoryboard(@RequestBody Dataset dataset) {
+        return createStoryboard(dataset);
+    }
+
+    @PostMapping("/storyboard/file")
+    public Long newStoryboardFromFile(@RequestParam("dataset") MultipartFile datasetFile) {
+        if (datasetFile == null || datasetFile.isEmpty())
+            throw new StoryboardMissingInformationException();
+        try {
+            return createStoryboard(
+                    new Gson().fromJson(
+                            new String(datasetFile.getBytes()), Dataset.class));
+        } catch (IOException e) {
+            throw new StoryboardBadFileException();
+        }
     }
 
     @GetMapping("/storyboard/metadata/{id}")
