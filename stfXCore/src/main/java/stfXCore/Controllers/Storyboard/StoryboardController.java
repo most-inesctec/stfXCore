@@ -1,10 +1,14 @@
 package stfXCore.Controllers.Storyboard;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+
 import stfXCore.Models.Storyboard.*;
+import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardBadFileException;
 import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardMissingInformationException;
 import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardNotFoundException;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
@@ -15,6 +19,7 @@ import stfXCore.Services.Frames.FramedDataset;
 import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Models.Storyboard.Transformations.TransformationList;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -53,8 +58,7 @@ public class StoryboardController {
             storyboard.addRigidTransformation(snapshots.get(i), transformations.get(i));
     }
 
-    @PostMapping("/storyboard")
-    public Long newStoryboard(@RequestBody Dataset dataset) {
+    private Long createStoryboard(Dataset dataset) {
         if (dataset.getDataset() == null ||
                 dataset.getMetadata() == null ||
                 dataset.getMetadata().getTimePeriod() == null)
@@ -63,6 +67,24 @@ public class StoryboardController {
         Storyboard storyboard = new Storyboard(dataset.getMetadata());
         computeTransformations(dataset, storyboard);
         return repository.save(storyboard).getId();
+    }
+
+    @PostMapping("/storyboard")
+    public Long newStoryboard(@RequestBody Dataset dataset) {
+        return createStoryboard(dataset);
+    }
+
+    @PostMapping("/storyboard/file")
+    public Long newStoryboardFromFile(@RequestParam("dataset") MultipartFile datasetFile) {
+        if (datasetFile.isEmpty())
+            throw new StoryboardMissingInformationException();
+        try {
+            return createStoryboard(
+                    new Gson().fromJson(
+                            new String(datasetFile.getBytes()), Dataset.class));
+        } catch (IOException e) {
+            throw new StoryboardBadFileException();
+        }
     }
 
     @GetMapping("/storyboard/metadata/{id}")

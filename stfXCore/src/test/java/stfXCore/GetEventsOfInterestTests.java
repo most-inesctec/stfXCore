@@ -18,11 +18,11 @@ public class GetEventsOfInterestTests extends MockTemplate {
     @Test
     public void testStoryboardNotFound(@Autowired MockMvc mvc) throws Exception {
         mockCPD();
-        mvc.perform(post("/storyboard/4")
+        mvc.perform(post("/storyboard/15")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("Could not find storyboard 4"));
+                .andExpect(content().string("Could not find storyboard 15"));
     }
 
     @Test
