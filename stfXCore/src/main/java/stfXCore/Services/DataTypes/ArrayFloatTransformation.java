@@ -12,7 +12,7 @@ public class ArrayFloatTransformation extends TransformationDataType<ArrayList<F
     }
 
     @Override
-    public ArrayFloatTransformation getNullValue() {
+    public ArrayFloatTransformation nullValue() {
         return new ArrayFloatTransformation(new ArrayList<>(Arrays.asList(0f, 0f)));
     }
 

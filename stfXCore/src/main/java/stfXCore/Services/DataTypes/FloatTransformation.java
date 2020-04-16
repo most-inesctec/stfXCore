@@ -12,7 +12,7 @@ public class FloatTransformation extends TransformationDataType<Float> {
     }
 
     @Override
-    public FloatTransformation getNullValue() {
+    public FloatTransformation nullValue() {
         return new FloatTransformation(0f);
     }
 

@@ -14,7 +14,7 @@ public class ScaleFloatTransformation extends TransformationDataType<Float> {
     }
 
     @Override
-    public ScaleFloatTransformation getNullValue() {
+    public ScaleFloatTransformation nullValue() {
         return new ScaleFloatTransformation(NULL_SCALE);
     }
 

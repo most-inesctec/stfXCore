@@ -10,7 +10,7 @@ public abstract class TransformationDataType<T> {
 
     public abstract boolean verifyNull();
 
-    public abstract TransformationDataType<T> getNullValue();
+    public abstract TransformationDataType<T> nullValue();
 
     public T getTransformation() {
         return transformation;
