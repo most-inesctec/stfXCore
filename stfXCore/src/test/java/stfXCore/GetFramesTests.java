@@ -86,8 +86,8 @@ public class GetFramesTests {
 
         UniformScaleThresholds sThreshold = new UniformScaleThresholds();
         sThreshold.setDelta(0.2f);
-        sThreshold.setDirectedAcc(0.8f);
-        sThreshold.setAbsoluteAcc(1f);
+        sThreshold.setDirectedAcc(1.1f);
+        sThreshold.setAbsoluteAcc(2f);
 
         ThresholdParameters parameters = new ThresholdParameters();
         parameters.setTranslation(tThreshold);
@@ -138,7 +138,7 @@ public class GetFramesTests {
         EventDataWithTrigger<ScaleFloatTransformation> eventSF = frame3.getEvents().get(2);
         Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 10) / 10f, 1.3f);
+        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 1.33f);
 
         Frame frame4 = frames.get(3);
         Assertions.assertArrayEquals(frame4.getTemporalRange().toArray(new Float[frame4.getTemporalRange().size()]), new Float[]{10f, 15f});
@@ -150,7 +150,7 @@ public class GetFramesTests {
         eventSF = frame4.getEvents().get(1);
         Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 10) / 10f, 1.5f);
+        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 1.61f);
 
 
         Frame frame5 = frames.get(4);

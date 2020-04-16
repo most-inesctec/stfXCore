@@ -25,12 +25,12 @@ public class ScaleFloatTransformation extends TransformationDataType<Float> {
 
     @Override
     public ScaleFloatTransformation add(Float transformation) {
-        return new ScaleFloatTransformation(this.value() + transformation);
+        return new ScaleFloatTransformation(this.transformation * transformation);
     }
 
     @Override
     public ScaleFloatTransformation subtract(Float transformation) {
-        return new ScaleFloatTransformation(this.transformation - transformation + NULL_SCALE);
+        return new ScaleFloatTransformation(this.transformation / transformation);
     }
 
     @Override
