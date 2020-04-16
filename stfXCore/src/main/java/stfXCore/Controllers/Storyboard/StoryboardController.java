@@ -95,6 +95,7 @@ public class StoryboardController {
         return storyboard.getMetadata();
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/storyboard/{id}")
     public ArrayList<Frame> getEventsOfInterest(@PathVariable Long id, @RequestBody Thresholds thresholds) {
         Storyboard storyboard = repository.findById(id)
