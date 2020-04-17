@@ -20,8 +20,11 @@ import java.util.Arrays;
 
 public class GetFramesTests {
 
-    @Test
-    void verifyFramesParser() {
+    Storyboard storyboard;
+
+    Thresholds thresholds;
+
+    private void mockData() {
         RigidTransformation translation = new RigidTransformation();
         translation.setScale(1f);
         translation.setTranslation(new ArrayList<>(Arrays.asList(1f, 0f)));
@@ -70,7 +73,7 @@ public class GetFramesTests {
                 new Pair<>(new Snapshot().setX(null, 19L).setY(null, 20L), rotation)
         ));
 
-        Storyboard storyboard = new Storyboard();
+        storyboard = new Storyboard();
         storyboard.setRigidTransformations(data);
 
         //Building Thresholds
@@ -94,10 +97,14 @@ public class GetFramesTests {
         parameters.setRotation(rThreshold);
         parameters.setScale(sThreshold);
 
-        Thresholds thresholds = new Thresholds();
+        thresholds = new Thresholds();
         thresholds.setParameters(parameters);
+    }
 
-        ArrayList<Frame> frames = FramedDataset.getFrames(storyboard, thresholds);
+    @Test
+    void verifyFramesParser() {
+        mockData();
+        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).getFrames(null, null);
         Assertions.assertEquals(frames.size(), 5);
 
         // Verify retrivied frames
@@ -152,7 +159,6 @@ public class GetFramesTests {
         Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
         Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 1.61f);
 
-
         Frame frame5 = frames.get(4);
         Assertions.assertArrayEquals(frame5.getTemporalRange().toArray(new Long[frame5.getTemporalRange().size()]), new Long[]{15L, 20L});
         Assertions.assertEquals(frame5.getEvents().size(), 1);
@@ -160,5 +166,95 @@ public class GetFramesTests {
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
         Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
         Assertions.assertEquals(eventF.getTrigger().getTransformation(), 5f);
+    }
+
+    @Test
+    void initialTimestampFramesParser() {
+        mockData();
+        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).getFrames(5L, null);
+        Assertions.assertEquals(frames.size(), 3);
+
+        // Verify retrivied frames
+        Frame frame2 = frames.get(0);
+        Assertions.assertArrayEquals(frame2.getTemporalRange().toArray(new Long[frame2.getTemporalRange().size()]), new Long[]{5L, 7L});
+        Assertions.assertEquals(frame2.getEvents().size(), 1);
+        EventDataWithTrigger<FloatTransformation> eventF = frame2.getEvents().get(0);
+        Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
+        Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), 2f);
+
+        Frame frame3 = frames.get(1);
+        Assertions.assertArrayEquals(frame3.getTemporalRange().toArray(new Long[frame3.getTemporalRange().size()]), new Long[]{7L, 15L});
+        Assertions.assertEquals(frame3.getEvents().size(), 2);
+        eventF = frame3.getEvents().get(0);
+        Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
+        Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), -2f);
+        EventDataWithTrigger<ScaleFloatTransformation> eventSF = frame3.getEvents().get(1);
+        Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
+        Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
+        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 2.14f);
+
+        Frame frame5 = frames.get(2);
+        Assertions.assertArrayEquals(frame5.getTemporalRange().toArray(new Long[frame5.getTemporalRange().size()]), new Long[]{15L, 20L});
+        Assertions.assertEquals(frame5.getEvents().size(), 1);
+        eventF = frame5.getEvents().get(0);
+        Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
+        Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), 5f);
+    }
+
+    @Test
+    void finalTimestampFramesParser() {
+        mockData();
+        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).getFrames(null, 18L);
+        Assertions.assertEquals(frames.size(), 3);
+
+        // Verify retrivied frames
+        Frame frame1 = frames.get(0);
+        Assertions.assertArrayEquals(frame1.getTemporalRange().toArray(new Long[frame1.getTemporalRange().size()]), new Long[]{0L, 7L});
+        Assertions.assertEquals(frame1.getEvents().size(), 1);
+        EventDataWithTrigger<ArrayFloatTransformation> eventAF = frame1.getEvents().get(0);
+        Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
+        Assertions.assertEquals(eventAF.getType(), Event.Transformation.TRANSLATION);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(0), 7f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(1), 0f);
+
+        Frame frame3 = frames.get(1);
+        Assertions.assertArrayEquals(frame3.getTemporalRange().toArray(new Long[frame3.getTemporalRange().size()]), new Long[]{7L, 10L});
+        Assertions.assertEquals(frame3.getEvents().size(), 2);
+        eventAF = frame3.getEvents().get(0);
+        Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
+        Assertions.assertEquals(eventAF.getType(), Event.Transformation.TRANSLATION);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(0), 3f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(1), 0f);
+        EventDataWithTrigger<ScaleFloatTransformation> eventSF = frame3.getEvents().get(1);
+        Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
+        Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
+        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 1.33f);
+
+        Frame frame4 = frames.get(2);
+        Assertions.assertArrayEquals(frame4.getTemporalRange().toArray(new Long[frame4.getTemporalRange().size()]), new Long[]{10L, 15L});
+        Assertions.assertEquals(frame4.getEvents().size(), 1);
+        eventSF = frame4.getEvents().get(0);
+        Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
+        Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
+        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 1.61f);
+    }
+
+    @Test
+    void initialAndFinalTimestampsFramesParser() {
+        mockData();
+        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).getFrames(5L, 18L);
+        Assertions.assertEquals(frames.size(), 1);
+
+        // Verify retrivied frames
+        Frame frame3 = frames.get(0);
+        Assertions.assertArrayEquals(frame3.getTemporalRange().toArray(new Long[frame3.getTemporalRange().size()]), new Long[]{7L, 15L});
+        Assertions.assertEquals(frame3.getEvents().size(), 1);
+        EventDataWithTrigger<ScaleFloatTransformation> eventSF = frame3.getEvents().get(0);
+        Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
+        Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
+        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 2.14f);
     }
 }

@@ -139,23 +139,4 @@ public abstract class TransformationsParser<T extends TransformationDataType> {
     }
 
     protected abstract ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold);
-
-    public static ArrayList<Event<?>> parseTransformations(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull ThresholdParameters thresholds) {
-        ArrayList<Event<?>> eventsOfInterest = new ArrayList<>();
-
-        // TODO: Parsing can be concurrent
-        if (thresholds.getTranslation() != null)
-            eventsOfInterest.addAll(
-                    new TranslationParser().parse(rigidTransformations, thresholds.getTranslation()));
-
-        if (thresholds.getRotation() != null)
-            eventsOfInterest.addAll(
-                    new RotationParser().parse(rigidTransformations, thresholds.getRotation()));
-
-        if (thresholds.getScale() != null)
-            eventsOfInterest.addAll(
-                    new UniformScaleParser().parse(rigidTransformations, thresholds.getScale()));
-
-        return eventsOfInterest;
-    }
 }
