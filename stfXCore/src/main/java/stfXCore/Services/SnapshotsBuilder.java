@@ -10,7 +10,7 @@ public class SnapshotsBuilder {
     public static ArrayList<Snapshot> createSnapshots(Dataset dataset) {
         ArrayList<Snapshot> snapshots = new ArrayList<>();
         ArrayList<ArrayList<ArrayList<Float>>> representations = dataset.getDataset();
-        float timePeriod = dataset.getMetadata().getTimePeriod();
+        Long timePeriod = dataset.getMetadata().getTimePeriod();
 
         for (int i = 0; i < representations.size() - 1; ++i)
             snapshots.add(new Snapshot()

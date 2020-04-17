@@ -16,7 +16,7 @@ public class Frame {
     private ArrayList<EventDataWithTrigger> events;
 
     // Saving redudant data and as an array, for json
-    private ArrayList<Float> temporalRange;
+    private ArrayList<Long> temporalRange;
 
     private List<State> phenomena;
 
@@ -32,11 +32,11 @@ public class Frame {
         events.add(event);
     }
 
-    public Float lowerBound() {
+    public Long lowerBound() {
         return this.temporalRange.get(LOWER_BOUND_INDEX);
     }
 
-    public Float upperBound() {
+    public Long upperBound() {
         return this.temporalRange.get(UPPER_BOUND_INDEX);
     }
 }

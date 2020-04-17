@@ -20,7 +20,7 @@ public class StateList {
         this.states.add(transformations.get(transformations.size() - 1).getFirst().getY());
     }
 
-    public ArrayList<State> getStates(Float lowerBound) {
+    public ArrayList<State> getStates(Long lowerBound) {
         int lowerIndex = -1;
         for (int i = 0; i < states.size(); ++i) {
             if (lowerBound.equals(states.get(i).getTimestamp()))
@@ -30,7 +30,7 @@ public class StateList {
         return new ArrayList<>(states.subList(lowerIndex, states.size()));
     }
 
-    public ArrayList<State> getStates(Float lowerBound, Float upperBound) {
+    public ArrayList<State> getStates(Long lowerBound, Long upperBound) {
         int lowerIndex = -1;
         int upperIndex = -1;
 

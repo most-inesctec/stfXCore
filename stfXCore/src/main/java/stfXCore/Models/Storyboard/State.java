@@ -12,11 +12,11 @@ public class State implements Serializable {
     @Lob
     private ArrayList<ArrayList<Float>> representation;
 
-    private float timestamp;
+    private Long timestamp;
 
     State() {}
 
-    State(ArrayList<ArrayList<Float>> representation, float timestamp) {
+    State(ArrayList<ArrayList<Float>> representation, Long timestamp) {
         this.representation = representation;
         this.timestamp = timestamp;
     }

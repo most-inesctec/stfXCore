@@ -27,13 +27,13 @@ public class Event<T extends TransformationDataType> {
      * First Element are timestamps
      * Second Element are triggerValues
      */
-    private ArrayList<Pair<Float, T>> values;
+    private ArrayList<Pair<Long, T>> values;
 
     public Event(ThresholdTrigger trigger, Transformation type) {
         this.data = new EventData(trigger, type);
     }
 
-    public Event<T> setValues(ArrayList<Pair<Float, T>> values) {
+    public Event<T> setValues(ArrayList<Pair<Long, T>> values) {
         this.values = values;
         return this;
     }
@@ -52,11 +52,11 @@ public class Event<T extends TransformationDataType> {
     /**
      * Get the triggerValue associated to the given timestamp
      */
-    public T getTriggerValue(Float fromTimestamp, Float toTimestamp) {
+    public T getTriggerValue(Long fromTimestamp, Long toTimestamp) {
         T fromValue = null;
         T toValue = null;
 
-        for (Pair<Float, T> pair : values) {
+        for (Pair<Long, T> pair : values) {
             if (pair.getFirst().equals(fromTimestamp))
                 fromValue = pair.getSecond();
             else if (pair.getFirst().equals(toTimestamp))

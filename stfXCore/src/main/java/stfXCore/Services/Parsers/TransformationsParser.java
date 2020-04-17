@@ -18,8 +18,8 @@ public abstract class TransformationsParser<T extends TransformationDataType> {
      * First Element are timestamps
      * Second Element are triggerValues
      */
-    protected ArrayList<Pair<Float, T>> accDirected;
-    protected ArrayList<Pair<Float, T>> accAbsolute;
+    protected ArrayList<Pair<Long, T>> accDirected;
+    protected ArrayList<Pair<Long, T>> accAbsolute;
     protected Float accAbsoluteValue;
 
     TransformationsParser() {
@@ -31,21 +31,21 @@ public abstract class TransformationsParser<T extends TransformationDataType> {
         accAbsoluteValue = 0f;
     }
 
-    private boolean verifyNullTransformation(ArrayList<Pair<Float, T>> accumulator, T transformation) {
+    private boolean verifyNullTransformation(ArrayList<Pair<Long, T>> accumulator, T transformation) {
         return accumulator == null && transformation.verifyNull();
     }
 
-    private Pair<Float, T> createPair(State state, T increment) {
-        return new Pair<Float, T>(state.getTimestamp(), increment);
+    private Pair<Long, T> createPair(State state, T increment) {
+        return new Pair<Long, T>(state.getTimestamp(), increment);
     }
 
-    private T getLastSecond(ArrayList<Pair<Float, T>> list) {
+    private T getLastSecond(ArrayList<Pair<Long, T>> list) {
         return list.get(list.size() - 1).getSecond();
     }
 
     protected Event<T> computeDelta(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
         if (Math.abs(transformation.getSecond().value()) >= threshold) {
-            ArrayList<Pair<Float, T>> values = new ArrayList<>();
+            ArrayList<Pair<Long, T>> values = new ArrayList<>();
             values.add(createPair(transformation.getFirst().getX(), (T) transformation.getSecond().nullValue()));
             values.add(createPair(transformation.getFirst().getY(), transformation.getSecond()));
             return new Event<T>(Event.ThresholdTrigger.DELTA, type).setValues(values);
