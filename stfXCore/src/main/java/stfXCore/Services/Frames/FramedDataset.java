@@ -32,24 +32,19 @@ public class FramedDataset {
         StateList states = storyboard.getStates();
 
         while (!orderedEvents.isEmpty()) {
-            EventWrapper eventWrapper = orderedEvents.poll();
-            if (eventWrapper.getType() == START_WRAPPER)
-                validEvents.add(eventWrapper.getEvent());
-            else
-                validEvents.remove(eventWrapper.getEvent());
-
-            if (validEvents.size() == 0)
-                continue;
-
+            EventWrapper eventWrapper;
             // Polling all events with equal timestamp
-            while (orderedEvents.peek() != null &&
-                    orderedEvents.peek().getTimestamp().equals(eventWrapper.getTimestamp())) {
+            do {
                 eventWrapper = orderedEvents.poll();
                 if (eventWrapper.getType() == START_WRAPPER)
                     validEvents.add(eventWrapper.getEvent());
                 else
                     validEvents.remove(eventWrapper.getEvent());
-            }
+            } while (orderedEvents.peek() != null &&
+                    orderedEvents.peek().getTimestamp().equals(eventWrapper.getTimestamp()));
+
+            if (validEvents.size() == 0)
+                continue;
 
             Frame frame;
             if (!orderedEvents.isEmpty()) {
