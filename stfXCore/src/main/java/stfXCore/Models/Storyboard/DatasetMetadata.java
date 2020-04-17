@@ -10,7 +10,7 @@ public class DatasetMetadata implements Serializable {
     private Long timePeriod;
 
     /**
-     * Start time since 1 Jan 1970
+     * Number of seconds elapsed since 1 Jan 1970
      */
     private Long startTime;
 
