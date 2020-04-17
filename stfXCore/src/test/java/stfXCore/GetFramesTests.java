@@ -97,7 +97,7 @@ public class GetFramesTests {
         Thresholds thresholds = new Thresholds();
         thresholds.setParameters(parameters);
 
-        ArrayList<Frame> frames = FramedDataset.getFrames(storyboard, thresholds);
+        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).getFrames(null, null);
         Assertions.assertEquals(frames.size(), 5);
 
         // Verify retrivied frames

@@ -97,14 +97,17 @@ public class StoryboardController {
     }
 
     @PostMapping("/storyboard/{id}")
-    public ArrayList<Frame> getEventsOfInterest(@PathVariable Long id, @RequestBody Thresholds thresholds) {
+    public ArrayList<Frame> getEventsOfInterest(@PathVariable Long id,
+                                                @RequestBody Thresholds thresholds,
+                                                @RequestParam(required = false) Long initalTimestamp,
+                                                @RequestParam(required = false) Long finalTimestamp) {
         Storyboard storyboard = repository.findById(id)
                 .orElseThrow(() -> new StoryboardNotFoundException(id));
 
         if (thresholds.getParameters() == null)
             throw new StoryboardMissingInformationException();
 
-        return FramedDataset.getFrames(storyboard, thresholds);
+        return new FramedDataset(storyboard, thresholds).getFrames(initalTimestamp, finalTimestamp);
     }
 
     @DeleteMapping("/storyboard/{id}")
