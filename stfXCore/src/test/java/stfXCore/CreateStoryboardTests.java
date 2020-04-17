@@ -21,7 +21,7 @@ public class CreateStoryboardTests extends MockTemplate {
         mockCPD();
         mvc.perform(post("/storyboard")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"dataset\": [[[49.44874674652582, 49.44955690588778], [53.43067605954686, 49.44955600296501], [53.4346053725679, 53.427555100042234], [51.43713990926295, 55.402981930429604], [49.44320808526126, 53.42922779467332], [49.44874674652582, 49.44955690588778]], [[50.0, 50.0], [54.0, 50.0], [54.0, 54.0], [52.0, 56.0], [50.0, 54.0], [50.0, 50.0]]], \"metadata\": {\"timePeriod\": 3, \"name\": \"DatasetName\"}}"))
+                .content("{\"dataset\": [[[49.44874674652582, 49.44955690588778], [53.43067605954686, 49.44955600296501], [53.4346053725679, 53.427555100042234], [51.43713990926295, 55.402981930429604], [49.44320808526126, 53.42922779467332], [49.44874674652582, 49.44955690588778]], [[50.0, 50.0], [54.0, 50.0], [54.0, 54.0], [52.0, 56.0], [50.0, 54.0], [50.0, 50.0]]], \"metadata\": {\"timePeriod\": 3,  \"startTime\": 50, \"name\": \"DatasetName\"}}"))
                 .andExpect(status().isOk());
     }
 
@@ -30,7 +30,7 @@ public class CreateStoryboardTests extends MockTemplate {
         // Missing dataset
         mvc.perform(post("/storyboard")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"metadata\": {\"timePeriod\": 3}}"))
+                .content("{\"metadata\": {\"timePeriod\": 3, \"startTime\": 50}}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Missing information in the performed request"));
 
@@ -44,9 +44,17 @@ public class CreateStoryboardTests extends MockTemplate {
         // Missing timeperiod in dataset
         mvc.perform(post("/storyboard")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"dataset\": [[[49.44874674652582, 49.44955690588778], [53.43067605954686, 49.44955600296501], [53.4346053725679, 53.427555100042234], [51.43713990926295, 55.402981930429604], [49.44320808526126, 53.42922779467332], [49.44874674652582, 49.44955690588778]], [[50.0, 50.0], [54.0, 50.0], [54.0, 54.0], [52.0, 56.0], [50.0, 54.0], [50.0, 50.0]]], \"metadata\": {\"name\": \"ExampleDataset\"}}"))
+                .content("{\"dataset\": [[[49.44874674652582, 49.44955690588778], [53.43067605954686, 49.44955600296501], [53.4346053725679, 53.427555100042234], [51.43713990926295, 55.402981930429604], [49.44320808526126, 53.42922779467332], [49.44874674652582, 49.44955690588778]], [[50.0, 50.0], [54.0, 50.0], [54.0, 54.0], [52.0, 56.0], [50.0, 54.0], [50.0, 50.0]]], \"metadata\": { \"startTime\": 50, \"name\": \"ExampleDataset\"}}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Missing information in the performed request"));
+
+        // Missing startTime in dataset
+        mvc.perform(post("/storyboard")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"dataset\": [[[49.44874674652582, 49.44955690588778], [53.43067605954686, 49.44955600296501], [53.4346053725679, 53.427555100042234], [51.43713990926295, 55.402981930429604], [49.44320808526126, 53.42922779467332], [49.44874674652582, 49.44955690588778]], [[50.0, 50.0], [54.0, 50.0], [54.0, 54.0], [52.0, 56.0], [50.0, 54.0], [50.0, 50.0]]], \"metadata\": { \"timePeriod\": 3, \"name\": \"ExampleDataset\"}}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Missing information in the performed request"));
+
     }
 
     @Test
@@ -54,7 +62,7 @@ public class CreateStoryboardTests extends MockTemplate {
         mockCPD();
         String id = mvc.perform(post("/storyboard")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"dataset\": [[[49.44874674652582, 49.44955690588778], [53.43067605954686, 49.44955600296501], [53.4346053725679, 53.427555100042234], [51.43713990926295, 55.402981930429604], [49.44320808526126, 53.42922779467332], [49.44874674652582, 49.44955690588778]], [[50.0, 50.0], [54.0, 50.0], [54.0, 54.0], [52.0, 56.0], [50.0, 54.0], [50.0, 50.0]]], \"metadata\": {\"timePeriod\": 3, \"name\": \"DatasetName\"}}"))
+                .content("{\"dataset\": [[[49.44874674652582, 49.44955690588778], [53.43067605954686, 49.44955600296501], [53.4346053725679, 53.427555100042234], [51.43713990926295, 55.402981930429604], [49.44320808526126, 53.42922779467332], [49.44874674652582, 49.44955690588778]], [[50.0, 50.0], [54.0, 50.0], [54.0, 54.0], [52.0, 56.0], [50.0, 54.0], [50.0, 50.0]]], \"metadata\": {\"timePeriod\": 3, \"startTime\": 50, \"name\": \"DatasetName\"}}"))
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
