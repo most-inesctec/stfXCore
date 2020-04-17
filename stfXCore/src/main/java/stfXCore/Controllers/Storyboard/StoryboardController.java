@@ -53,7 +53,7 @@ public class StoryboardController {
         ArrayList<RigidTransformation> transformations = new RestTemplate().postForObject(
                 methodUri, representations, TransformationList.class).getTransformations();
 
-        // Rather have two n loops than performing n request to the API
+        // Rather have two O(n) loops than performing n request to the API
         for (int i = 0; i < snapshots.size(); ++i)
             storyboard.addRigidTransformation(snapshots.get(i), transformations.get(i));
     }
@@ -61,7 +61,8 @@ public class StoryboardController {
     private Long createStoryboard(Dataset dataset) {
         if (dataset.getDataset() == null ||
                 dataset.getMetadata() == null ||
-                dataset.getMetadata().getTimePeriod() == null)
+                dataset.getMetadata().getTimePeriod() == null ||
+                dataset.getMetadata().getStartTime() == null)
             throw new StoryboardMissingInformationException();
 
         Storyboard storyboard = new Storyboard(dataset.getMetadata());

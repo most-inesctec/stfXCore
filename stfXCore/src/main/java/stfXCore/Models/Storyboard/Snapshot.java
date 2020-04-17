@@ -19,12 +19,12 @@ public class Snapshot implements Serializable {
         this.Y = Y;
     }
 
-    public Snapshot setX(ArrayList<ArrayList<Float>> X, float timestamp) {
+    public Snapshot setX(ArrayList<ArrayList<Float>> X, Long timestamp) {
         this.X = new State(X, timestamp);
         return this;
     }
 
-    public Snapshot setY(ArrayList<ArrayList<Float>> Y, float timestamp) {
+    public Snapshot setY(ArrayList<ArrayList<Float>> Y, Long timestamp) {
         this.Y = new State(Y, timestamp);
         return this;
     }

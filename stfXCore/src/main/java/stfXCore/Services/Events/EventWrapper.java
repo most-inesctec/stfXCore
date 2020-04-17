@@ -14,14 +14,14 @@ public abstract class EventWrapper {
 
     private Event event;
 
-    private Float timestamp;
+    private Long timestamp;
 
     public EventWrapper(EventType type, Event event) {
         this.type = type;
         this.event = event;
     }
 
-    public EventWrapper setTimestamp(Float timestamp) {
+    public EventWrapper setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
         return this;
     }

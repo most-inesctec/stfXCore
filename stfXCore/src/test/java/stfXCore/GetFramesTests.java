@@ -48,26 +48,26 @@ public class GetFramesTests {
         translationAndScaleAndRotation.setRotation(1f);
 
         ArrayList<Pair<Snapshot, RigidTransformation>> data = new ArrayList<>(Arrays.asList(
-                new Pair<>(new Snapshot().setX(null, 0).setY(null, 1), translation),
-                new Pair<>(new Snapshot().setX(null, 1).setY(null, 2), translation),
-                new Pair<>(new Snapshot().setX(null, 2).setY(null, 3), translation),
-                new Pair<>(new Snapshot().setX(null, 3).setY(null, 4), translation),
-                new Pair<>(new Snapshot().setX(null, 4).setY(null, 5), translation),
-                new Pair<>(new Snapshot().setX(null, 5).setY(null, 6), translationAndRotation),
-                new Pair<>(new Snapshot().setX(null, 6).setY(null, 7), translationAndRotation),
-                new Pair<>(new Snapshot().setX(null, 7).setY(null, 8), translationAndScaleAndRotation),
-                new Pair<>(new Snapshot().setX(null, 8).setY(null, 9), translationAndScaleAndRotation),
-                new Pair<>(new Snapshot().setX(null, 9).setY(null, 10), translationAndScaleAndRotation),
-                new Pair<>(new Snapshot().setX(null, 10).setY(null, 11), rotationAndScale),
-                new Pair<>(new Snapshot().setX(null, 11).setY(null, 12), rotationAndScale),
-                new Pair<>(new Snapshot().setX(null, 12).setY(null, 13), rotationAndScale),
-                new Pair<>(new Snapshot().setX(null, 13).setY(null, 14), rotationAndScale),
-                new Pair<>(new Snapshot().setX(null, 14).setY(null, 15), rotationAndScale),
-                new Pair<>(new Snapshot().setX(null, 15).setY(null, 16), rotation),
-                new Pair<>(new Snapshot().setX(null, 16).setY(null, 17), rotation),
-                new Pair<>(new Snapshot().setX(null, 17).setY(null, 18), rotation),
-                new Pair<>(new Snapshot().setX(null, 18).setY(null, 19), rotation),
-                new Pair<>(new Snapshot().setX(null, 19).setY(null, 20), rotation)
+                new Pair<>(new Snapshot().setX(null, 0L).setY(null, 1L), translation),
+                new Pair<>(new Snapshot().setX(null, 1L).setY(null, 2L), translation),
+                new Pair<>(new Snapshot().setX(null, 2L).setY(null, 3L), translation),
+                new Pair<>(new Snapshot().setX(null, 3L).setY(null, 4L), translation),
+                new Pair<>(new Snapshot().setX(null, 4L).setY(null, 5L), translation),
+                new Pair<>(new Snapshot().setX(null, 5L).setY(null, 6L), translationAndRotation),
+                new Pair<>(new Snapshot().setX(null, 6L).setY(null, 7L), translationAndRotation),
+                new Pair<>(new Snapshot().setX(null, 7L).setY(null, 8L), translationAndScaleAndRotation),
+                new Pair<>(new Snapshot().setX(null, 8L).setY(null, 9L), translationAndScaleAndRotation),
+                new Pair<>(new Snapshot().setX(null, 9L).setY(null, 10L), translationAndScaleAndRotation),
+                new Pair<>(new Snapshot().setX(null, 10L).setY(null, 11L), rotationAndScale),
+                new Pair<>(new Snapshot().setX(null, 11L).setY(null, 12L), rotationAndScale),
+                new Pair<>(new Snapshot().setX(null, 12L).setY(null, 13L), rotationAndScale),
+                new Pair<>(new Snapshot().setX(null, 13L).setY(null, 14L), rotationAndScale),
+                new Pair<>(new Snapshot().setX(null, 14L).setY(null, 15L), rotationAndScale),
+                new Pair<>(new Snapshot().setX(null, 15L).setY(null, 16L), rotation),
+                new Pair<>(new Snapshot().setX(null, 16L).setY(null, 17L), rotation),
+                new Pair<>(new Snapshot().setX(null, 17L).setY(null, 18L), rotation),
+                new Pair<>(new Snapshot().setX(null, 18L).setY(null, 19L), rotation),
+                new Pair<>(new Snapshot().setX(null, 19L).setY(null, 20L), rotation)
         ));
 
         Storyboard storyboard = new Storyboard();
@@ -102,7 +102,7 @@ public class GetFramesTests {
 
         // Verify retrivied frames
         Frame frame1 = frames.get(0);
-        Assertions.assertArrayEquals(frame1.getTemporalRange().toArray(new Float[frame1.getTemporalRange().size()]), new Float[]{0f, 5f});
+        Assertions.assertArrayEquals(frame1.getTemporalRange().toArray(new Long[frame1.getTemporalRange().size()]), new Long[]{0L, 5L});
         Assertions.assertEquals(frame1.getEvents().size(), 1);
         EventDataWithTrigger<ArrayFloatTransformation> eventAF = frame1.getEvents().get(0);
         Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
@@ -111,7 +111,7 @@ public class GetFramesTests {
         Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(1), 0f);
 
         Frame frame2 = frames.get(1);
-        Assertions.assertArrayEquals(frame2.getTemporalRange().toArray(new Float[frame2.getTemporalRange().size()]), new Float[]{5f, 7f});
+        Assertions.assertArrayEquals(frame2.getTemporalRange().toArray(new Long[frame2.getTemporalRange().size()]), new Long[]{5L, 7L});
         Assertions.assertEquals(frame2.getEvents().size(), 2);
         eventAF = frame2.getEvents().get(0);
         Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
@@ -124,7 +124,7 @@ public class GetFramesTests {
         Assertions.assertEquals(eventF.getTrigger().getTransformation(), 2f);
 
         Frame frame3 = frames.get(2);
-        Assertions.assertArrayEquals(frame3.getTemporalRange().toArray(new Float[frame3.getTemporalRange().size()]), new Float[]{7f, 10f});
+        Assertions.assertArrayEquals(frame3.getTemporalRange().toArray(new Long[frame3.getTemporalRange().size()]), new Long[]{7L, 10L});
         Assertions.assertEquals(frame3.getEvents().size(), 3);
         eventAF = frame3.getEvents().get(0);
         Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
@@ -141,7 +141,7 @@ public class GetFramesTests {
         Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 1.33f);
 
         Frame frame4 = frames.get(3);
-        Assertions.assertArrayEquals(frame4.getTemporalRange().toArray(new Float[frame4.getTemporalRange().size()]), new Float[]{10f, 15f});
+        Assertions.assertArrayEquals(frame4.getTemporalRange().toArray(new Long[frame4.getTemporalRange().size()]), new Long[]{10L, 15L});
         Assertions.assertEquals(frame4.getEvents().size(), 2);
         eventF = frame4.getEvents().get(0);
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
@@ -154,7 +154,7 @@ public class GetFramesTests {
 
 
         Frame frame5 = frames.get(4);
-        Assertions.assertArrayEquals(frame5.getTemporalRange().toArray(new Float[frame5.getTemporalRange().size()]), new Float[]{15f, 20f});
+        Assertions.assertArrayEquals(frame5.getTemporalRange().toArray(new Long[frame5.getTemporalRange().size()]), new Long[]{15L, 20L});
         Assertions.assertEquals(frame5.getEvents().size(), 1);
         eventF = frame5.getEvents().get(0);
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
