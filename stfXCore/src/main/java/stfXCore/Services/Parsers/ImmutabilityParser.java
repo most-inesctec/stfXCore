@@ -2,6 +2,7 @@ package stfXCore.Services.Parsers;
 
 import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
+import stfXCore.Services.DataTypes.LongTransformation;
 import stfXCore.Services.Events.Event;
 import stfXCore.Utils.Pair;
 
@@ -11,12 +12,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static stfXCore.Services.Events.Event.ThresholdTrigger.ABSOLUTE_ACC;
+import static stfXCore.Services.Events.Event.Transformation.IMMUTABILITY;
 
 public class ImmutabilityParser {
 
     Long counter;
 
-    ArrayList<Pair<Long, Long>> representations;
+    ArrayList<Pair<Long, LongTransformation>> representations;
+
+    ImmutabilityParser() {
+    }
 
     private void resetCounters() {
         counter = 0L;
@@ -33,10 +38,14 @@ public class ImmutabilityParser {
                     Snapshot s = transformation.getFirst();
 
                     if (representations.size() == 0)
-                        representations.add(new Pair<Long, Long>(s.getX().getTimestamp(), 0L));
+                        representations.add(new Pair<Long, LongTransformation>(
+                                s.getX().getTimestamp(),
+                                new LongTransformation(0L)));
 
                     counter += s.getY().getTimestamp() - s.getX().getTimestamp();
-                    representations.add(new Pair<Long, Long>(s.getY().getTimestamp(), counter));
+                    representations.add(new Pair<Long, LongTransformation>(
+                            s.getY().getTimestamp(),
+                            new LongTransformation(counter)));
                 } else {
                     resetCounters();
                     continue;
@@ -44,7 +53,7 @@ public class ImmutabilityParser {
 
                 if (counter >= threshold) {
                     eventsOfInterest.add(
-                            new Event<>(ABSOLUTE_ACC, IMMUTABILITY)
+                            new Event<LongTransformation>(ABSOLUTE_ACC, IMMUTABILITY)
                                     .setValues(representations));
                     resetCounters();
                 }
@@ -52,9 +61,6 @@ public class ImmutabilityParser {
         }
 
         return eventsOfInterest;
-    }
-
-    ImmutabilityParser() {
     }
 
     public ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, Long threshold) {

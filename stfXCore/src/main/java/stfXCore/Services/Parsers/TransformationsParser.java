@@ -138,5 +138,5 @@ public abstract class TransformationsParser<T extends TransformationDataType> {
         return eventsOfInterest;
     }
 
-    protected abstract ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold);
+    public abstract ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold);
 }
