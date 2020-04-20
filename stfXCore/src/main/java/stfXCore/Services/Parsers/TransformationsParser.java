@@ -108,13 +108,16 @@ public abstract class TransformationsParser<T extends TransformationDataType> {
      */
     protected ArrayList<Event<?>> filterThreshold(List<Pair<Snapshot, T>> transformations, GenericThreshold<Float> threshold, Event.Transformation type) {
         ArrayList<Event<?>> eventsOfInterest = new ArrayList<>();
+        Event<T> event;
 
         for (Pair<Snapshot, T> transformation : transformations) {
-            Event<T> event = computeDelta(transformation, threshold.getDelta(), type);
-            if (event != null) {
-                eventsOfInterest.add(event);
-                resetDeltas();
-                continue;
+            if (threshold.getDelta() != null) {
+                event = computeDelta(transformation, threshold.getDelta(), type);
+                if (event != null) {
+                    eventsOfInterest.add(event);
+                    resetDeltas();
+                    continue;
+                }
             }
 
             if (threshold.getDirectedAcc() != null) {
