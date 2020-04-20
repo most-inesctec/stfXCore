@@ -16,6 +16,7 @@ public class Event<T extends TransformationDataType> {
     }
 
     public enum Transformation {
+        IMMUTABILITY,
         TRANSLATION,
         ROTATION,
         UNIFORM_SCALE

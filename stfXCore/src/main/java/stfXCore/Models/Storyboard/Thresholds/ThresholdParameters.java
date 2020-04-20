@@ -11,5 +11,7 @@ public class ThresholdParameters {
 
     private UniformScaleThresholds scale;
 
+    private Long immutability;
+
     public ThresholdParameters() {}
 }

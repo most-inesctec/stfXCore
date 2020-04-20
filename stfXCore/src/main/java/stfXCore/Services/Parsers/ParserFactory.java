@@ -48,6 +48,10 @@ public class ParserFactory {
             eventsOfInterest.addAll(
                     new UniformScaleParser().parse(transformations, thresholds.getScale()));
 
+        if (thresholds.getImmutability() != null)
+            eventsOfInterest.addAll(
+                    new ImmutabilityParser().parse(transformations, thresholds.getImmutability()));
+
         return eventsOfInterest;
     }
 }

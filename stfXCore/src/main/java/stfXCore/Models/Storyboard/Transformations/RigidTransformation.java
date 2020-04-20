@@ -19,5 +19,12 @@ public class RigidTransformation implements Serializable {
     private float scale;
 
     @Builder
-    public RigidTransformation() {}
+    public RigidTransformation() {
+    }
+
+    public boolean isNull() {
+        return rotation == 0 &&
+                translation.get(0) == 0 && translation.get(1) == 0 &&
+                scale == 1;
+    }
 }
