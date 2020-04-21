@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Test;
 import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.Storyboard;
 import stfXCore.Models.Storyboard.Thresholds.*;
+import stfXCore.Services.DataTypes.NullTransformation;
 import stfXCore.Services.DataTypes.ScaleFloatTransformation;
 import stfXCore.Services.Events.Event;
 import stfXCore.Services.Events.EventDataWithTrigger;
+import stfXCore.Services.Events.UnimportantEvent;
 import stfXCore.Services.Frames.Frame;
 import stfXCore.Services.DataTypes.ArrayFloatTransformation;
 import stfXCore.Services.DataTypes.FloatTransformation;
@@ -104,7 +106,7 @@ public class GetFramesTests {
     @Test
     void verifyFramesParser() {
         mockData();
-        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).getFrames(null, null);
+        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).getFrames();
         Assertions.assertEquals(frames.size(), 5);
 
         // Verify retrivied frames
@@ -171,7 +173,7 @@ public class GetFramesTests {
     @Test
     void initialTimestampFramesParser() {
         mockData();
-        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).getFrames(5L, null);
+        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).restrictInterval(5L, null).getFrames();
         Assertions.assertEquals(frames.size(), 3);
 
         // Verify retrivied frames
@@ -205,10 +207,10 @@ public class GetFramesTests {
     }
 
     @Test
-    void finalTimestampFramesParser() {
+    void finalTimestampAndUnimportantFramesParser() {
         mockData();
-        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).getFrames(null, 18L);
-        Assertions.assertEquals(frames.size(), 3);
+        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).restrictInterval(null, 18L).getFrames();
+        Assertions.assertEquals(frames.size(), 4);
 
         // Verify retrivied frames
         Frame frame1 = frames.get(0);
@@ -240,21 +242,47 @@ public class GetFramesTests {
         Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
         Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 1.61f);
+
+        Frame frame5 = frames.get(3);
+        Assertions.assertArrayEquals(frame5.getTemporalRange().toArray(new Long[frame5.getTemporalRange().size()]), new Long[]{15L, 18L});
+        Assertions.assertEquals(frame5.getEvents().size(), 1);
+        EventDataWithTrigger<NullTransformation> eventU = frame5.getEvents().get(0);
+        Assertions.assertEquals(eventU.getThreshold(), null);
+        Assertions.assertEquals(eventU.getType(), Event.Transformation.UNIMPORTANT);
+        Assertions.assertEquals(eventU.getTrigger(), null);
     }
 
     @Test
-    void initialAndFinalTimestampsFramesParser() {
+    void initialAndFinalTimestampsAndUnimportantFramesParser() {
         mockData();
-        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).getFrames(5L, 18L);
-        Assertions.assertEquals(frames.size(), 1);
+        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).restrictInterval(5L, 18L).getFrames();
+        Assertions.assertEquals(frames.size(), 3);
 
         // Verify retrivied frames
-        Frame frame3 = frames.get(0);
-        Assertions.assertArrayEquals(frame3.getTemporalRange().toArray(new Long[frame3.getTemporalRange().size()]), new Long[]{7L, 15L});
-        Assertions.assertEquals(frame3.getEvents().size(), 1);
-        EventDataWithTrigger<ScaleFloatTransformation> eventSF = frame3.getEvents().get(0);
+        Frame frame1 = frames.get(0);
+        Assertions.assertArrayEquals(frame1.getTemporalRange().toArray(new Long[frame1.getTemporalRange().size()]), new Long[]{5L, 7L});
+        Assertions.assertEquals(frame1.getEvents().size(), 1);
+        EventDataWithTrigger<NullTransformation> eventU = frame1.getEvents().get(0);
+        Assertions.assertEquals(eventU.getThreshold(), null);
+        Assertions.assertEquals(eventU.getType(), Event.Transformation.UNIMPORTANT);
+        Assertions.assertEquals(eventU.getTrigger(), null);
+
+        Frame frame2 = frames.get(1);
+        Assertions.assertArrayEquals(frame2.getTemporalRange().toArray(new Long[frame2.getTemporalRange().size()]), new Long[]{7L, 15L});
+        Assertions.assertEquals(frame2.getEvents().size(), 1);
+        EventDataWithTrigger<ScaleFloatTransformation> eventSF = frame2.getEvents().get(0);
         Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
         Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 2.14f);
+
+        Frame frame3 = frames.get(2);
+        Assertions.assertArrayEquals(frame3.getTemporalRange().toArray(new Long[frame3.getTemporalRange().size()]), new Long[]{15L, 18L});
+        Assertions.assertEquals(frame3.getEvents().size(), 1);
+        eventU = frame3.getEvents().get(0);
+        Assertions.assertEquals(eventU.getThreshold(), null);
+        Assertions.assertEquals(eventU.getType(), Event.Transformation.UNIMPORTANT);
+        Assertions.assertEquals(eventU.getTrigger(), null);
     }
+
+    @Test
 }

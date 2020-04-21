@@ -67,7 +67,9 @@ public class ImmutabilityTest extends MockTemplate {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"parameters\": {\"immutability\": 5}}"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("[{\"events\":[{\"threshold\":\"ABSOLUTE_ACC\",\"type\":\"IMMUTABILITY\",\"trigger\":{\"transformation\":6}}],\"temporalRange\":[1500,1506],\"phenomena\":[{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1500},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1502},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1504},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1506}]}]"));
+                .andExpect(content().string(
+                        "[{\"events\":[{\"type\":\"IMMUTABILITY\",\"trigger\":{\"transformation\":6}}],\"temporalRange\":[1500,1506],\"phenomena\":[{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1500},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1502},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1504},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1506}]}," +
+                                "{\"events\":[{\"type\":\"UNIMPORTANT\"}],\"temporalRange\":[1506,1508],\"phenomena\":[{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1506},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1508}]}]"));
     }
 
     @Test
@@ -87,7 +89,7 @@ public class ImmutabilityTest extends MockTemplate {
                 .andExpect(status().isOk())
                 .andExpect(content().string(
                         "[{\"events\":[{\"threshold\":\"ABSOLUTE_ACC\",\"type\":\"TRANSLATION\",\"trigger\":{\"transformation\":[2.0,2.0]}}],\"temporalRange\":[1500,1502],\"phenomena\":[{\"representation\":[[-2.0,-2.0],[-2.0,-1.0],[-1.0,-2.0]],\"timestamp\":1500},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1502}]}," +
-                                "{\"events\":[{\"threshold\":\"ABSOLUTE_ACC\",\"type\":\"TRANSLATION\",\"trigger\":{\"transformation\":[0.0,0.0]}},{\"threshold\":\"ABSOLUTE_ACC\",\"type\":\"IMMUTABILITY\",\"trigger\":{\"transformation\":6}}],\"temporalRange\":[1502,1508],\"phenomena\":[{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1502},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1504},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1506},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1508}]}," +
+                                "{\"events\":[{\"threshold\":\"ABSOLUTE_ACC\",\"type\":\"TRANSLATION\",\"trigger\":{\"transformation\":[0.0,0.0]}},{\"type\":\"IMMUTABILITY\",\"trigger\":{\"transformation\":6}}],\"temporalRange\":[1502,1508],\"phenomena\":[{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1502},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1504},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1506},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1508}]}," +
                                 "{\"events\":[{\"threshold\":\"ABSOLUTE_ACC\",\"type\":\"TRANSLATION\",\"trigger\":{\"transformation\":[2.0,2.0]}}],\"temporalRange\":[1508,1512],\"phenomena\":[{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1508},{\"representation\":[[0.0,0.0],[0.0,1.0],[1.0,0.0]],\"timestamp\":1510},{\"representation\":[[2.0,2.0],[2.0,3.0],[3.0,2.0]],\"timestamp\":1512}]}]"
                 ));
     }
