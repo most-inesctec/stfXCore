@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static stfXCore.Services.Events.Event.ThresholdTrigger.ABSOLUTE_ACC;
 import static stfXCore.Services.Events.Event.Transformation.IMMUTABILITY;
 
 public class ImmutabilityParser {
@@ -53,7 +52,7 @@ public class ImmutabilityParser {
 
                 if (counter >= threshold) {
                     eventsOfInterest.add(
-                            new Event<LongTransformation>(ABSOLUTE_ACC, IMMUTABILITY)
+                            new Event<LongTransformation>(IMMUTABILITY)
                                     .setValues(representations));
                     resetCounters();
                 }

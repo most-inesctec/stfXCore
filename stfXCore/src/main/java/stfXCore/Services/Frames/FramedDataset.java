@@ -20,33 +20,48 @@ public class FramedDataset {
     private Thresholds thresholds;
 
     private Long initialTimestamp;
+
     private Long finalTimestamp;
 
     public FramedDataset(Storyboard storyboard, Thresholds thresholds) {
         this.storyboard = storyboard;
         this.thresholds = thresholds;
+
+        ArrayList<Long> defaultRange = storyboard.getStates().getTemporalRange();
+        this.initialTimestamp = defaultRange.get(0);
+        this.finalTimestamp = defaultRange.get(1);
     }
 
     public FramedDataset restrictInterval(Long initialTimestamp, Long finalTimestamp) {
-        this.initialTimestamp = initialTimestamp;
-        this.finalTimestamp = finalTimestamp;
+        if (initialTimestamp != null) this.initialTimestamp = initialTimestamp;
+        if (finalTimestamp != null) this.finalTimestamp = finalTimestamp;
         return this;
     }
 
-    private ArrayList<Frame> addUnimportantEvents(ArrayList<Frame> framedDataset) {
+    private ArrayList<Frame> addUnimportantFrames(ArrayList<Frame> framedDataset) {
+        if (framedDataset.size() == 0)
+            return framedDataset;
+
+        StateList states = storyboard.getStates();
+
         // First element case
         if (initialTimestamp < framedDataset.get(0).lowerBound())
-            framedDataset.add(0, new UnimportantEvent(initialTimestamp, framedDataset.get(0).lowerBound()));
+            framedDataset.add(0,
+                    new UnimportantFrame(states.getStates(initialTimestamp, framedDataset.get(0).lowerBound())));
 
         // Middle elements
         for (int i = 1; i < framedDataset.size(); ++i) {
             if (framedDataset.get(i - 1).upperBound() < framedDataset.get(i).lowerBound())
-                framedDataset.add(i, new UnimportantEvent(framedDataset.get(i - 1).upperBound(), framedDataset.get(i).lowerBound()));
+                framedDataset.add(i,
+                        new UnimportantFrame(states.getStates(framedDataset.get(i - 1).upperBound(), framedDataset.get(i).lowerBound())));
         }
 
         // Last element case
         if (finalTimestamp > framedDataset.get(framedDataset.size() - 1).upperBound())
-            framedDataset.add(framedDataset.size(), new UnimportantEvent(framedDataset.get(framedDataset.size() - 1).upperBound(), finalTimestamp));
+            framedDataset.add(framedDataset.size(),
+                    new UnimportantFrame(states.getStates(framedDataset.get(framedDataset.size() - 1).upperBound(), finalTimestamp)));
+
+        return framedDataset;
     }
 
     public ArrayList<Frame> getFrames() {
@@ -98,6 +113,6 @@ public class FramedDataset {
             framedDataset.add(frame);
         }
 
-        return framedDataset;
+        return addUnimportantFrames(framedDataset);
     }
 }

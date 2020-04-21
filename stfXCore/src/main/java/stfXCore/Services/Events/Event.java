@@ -16,6 +16,7 @@ public class Event<T extends TransformationDataType> {
     }
 
     public enum Transformation {
+        UNIMPORTANT,
         IMMUTABILITY,
         TRANSLATION,
         ROTATION,
@@ -29,6 +30,11 @@ public class Event<T extends TransformationDataType> {
      * Second Element are triggerValues
      */
     private ArrayList<Pair<Long, T>> values;
+
+
+    public Event(Transformation type) {
+        this.data = new EventData(null, type);
+    }
 
     public Event(ThresholdTrigger trigger, Transformation type) {
         this.data = new EventData(trigger, type);

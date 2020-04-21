@@ -107,7 +107,9 @@ public class StoryboardController {
         if (thresholds.getParameters() == null)
             throw new StoryboardMissingInformationException();
 
-        return new FramedDataset(storyboard, thresholds).getFrames(initalTimestamp, finalTimestamp);
+        return new FramedDataset(storyboard, thresholds)
+                .restrictInterval(initalTimestamp, finalTimestamp)
+                .getFrames();
     }
 
     @DeleteMapping("/storyboard/{id}")
