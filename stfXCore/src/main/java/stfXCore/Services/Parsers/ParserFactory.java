@@ -6,7 +6,6 @@ import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Services.Events.Event;
 import stfXCore.Utils.Pair;
 
-import javax.swing.text.html.parser.Parser;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 
