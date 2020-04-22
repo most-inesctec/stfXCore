@@ -13,16 +13,16 @@ import java.util.stream.Collectors;
 
 public class RotationParser extends TransformationsParser<FloatTransformation> {
 
-    RotationParser() {
+    RotationParser(GenericThreshold<Float> threshold) {
+        super(threshold);
     }
 
     @Override
-    public ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, GenericThreshold<Float> threshold) {
+    public ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations) {
         return filterThreshold(
                 rigidTransformations.stream().map(
                         pair -> new Pair<>(pair.getFirst(), new FloatTransformation(pair.getSecond().getRotation())))
                         .collect(Collectors.toList()),
-                threshold,
                 Event.Transformation.ROTATION);
     }
 }

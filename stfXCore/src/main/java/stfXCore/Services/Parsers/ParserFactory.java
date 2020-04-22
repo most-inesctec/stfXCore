@@ -8,6 +8,7 @@ import stfXCore.Utils.Pair;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.concurrent.*;
 
 public class ParserFactory {
 
@@ -31,25 +32,31 @@ public class ParserFactory {
         return this;
     }
 
-    public ArrayList<Event<?>> parseTransformations() {
-        ArrayList<Event<?>> eventsOfInterest = new ArrayList<>();
+    public ConcurrentLinkedQueue<Event<?>> parseTransformations() {
+        ITransformationParser[] concurrentParsers = {
+                new TranslationParser(thresholds.getTranslation()),
+                new RotationParser(thresholds.getRotation()),
+                new UniformScaleParser(thresholds.getScale()),
+                new ImmutabilityParser(thresholds.getImmutability())
+        };
 
-        // TODO: Parsing can be concurrent
-        if (thresholds.getTranslation() != null)
-            eventsOfInterest.addAll(
-                    new TranslationParser().parse(transformations, thresholds.getTranslation()));
+        ExecutorService service = Executors.newCachedThreadPool();
+        ArrayList<CompletableFuture<Boolean>> futures = new ArrayList<>();
+        ConcurrentLinkedQueue<Event<?>> eventsOfInterest = new ConcurrentLinkedQueue<>();
 
-        if (thresholds.getRotation() != null)
-            eventsOfInterest.addAll(
-                    new RotationParser().parse(transformations, thresholds.getRotation()));
+        for (ITransformationParser parser : concurrentParsers) {
+            futures.add(
+                    CompletableFuture.supplyAsync(() ->
+                            eventsOfInterest.addAll(parser.parse(transformations)), service));
+        }
 
-        if (thresholds.getScale() != null)
-            eventsOfInterest.addAll(
-                    new UniformScaleParser().parse(transformations, thresholds.getScale()));
-
-        if (thresholds.getImmutability() != null)
-            eventsOfInterest.addAll(
-                    new ImmutabilityParser().parse(transformations, thresholds.getImmutability()));
+        try {
+            CompletableFuture<Void> allFutures = CompletableFuture.allOf(
+                    futures.toArray(new CompletableFuture[futures.size()]));
+            allFutures.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
 
         return eventsOfInterest;
     }
