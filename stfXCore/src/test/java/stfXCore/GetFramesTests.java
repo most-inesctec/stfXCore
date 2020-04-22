@@ -283,6 +283,4 @@ public class GetFramesTests {
         Assertions.assertEquals(eventU.getType(), Event.Transformation.UNIMPORTANT);
         Assertions.assertEquals(eventU.getTrigger(), null);
     }
-
-    @Test
 }
