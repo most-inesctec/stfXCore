@@ -6,7 +6,6 @@ import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Services.Events.Event;
 import stfXCore.Utils.Pair;
 
-import javax.swing.text.html.parser.Parser;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 
@@ -24,8 +23,8 @@ public class ParserFactory {
     public ParserFactory restrictInterval(Long lowerBound, Long upperBound) {
         ArrayList<Pair<Snapshot, RigidTransformation>> trimmedTransformations = new ArrayList<>();
         for (Pair<Snapshot, RigidTransformation> pair : transformations) {
-            if ((lowerBound == null || pair.getFirst().getX().getTimestamp() >= lowerBound) &&
-                    (upperBound == null || pair.getFirst().getY().getTimestamp() <= upperBound))
+            if (pair.getFirst().getX().getTimestamp() >= lowerBound &&
+                    pair.getFirst().getY().getTimestamp() <= upperBound)
                 trimmedTransformations.add(pair);
         }
         this.transformations = trimmedTransformations;

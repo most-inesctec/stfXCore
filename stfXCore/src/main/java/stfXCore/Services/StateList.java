@@ -6,6 +6,7 @@ import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class StateList {
@@ -18,6 +19,13 @@ public class StateList {
                 .collect(Collectors.toCollection(ArrayList::new));
         // Adding last representation
         this.states.add(transformations.get(transformations.size() - 1).getFirst().getY());
+    }
+
+    public ArrayList<Long> getTemporalRange() {
+        return new ArrayList<Long>(Arrays.asList(
+                states.get(0).getTimestamp(),
+                states.get(states.size() - 1).getTimestamp()
+        ));
     }
 
     public ArrayList<State> getStates(Long lowerBound) {
