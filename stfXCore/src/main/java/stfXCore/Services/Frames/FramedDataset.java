@@ -10,6 +10,7 @@ import stfXCore.Services.StateList;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static stfXCore.Services.Events.EventWrapper.EventType.START_WRAPPER;
 
@@ -65,7 +66,7 @@ public class FramedDataset {
     }
 
     public ArrayList<Frame> getFrames() {
-        ArrayList<Event<?>> eventsOfInterest = new ParserFactory(
+        ConcurrentLinkedQueue<Event<?>> eventsOfInterest = new ParserFactory(
                 storyboard.getRigidTransformations(),
                 thresholds.getParameters())
                 .restrictInterval(initialTimestamp, finalTimestamp)

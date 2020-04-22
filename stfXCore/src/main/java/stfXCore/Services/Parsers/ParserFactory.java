@@ -8,6 +8,7 @@ import stfXCore.Utils.Pair;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.concurrent.*;
 
 public class ParserFactory {
 
@@ -31,10 +32,7 @@ public class ParserFactory {
         return this;
     }
 
-    public ArrayList<Event<?>> parseTransformations() {
-        //ConcurrentLinkedQueue<Event<?>> eventsOfInterest = new ConcurrentLinkedQueue<>();
-        ArrayList<Event<?>> eventsOfInterest = new ArrayList<>();
-
+    public ConcurrentLinkedQueue<Event<?>> parseTransformations() {
         ITransformationParser[] concurrentParsers = {
                 new TranslationParser(thresholds.getTranslation()),
                 new RotationParser(thresholds.getRotation()),
@@ -42,9 +40,22 @@ public class ParserFactory {
                 new ImmutabilityParser(thresholds.getImmutability())
         };
 
-        // TODO PARSING CAN BE CONCURRENT
+        ExecutorService service = Executors.newCachedThreadPool();
+        ArrayList<CompletableFuture<Boolean>> futures = new ArrayList<>();
+        ConcurrentLinkedQueue<Event<?>> eventsOfInterest = new ConcurrentLinkedQueue<>();
+
         for (ITransformationParser parser : concurrentParsers) {
-            eventsOfInterest.addAll(parser.parse(transformations));
+            futures.add(
+                    CompletableFuture.supplyAsync(() ->
+                            eventsOfInterest.addAll(parser.parse(transformations)), service));
+        }
+
+        try {
+            CompletableFuture<Void> allFutures = CompletableFuture.allOf(
+                    futures.toArray(new CompletableFuture[futures.size()]));
+            allFutures.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
 
         return eventsOfInterest;
