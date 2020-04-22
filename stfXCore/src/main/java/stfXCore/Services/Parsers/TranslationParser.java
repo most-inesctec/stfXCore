@@ -13,16 +13,16 @@ import java.util.stream.Collectors;
 
 public class TranslationParser extends TransformationsParser<ArrayFloatTransformation> {
 
-    TranslationParser() {
+    TranslationParser(GenericThreshold<Float> threshold) {
+        super(threshold);
     }
 
     @Override
-    public ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold) {
+    public ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations) {
         return filterThreshold(
                 rigidTransformations.stream().map(
                         pair -> new Pair<>(pair.getFirst(), new ArrayFloatTransformation(pair.getSecond().getTranslation())))
                         .collect(Collectors.toList()),
-                threshold,
                 Event.Transformation.TRANSLATION);
     }
 }

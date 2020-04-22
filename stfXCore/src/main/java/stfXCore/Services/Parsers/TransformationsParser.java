@@ -12,8 +12,9 @@ import stfXCore.Utils.Pair;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-public abstract class TransformationsParser<T extends TransformationDataType> {
+public abstract class TransformationsParser<T extends TransformationDataType> implements ITransformationParser {
 
+    protected GenericThreshold<Float> threshold;
     /**
      * First Element are timestamps
      * Second Element are triggerValues
@@ -22,7 +23,8 @@ public abstract class TransformationsParser<T extends TransformationDataType> {
     protected ArrayList<Pair<Long, T>> accAbsolute;
     protected Float accAbsoluteValue;
 
-    TransformationsParser() {
+    TransformationsParser(GenericThreshold<Float> threshold) {
+        this.threshold = threshold;
     }
 
     private void resetDeltas() {
@@ -106,9 +108,12 @@ public abstract class TransformationsParser<T extends TransformationDataType> {
      * @param threshold       The thresholds to use
      * @param type            The type of the transformation being analyzed
      */
-    protected ArrayList<Event<?>> filterThreshold(List<Pair<Snapshot, T>> transformations, GenericThreshold<Float> threshold, Event.Transformation type) {
+    protected ArrayList<Event<?>> filterThreshold(List<Pair<Snapshot, T>> transformations, Event.Transformation type) {
         ArrayList<Event<?>> eventsOfInterest = new ArrayList<>();
         Event<T> event;
+
+        if (threshold == null)
+            return eventsOfInterest;
 
         for (Pair<Snapshot, T> transformation : transformations) {
             if (threshold.getDelta() != null) {
@@ -140,6 +145,4 @@ public abstract class TransformationsParser<T extends TransformationDataType> {
 
         return eventsOfInterest;
     }
-
-    public abstract ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold);
 }

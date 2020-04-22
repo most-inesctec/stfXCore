@@ -32,24 +32,20 @@ public class ParserFactory {
     }
 
     public ArrayList<Event<?>> parseTransformations() {
+        //ConcurrentLinkedQueue<Event<?>> eventsOfInterest = new ConcurrentLinkedQueue<>();
         ArrayList<Event<?>> eventsOfInterest = new ArrayList<>();
 
-        // TODO: Parsing can be concurrent
-        if (thresholds.getTranslation() != null)
-            eventsOfInterest.addAll(
-                    new TranslationParser().parse(transformations, thresholds.getTranslation()));
+        ITransformationParser[] concurrentParsers = {
+                new TranslationParser(thresholds.getTranslation()),
+                new RotationParser(thresholds.getRotation()),
+                new UniformScaleParser(thresholds.getScale()),
+                new ImmutabilityParser(thresholds.getImmutability())
+        };
 
-        if (thresholds.getRotation() != null)
-            eventsOfInterest.addAll(
-                    new RotationParser().parse(transformations, thresholds.getRotation()));
-
-        if (thresholds.getScale() != null)
-            eventsOfInterest.addAll(
-                    new UniformScaleParser().parse(transformations, thresholds.getScale()));
-
-        if (thresholds.getImmutability() != null)
-            eventsOfInterest.addAll(
-                    new ImmutabilityParser().parse(transformations, thresholds.getImmutability()));
+        // TODO PARSING CAN BE CONCURRENT
+        for (ITransformationParser parser : concurrentParsers) {
+            eventsOfInterest.addAll(parser.parse(transformations));
+        }
 
         return eventsOfInterest;
     }

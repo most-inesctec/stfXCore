@@ -13,13 +13,16 @@ import java.util.stream.Collectors;
 
 import static stfXCore.Services.Events.Event.Transformation.IMMUTABILITY;
 
-public class ImmutabilityParser {
+public class ImmutabilityParser implements ITransformationParser {
+
+    private Long threshold;
 
     Long counter;
 
     ArrayList<Pair<Long, LongTransformation>> representations;
 
-    ImmutabilityParser() {
+    ImmutabilityParser(Long threshold) {
+        this.threshold = threshold;
     }
 
     private void resetCounters() {
@@ -27,7 +30,7 @@ public class ImmutabilityParser {
         representations = new ArrayList<>();
     }
 
-    protected ArrayList<Event<?>> filterThreshold(List<Pair<Snapshot, Boolean>> transformations, Long threshold) {
+    protected ArrayList<Event<?>> filterThreshold(List<Pair<Snapshot, Boolean>> transformations) {
         ArrayList<Event<?>> eventsOfInterest = new ArrayList<>();
         resetCounters();
 
@@ -62,11 +65,11 @@ public class ImmutabilityParser {
         return eventsOfInterest;
     }
 
-    public ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, Long threshold) {
+    @Override
+    public ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations) {
         return filterThreshold(
                 rigidTransformations.stream().map(
                         pair -> new Pair<>(pair.getFirst(), pair.getSecond().isNull()))
-                        .collect(Collectors.toList()),
-                threshold);
+                        .collect(Collectors.toList()));
     }
 }

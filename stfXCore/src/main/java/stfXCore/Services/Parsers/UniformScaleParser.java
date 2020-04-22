@@ -13,16 +13,16 @@ import java.util.stream.Collectors;
 
 public class UniformScaleParser extends TransformationsParser<ScaleFloatTransformation> {
 
-    UniformScaleParser() {
+    UniformScaleParser(GenericThreshold<Float> threshold) {
+        super(threshold);
     }
 
     @Override
-    public ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations, @NotNull GenericThreshold<Float> threshold) {
+    public ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations) {
         return filterThreshold(
                 rigidTransformations.stream().map(
                         pair -> new Pair<>(pair.getFirst(), new ScaleFloatTransformation(pair.getSecond().getScale())))
                         .collect(Collectors.toList()),
-                threshold,
                 Event.Transformation.UNIFORM_SCALE);
     }
 }
