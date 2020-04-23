@@ -3,6 +3,8 @@ package stfXCore.Controllers.Storyboard;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-@RestController
+@Controller
 public class StoryboardController {
 
     @Autowired
@@ -70,8 +72,19 @@ public class StoryboardController {
         return repository.save(storyboard).getId();
     }
 
-    @PostMapping("/storyboard")
+    @GetMapping("/")
+    public String createDataset(Model model) {
+        model.addAttribute("dataset", new Dataset());
+        return "index";
+    }
+
+    @PostMapping(path = "/storyboard", consumes = "application/json")
     public Long newStoryboard(@RequestBody Dataset dataset) {
+        return createStoryboard(dataset);
+    }
+
+    @PostMapping(path = "/storyboard", consumes = "application/x-www-form-urlencoded")
+    public Long newStoryboardFromWeb(@ModelAttribute Dataset dataset) {
         return createStoryboard(dataset);
     }
 
