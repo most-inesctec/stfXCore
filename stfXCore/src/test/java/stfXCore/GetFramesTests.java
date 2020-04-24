@@ -20,7 +20,7 @@ import stfXCore.Utils.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class GetFramesTests {
+public class GetFramesTests extends GetFrames {
 
     Storyboard storyboard;
 
@@ -173,7 +173,7 @@ public class GetFramesTests {
     @Test
     void initialTimestampFramesParser() {
         mockData();
-        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).restrictInterval(5L, null).getFrames();
+        ArrayList<Frame> frames = getFrames(storyboard, thresholds, 5L, null);
         Assertions.assertEquals(frames.size(), 3);
 
         // Verify retrivied frames
@@ -209,7 +209,7 @@ public class GetFramesTests {
     @Test
     void finalTimestampAndUnimportantFramesParser() {
         mockData();
-        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).restrictInterval(null, 18L).getFrames();
+        ArrayList<Frame> frames = getFrames(storyboard, thresholds, null, 18L);
         Assertions.assertEquals(frames.size(), 4);
 
         // Verify retrivied frames
@@ -255,7 +255,7 @@ public class GetFramesTests {
     @Test
     void initialAndFinalTimestampsAndUnimportantFramesParser() {
         mockData();
-        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).restrictInterval(5L, 18L).getFrames();
+        ArrayList<Frame> frames = getFrames(storyboard, thresholds, 5L, 18L);
         Assertions.assertEquals(frames.size(), 3);
 
         // Verify retrivied frames

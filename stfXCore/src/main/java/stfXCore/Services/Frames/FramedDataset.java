@@ -7,6 +7,7 @@ import stfXCore.Services.Events.EventDataWithTrigger;
 import stfXCore.Services.Parsers.ParserFactory;
 import stfXCore.Services.Events.EventWrapper;
 import stfXCore.Services.StateList;
+import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -14,7 +15,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static stfXCore.Services.Events.EventWrapper.EventType.START_WRAPPER;
 
-public class FramedDataset {
+public class FramedDataset implements IFramedDataset {
 
     private Storyboard storyboard;
 
@@ -39,30 +40,12 @@ public class FramedDataset {
         return this;
     }
 
-    private ArrayList<Frame> addUnimportantFrames(ArrayList<Frame> framedDataset) {
-        if (framedDataset.size() == 0)
-            return framedDataset;
+    public StateList getStates() {
+        return this.storyboard.getStates();
+    }
 
-        StateList states = storyboard.getStates();
-
-        // First element case
-        if (initialTimestamp < framedDataset.get(0).lowerBound())
-            framedDataset.add(0,
-                    new UnimportantFrame(states.getStates(initialTimestamp, framedDataset.get(0).lowerBound())));
-
-        // Middle elements
-        for (int i = 1; i < framedDataset.size(); ++i) {
-            if (framedDataset.get(i - 1).upperBound() < framedDataset.get(i).lowerBound())
-                framedDataset.add(i,
-                        new UnimportantFrame(states.getStates(framedDataset.get(i - 1).upperBound(), framedDataset.get(i).lowerBound())));
-        }
-
-        // Last element case
-        if (finalTimestamp > framedDataset.get(framedDataset.size() - 1).upperBound())
-            framedDataset.add(framedDataset.size(),
-                    new UnimportantFrame(states.getStates(framedDataset.get(framedDataset.size() - 1).upperBound(), finalTimestamp)));
-
-        return framedDataset;
+    public Pair<Long, Long> getInterval() {
+        return new Pair(initialTimestamp, finalTimestamp);
     }
 
     public ArrayList<Frame> getFrames() {
@@ -114,6 +97,6 @@ public class FramedDataset {
             framedDataset.add(frame);
         }
 
-        return addUnimportantFrames(framedDataset);
+        return framedDataset;
     }
 }

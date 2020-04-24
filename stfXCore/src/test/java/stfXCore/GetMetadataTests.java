@@ -32,8 +32,8 @@ public class GetMetadataTests extends MockTemplate {
 
     @Test
     public void testStoryboardNotFound(@Autowired MockMvc mvc) throws Exception {
-        mvc.perform(get("/storyboard/metadata/10"))
+        mvc.perform(get("/storyboard/metadata/20"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("Could not find storyboard 10"));
+                .andExpect(content().string("Could not find storyboard 20"));
     }
 }

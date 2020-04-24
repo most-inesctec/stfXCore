@@ -19,7 +19,8 @@ import stfXCore.Utils.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class GetAffineFramesTests {
+public class GetAffineFramesTests extends GetFrames {
+
     Storyboard storyboard;
 
     Thresholds thresholds;
@@ -108,7 +109,7 @@ public class GetAffineFramesTests {
     @Test
     void verifyFramesParser() {
         mockData();
-        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).getFrames();
+        ArrayList<Frame> frames = getFrames(storyboard, thresholds, null, null);
         Assertions.assertEquals(frames.size(), 6);
 
         // Verify retrivied frames
