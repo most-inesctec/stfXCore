@@ -2,6 +2,7 @@ package stfXCore.Services.Frames;
 
 import lombok.Data;
 import stfXCore.Models.Storyboard.State;
+import stfXCore.Services.Events.Event;
 import stfXCore.Services.Events.EventDataWithTrigger;
 
 import java.util.ArrayList;
@@ -38,5 +39,43 @@ public class Frame {
 
     public Long upperBound() {
         return this.temporalRange.get(UPPER_BOUND_INDEX);
+    }
+
+    private EventDataWithTrigger getSimilarEvent(EventDataWithTrigger similarEvent) {
+        Event.ThresholdTrigger threshold = similarEvent.getThreshold();
+        Event.Transformation type = similarEvent.getTransformation();
+
+        for (EventDataWithTrigger event : events) {
+            if (event.getThreshold == threshold &&
+                    event.getTransformation() == type)
+                return event;
+        }
+        return null;
+    }
+
+    public Frame joinFrames(Frame frame) {
+        ArrayList<EventDataWithTrigger> frameEvents = frame.getEvents();
+        // If size different we know for sure events can not be joined
+        if (events.size() != frameEvents.size())
+            return null;
+
+        ArrayList<EventDataWithTrigger> jointEvents = new ArrayList<>();
+        for (EventDataWithTrigger event : frameEvents) {
+            EventDataWithTrigger similarEvent = getSimilarEvent(event)
+            if (similarEvent == null) {
+                return null;
+            } else {
+                jointEvents.add(event.jointEvents(similarEvent));
+            }
+        }
+
+        // Merging phenomena
+        List<State> jointPhenomena = new ArrayList<>(this.phenomena);
+        jointPhenomena.remove(this.phenomena.size()-1); // Removing last element common to both lists
+        jointPhenomena.addAll(frame.phenomena);
+
+        Frame jointFrame = new Frame(jointPhenomena);
+
+
     }
 }

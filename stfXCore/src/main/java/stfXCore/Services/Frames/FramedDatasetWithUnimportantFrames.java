@@ -42,7 +42,6 @@ public class FramedDatasetWithUnimportantFrames implements IFramedDataset {
         return frames;
     }
 
-
     @Override
     public ArrayList<Frame> getFrames() {
         return addUnimportantFrames(framedDataset.getFrames());

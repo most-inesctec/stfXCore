@@ -48,6 +48,7 @@ public class FramedDataset implements IFramedDataset {
         return new Pair(initialTimestamp, finalTimestamp);
     }
 
+    @Override
     public ArrayList<Frame> getFrames() {
         ConcurrentLinkedQueue<Event<?>> eventsOfInterest = new ParserFactory(
                 storyboard.getRigidTransformations(),
