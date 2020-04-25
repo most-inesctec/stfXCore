@@ -2,10 +2,10 @@ package stfXCore.Services.DataTypes;
 
 public abstract class TransformationDataType<T> {
 
-    protected T transformation;
+    protected T value;
 
-    TransformationDataType(T transformation) {
-        this.transformation = transformation;
+    TransformationDataType(T value) {
+        this.value = value;
     }
 
     public abstract boolean verifyNull();
@@ -13,14 +13,14 @@ public abstract class TransformationDataType<T> {
     public abstract TransformationDataType<T> nullValue();
 
     public T getTransformation() {
-        return transformation;
+        return value;
     }
 
-    public abstract float value();
+    public abstract float numericalValue();
 
-    public abstract TransformationDataType<T> add(T transformation);
+    public abstract TransformationDataType<T> add(T value);
 
-    public abstract TransformationDataType<T> subtract(T transformation);
+    public abstract TransformationDataType<T> subtract(T value);
 
-    public abstract boolean changeDirection(TransformationDataType<T> value);
+    public abstract boolean changeDirection(TransformationDataType<T> transformation);
 }

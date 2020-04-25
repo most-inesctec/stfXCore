@@ -2,13 +2,13 @@ package stfXCore.Services.DataTypes;
 
 public class LongTransformation extends TransformationDataType<Long> {
 
-    public LongTransformation(Long transformation) {
-        super(transformation);
+    public LongTransformation(Long value) {
+        super(value);
     }
 
     @Override
     public boolean verifyNull() {
-        return this.transformation == 0L;
+        return this.value == 0L;
     }
 
     @Override
@@ -17,23 +17,23 @@ public class LongTransformation extends TransformationDataType<Long> {
     }
 
     @Override
-    public float value() {
-        return this.transformation;
+    public float numericalValue() {
+        return this.value;
     }
 
     @Override
-    public LongTransformation add(Long transformation) {
-        return new LongTransformation(this.transformation + transformation);
+    public LongTransformation add(Long value) {
+        return new LongTransformation(this.value + value);
     }
 
     @Override
-    public LongTransformation subtract(Long transformation) {
-        return new LongTransformation(this.transformation - transformation);
+    public LongTransformation subtract(Long value) {
+        return new LongTransformation(this.value - value);
     }
 
     @Override
-    public boolean changeDirection(TransformationDataType<Long> value) {
-        return (value.value() > 0 && this.value() < 0) ||
-                (value.value() < 0 && this.value() > 0);
+    public boolean changeDirection(TransformationDataType<Long> transformation) {
+        return (transformation.numericalValue() > 0 && this.numericalValue() < 0) ||
+                (transformation.numericalValue() < 0 && this.numericalValue() > 0);
     }
 }

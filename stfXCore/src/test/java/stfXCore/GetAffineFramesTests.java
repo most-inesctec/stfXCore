@@ -9,17 +9,16 @@ import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Services.DataTypes.ArrayFloatTransformation;
 import stfXCore.Services.DataTypes.FloatTransformation;
 import stfXCore.Services.DataTypes.NullTransformation;
-import stfXCore.Services.DataTypes.ScaleFloatTransformation;
 import stfXCore.Services.Events.Event;
 import stfXCore.Services.Events.EventDataWithTrigger;
 import stfXCore.Services.Frames.Frame;
-import stfXCore.Services.Frames.FramedDataset;
 import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class GetAffineFramesTests {
+public class GetAffineFramesTests extends GetFrames {
+
     Storyboard storyboard;
 
     Thresholds thresholds;
@@ -108,7 +107,7 @@ public class GetAffineFramesTests {
     @Test
     void verifyFramesParser() {
         mockData();
-        ArrayList<Frame> frames = new FramedDataset(storyboard, thresholds).getFrames();
+        ArrayList<Frame> frames = getFrames(storyboard, thresholds, null, null);
         Assertions.assertEquals(frames.size(), 6);
 
         // Verify retrivied frames
