@@ -43,11 +43,11 @@ public class Frame {
 
     private EventDataWithTrigger getSimilarEvent(EventDataWithTrigger similarEvent) {
         Event.ThresholdTrigger threshold = similarEvent.getThreshold();
-        Event.Transformation type = similarEvent.getTransformation();
+        Event.Transformation type = similarEvent.getType();
 
         for (EventDataWithTrigger event : events) {
-            if (event.getThreshold == threshold &&
-                    event.getTransformation() == type)
+            if (event.getThreshold() == threshold &&
+                    event.getType() == type)
                 return event;
         }
         return null;
@@ -61,21 +61,21 @@ public class Frame {
 
         ArrayList<EventDataWithTrigger> jointEvents = new ArrayList<>();
         for (EventDataWithTrigger event : frameEvents) {
-            EventDataWithTrigger similarEvent = getSimilarEvent(event)
+            EventDataWithTrigger similarEvent = getSimilarEvent(event);
             if (similarEvent == null) {
                 return null;
             } else {
-                jointEvents.add(event.jointEvents(similarEvent));
+                jointEvents.add(event.joinEvents(similarEvent));
             }
         }
-
         // Merging phenomena
         List<State> jointPhenomena = new ArrayList<>(this.phenomena);
-        jointPhenomena.remove(this.phenomena.size()-1); // Removing last element common to both lists
+        jointPhenomena.remove(this.phenomena.size() - 1); // Removing last element common to both lists
         jointPhenomena.addAll(frame.phenomena);
 
         Frame jointFrame = new Frame(jointPhenomena);
-
-
+        for (EventDataWithTrigger event : jointEvents)
+            jointFrame.addEvent(event);
+        return jointFrame;
     }
 }

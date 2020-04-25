@@ -7,8 +7,8 @@ public class ArrayFloatTransformation extends TransformationDataType<ArrayList<F
 
     private static final Float DIRECTION_THRESHOLD = (float) Math.PI / 4;
 
-    public ArrayFloatTransformation(ArrayList<Float> transformation) {
-        super(transformation);
+    public ArrayFloatTransformation(ArrayList<Float> value) {
+        super(value);
     }
 
     @Override
@@ -18,35 +18,35 @@ public class ArrayFloatTransformation extends TransformationDataType<ArrayList<F
 
     @Override
     public boolean verifyNull() {
-        for (Float value : this.transformation)
+        for (Float value : this.value)
             if (value != 0)
                 return false;
         return true;
     }
 
     @Override
-    public float value() {
-        return (float) Math.sqrt(transformation.stream().reduce(
+    public float numericalValue() {
+        return (float) Math.sqrt(value.stream().reduce(
                 0f, (acc, el) -> acc + (float) Math.pow(el, 2)));
     }
 
     @Override
-    public ArrayFloatTransformation add(ArrayList<Float> transformation) {
+    public ArrayFloatTransformation add(ArrayList<Float> value) {
         ArrayList<Float> res = new ArrayList<>();
 
-        for (int i = 0; i < this.transformation.size(); i++)
-            res.add(this.transformation.get(i) + transformation.get(i));
+        for (int i = 0; i < this.value.size(); i++)
+            res.add(this.value.get(i) + value.get(i));
 
         return new ArrayFloatTransformation(res);
     }
 
     @Override
-    public ArrayFloatTransformation subtract(ArrayList<Float> transformation) {
+    public ArrayFloatTransformation subtract(ArrayList<Float> value) {
 
         ArrayList<Float> res = new ArrayList<>();
 
-        for (int i = 0; i < this.transformation.size(); i++)
-            res.add(this.transformation.get(i) - transformation.get(i));
+        for (int i = 0; i < this.value.size(); i++)
+            res.add(this.value.get(i) - value.get(i));
 
         return new ArrayFloatTransformation(res);
     }
@@ -54,13 +54,13 @@ public class ArrayFloatTransformation extends TransformationDataType<ArrayList<F
     @Override
     public boolean changeDirection(TransformationDataType<ArrayList<Float>> transformation) {
         float dotProduct = 0f;
-        ArrayList<Float> values = transformation.getTransformation(),
-                previousValues = this.getTransformation();
+        ArrayList<Float> values = transformation.getValue(),
+                previousValues = this.getValue();
 
         for (int i = 0; i < values.size(); i++)
             dotProduct += values.get(i) * previousValues.get(i);
 
         // If angle between two vectors > 45º say direction changed
-        return Math.acos(dotProduct / (transformation.value() * this.value())) > DIRECTION_THRESHOLD;
+        return Math.acos(dotProduct / (transformation.numericalValue() * this.numericalValue())) > DIRECTION_THRESHOLD;
     }
 }

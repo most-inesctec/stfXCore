@@ -8,7 +8,7 @@ public class NullTransformation extends TransformationDataType<Object> {
 
     @Override
     public boolean verifyNull() {
-        return this.transformation == null;
+        return this.value == null;
     }
 
     @Override
@@ -17,22 +17,22 @@ public class NullTransformation extends TransformationDataType<Object> {
     }
 
     @Override
-    public float value() {
+    public float numericalValue() {
         return 0f;
     }
 
     @Override
-    public NullTransformation add(Object transformation) {
+    public NullTransformation add(Object value) {
         return nullValue();
     }
 
     @Override
-    public NullTransformation subtract(Object transformation) {
+    public NullTransformation subtract(Object value) {
         return nullValue();
     }
 
     @Override
-    public boolean changeDirection(TransformationDataType<Object> value) {
+    public boolean changeDirection(TransformationDataType<Object> transformation) {
         return false;
     }
 }

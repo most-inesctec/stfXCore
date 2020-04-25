@@ -4,12 +4,9 @@ import stfXCore.Services.Events.Event;
 import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.State;
 import stfXCore.Models.Storyboard.Thresholds.GenericThreshold;
-import stfXCore.Models.Storyboard.Thresholds.ThresholdParameters;
-import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Services.DataTypes.TransformationDataType;
 import stfXCore.Utils.Pair;
 
-import javax.validation.constraints.NotNull;
 import java.util.*;
 
 public abstract class TransformationsParser<T extends TransformationDataType> implements ITransformationParser {
@@ -46,7 +43,7 @@ public abstract class TransformationsParser<T extends TransformationDataType> im
     }
 
     protected Event<T> computeDelta(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
-        if (Math.abs(transformation.getSecond().value()) >= threshold) {
+        if (Math.abs(transformation.getSecond().numericalValue()) >= threshold) {
             ArrayList<Pair<Long, T>> values = new ArrayList<>();
             values.add(createPair(transformation.getFirst().getX(), (T) transformation.getSecond().nullValue()));
             values.add(createPair(transformation.getFirst().getY(), transformation.getSecond()));
@@ -69,9 +66,9 @@ public abstract class TransformationsParser<T extends TransformationDataType> im
         } else
             accDirected.add(createPair(
                     transformation.getFirst().getY(),
-                    (T) getLastSecond(accDirected).add(transformationValue.getTransformation())));
+                    (T) getLastSecond(accDirected).add(transformationValue.getValue())));
 
-        if (Math.abs(getLastSecond(accDirected).value()) >= threshold)
+        if (Math.abs(getLastSecond(accDirected).numericalValue()) >= threshold)
             return new Event<T>(Event.ThresholdTrigger.DIRECTED_ACC, type).setValues(accDirected);
 
         return null;
@@ -87,12 +84,12 @@ public abstract class TransformationsParser<T extends TransformationDataType> im
             accAbsolute = new ArrayList<>();
             accAbsolute.add(createPair(transformation.getFirst().getX(), (T) transformationValue.nullValue()));
             accAbsolute.add(createPair(transformation.getFirst().getY(), transformationValue));
-            accAbsoluteValue = Math.abs(transformationValue.value());
+            accAbsoluteValue = Math.abs(transformationValue.numericalValue());
         } else {
             accAbsolute.add(createPair(
                     transformation.getFirst().getY(),
-                    (T) getLastSecond(accAbsolute).add(transformationValue.getTransformation())));
-            accAbsoluteValue += Math.abs(transformationValue.value());
+                    (T) getLastSecond(accAbsolute).add(transformationValue.getValue())));
+            accAbsoluteValue += Math.abs(transformationValue.numericalValue());
         }
 
         if (accAbsoluteValue >= threshold)

@@ -2,13 +2,13 @@ package stfXCore.Services.DataTypes;
 
 public class FloatTransformation extends TransformationDataType<Float> {
 
-    public FloatTransformation(Float transformation) {
-        super(transformation);
+    public FloatTransformation(Float value) {
+        super(value);
     }
 
     @Override
     public boolean verifyNull() {
-        return this.transformation == 0;
+        return this.value == 0;
     }
 
     @Override
@@ -17,23 +17,23 @@ public class FloatTransformation extends TransformationDataType<Float> {
     }
 
     @Override
-    public float value() {
-        return this.transformation;
+    public float numericalValue() {
+        return this.value;
     }
 
     @Override
-    public FloatTransformation add(Float transformation) {
-        return new FloatTransformation(this.transformation + transformation);
+    public FloatTransformation add(Float value) {
+        return new FloatTransformation(this.value + value);
     }
 
     @Override
-    public FloatTransformation subtract(Float transformation) {
-        return new FloatTransformation(this.transformation - transformation);
+    public FloatTransformation subtract(Float value) {
+        return new FloatTransformation(this.value - value);
     }
 
     @Override
-    public boolean changeDirection(TransformationDataType<Float> value) {
-        return (value.value() > 0 && this.value() < 0) ||
-                (value.value() < 0 && this.value() > 0);
+    public boolean changeDirection(TransformationDataType<Float> transformation) {
+        return (transformation.numericalValue() > 0 && this.numericalValue() < 0) ||
+                (transformation.numericalValue() < 0 && this.numericalValue() > 0);
     }
 }
