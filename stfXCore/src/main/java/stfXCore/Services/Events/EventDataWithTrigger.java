@@ -21,6 +21,6 @@ public class EventDataWithTrigger<T extends TransformationDataType> extends Even
     }
 
     public EventDataWithTrigger joinEvents(EventDataWithTrigger event) {
-        return new EventDataWithTrigger<T>(originalData, (T) trigger.add(trigger));
+        return new EventDataWithTrigger<T>(originalData, (T) trigger.add(event.trigger.getTransformation()));
     }
 }

@@ -9,7 +9,6 @@ import stfXCore.Services.DataTypes.NullTransformation;
 import stfXCore.Services.DataTypes.ScaleFloatTransformation;
 import stfXCore.Services.Events.Event;
 import stfXCore.Services.Events.EventDataWithTrigger;
-import stfXCore.Services.Events.UnimportantEvent;
 import stfXCore.Services.Frames.Frame;
 import stfXCore.Services.DataTypes.ArrayFloatTransformation;
 import stfXCore.Services.DataTypes.FloatTransformation;

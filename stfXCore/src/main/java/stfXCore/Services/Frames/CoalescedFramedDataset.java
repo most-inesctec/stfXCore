@@ -26,6 +26,8 @@ public class CoalescedFramedDataset implements IFramedDataset {
                 processFrame = jointFrame;
             }
         }
+        // Adding the last processed frame
+        coalescedFrames.add(processFrame);
 
         return coalescedFrames;
     }
