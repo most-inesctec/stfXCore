@@ -66,7 +66,7 @@ public abstract class TransformationsParser<T extends TransformationDataType> im
         } else
             accDirected.add(createPair(
                     transformation.getFirst().getY(),
-                    (T) getLastSecond(accDirected).add(transformationValue.getValue())));
+                    (T) getLastSecond(accDirected).add(transformationValue.getTransformation())));
 
         if (Math.abs(getLastSecond(accDirected).numericalValue()) >= threshold)
             return new Event<T>(Event.ThresholdTrigger.DIRECTED_ACC, type).setValues(accDirected);
@@ -88,7 +88,7 @@ public abstract class TransformationsParser<T extends TransformationDataType> im
         } else {
             accAbsolute.add(createPair(
                     transformation.getFirst().getY(),
-                    (T) getLastSecond(accAbsolute).add(transformationValue.getValue())));
+                    (T) getLastSecond(accAbsolute).add(transformationValue.getTransformation())));
             accAbsoluteValue += Math.abs(transformationValue.numericalValue());
         }
 

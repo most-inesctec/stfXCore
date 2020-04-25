@@ -119,8 +119,8 @@ public class GetAffineFramesTests extends GetFrames {
         EventDataWithTrigger<ArrayFloatTransformation> eventAF = frame2.getEvents().get(0);
         Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventAF.getType(), Event.Transformation.TRANSLATION);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(0), 5f);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(1), 0f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(0), 5f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(1), 0f);
 
         checkUnimportant(frames.get(2), new Long[]{9L, 12L});
 
@@ -130,7 +130,7 @@ public class GetAffineFramesTests extends GetFrames {
         EventDataWithTrigger<FloatTransformation> eventF = frame4.getEvents().get(0);
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
         Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
-        Assertions.assertEquals(eventF.getTrigger().getValue(), 5f);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), 5f);
 
         Frame frame5 = frames.get(4);
         Assertions.assertArrayEquals(frame5.getTemporalRange().toArray(new Long[frame2.getTemporalRange().size()]), new Long[]{17L, 18L});
@@ -138,12 +138,12 @@ public class GetAffineFramesTests extends GetFrames {
         eventF = frame5.getEvents().get(0);
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
         Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
-        Assertions.assertEquals(eventF.getTrigger().getValue(), -1f);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), -1f);
         eventAF = frame5.getEvents().get(1);
         Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DELTA);
         Assertions.assertEquals(eventAF.getType(), Event.Transformation.TRANSLATION);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(0), 1.5f);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(1), 1.5f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(0), 1.5f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(1), 1.5f);
 
         checkUnimportant(frames.get(5), new Long[]{18L, 20L});
     }

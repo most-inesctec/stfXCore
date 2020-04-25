@@ -12,7 +12,7 @@ public abstract class TransformationDataType<T> {
 
     public abstract TransformationDataType<T> nullValue();
 
-    public T getValue() {
+    public T getTransformation() {
         return value;
     }
 

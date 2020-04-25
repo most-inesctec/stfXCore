@@ -116,8 +116,8 @@ public class GetFramesTests extends GetFrames {
         EventDataWithTrigger<ArrayFloatTransformation> eventAF = frame1.getEvents().get(0);
         Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventAF.getType(), Event.Transformation.TRANSLATION);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(0), 5f);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(1), 0f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(0), 5f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(1), 0f);
 
         Frame frame2 = frames.get(1);
         Assertions.assertArrayEquals(frame2.getTemporalRange().toArray(new Long[frame2.getTemporalRange().size()]), new Long[]{5L, 7L});
@@ -125,12 +125,12 @@ public class GetFramesTests extends GetFrames {
         eventAF = frame2.getEvents().get(0);
         Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventAF.getType(), Event.Transformation.TRANSLATION);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(0), 2f);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(1), 0f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(0), 2f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(1), 0f);
         EventDataWithTrigger<FloatTransformation> eventF = frame2.getEvents().get(1);
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
         Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
-        Assertions.assertEquals(eventF.getTrigger().getValue(), 2f);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), 2f);
 
         Frame frame3 = frames.get(2);
         Assertions.assertArrayEquals(frame3.getTemporalRange().toArray(new Long[frame3.getTemporalRange().size()]), new Long[]{7L, 10L});
@@ -138,16 +138,16 @@ public class GetFramesTests extends GetFrames {
         eventAF = frame3.getEvents().get(0);
         Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventAF.getType(), Event.Transformation.TRANSLATION);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(0), 3f);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(1), 0f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(0), 3f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(1), 0f);
         eventF = frame3.getEvents().get(1);
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
         Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
-        Assertions.assertEquals(eventF.getTrigger().getValue(), 3f);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), 3f);
         EventDataWithTrigger<ScaleFloatTransformation> eventSF = frame3.getEvents().get(2);
         Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(Math.round(eventSF.getTrigger().getValue() * 100) / 100f, 1.33f);
+        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 1.33f);
 
         Frame frame4 = frames.get(3);
         Assertions.assertArrayEquals(frame4.getTemporalRange().toArray(new Long[frame4.getTemporalRange().size()]), new Long[]{10L, 15L});
@@ -155,11 +155,11 @@ public class GetFramesTests extends GetFrames {
         eventF = frame4.getEvents().get(0);
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
         Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
-        Assertions.assertEquals(eventF.getTrigger().getValue(), -5f);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), -5f);
         eventSF = frame4.getEvents().get(1);
         Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(Math.round(eventSF.getTrigger().getValue() * 100) / 100f, 1.61f);
+        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 1.61f);
 
         Frame frame5 = frames.get(4);
         Assertions.assertArrayEquals(frame5.getTemporalRange().toArray(new Long[frame5.getTemporalRange().size()]), new Long[]{15L, 20L});
@@ -167,7 +167,7 @@ public class GetFramesTests extends GetFrames {
         eventF = frame5.getEvents().get(0);
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
         Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
-        Assertions.assertEquals(eventF.getTrigger().getValue(), 5f);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), 5f);
     }
 
     @Test
@@ -183,7 +183,7 @@ public class GetFramesTests extends GetFrames {
         EventDataWithTrigger<FloatTransformation> eventF = frame2.getEvents().get(0);
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
         Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
-        Assertions.assertEquals(eventF.getTrigger().getValue(), 2f);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), 2f);
 
         Frame frame3 = frames.get(1);
         Assertions.assertArrayEquals(frame3.getTemporalRange().toArray(new Long[frame3.getTemporalRange().size()]), new Long[]{7L, 15L});
@@ -191,11 +191,11 @@ public class GetFramesTests extends GetFrames {
         eventF = frame3.getEvents().get(0);
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
         Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
-        Assertions.assertEquals(eventF.getTrigger().getValue(), -2f);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), -2f);
         EventDataWithTrigger<ScaleFloatTransformation> eventSF = frame3.getEvents().get(1);
         Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(Math.round(eventSF.getTrigger().getValue() * 100) / 100f, 2.14f);
+        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 2.14f);
 
         Frame frame5 = frames.get(2);
         Assertions.assertArrayEquals(frame5.getTemporalRange().toArray(new Long[frame5.getTemporalRange().size()]), new Long[]{15L, 20L});
@@ -203,7 +203,7 @@ public class GetFramesTests extends GetFrames {
         eventF = frame5.getEvents().get(0);
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
         Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
-        Assertions.assertEquals(eventF.getTrigger().getValue(), 5f);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), 5f);
     }
 
     @Test
@@ -219,8 +219,8 @@ public class GetFramesTests extends GetFrames {
         EventDataWithTrigger<ArrayFloatTransformation> eventAF = frame1.getEvents().get(0);
         Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventAF.getType(), Event.Transformation.TRANSLATION);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(0), 7f);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(1), 0f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(0), 7f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(1), 0f);
 
         Frame frame3 = frames.get(1);
         Assertions.assertArrayEquals(frame3.getTemporalRange().toArray(new Long[frame3.getTemporalRange().size()]), new Long[]{7L, 10L});
@@ -228,12 +228,12 @@ public class GetFramesTests extends GetFrames {
         eventAF = frame3.getEvents().get(0);
         Assertions.assertEquals(eventAF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventAF.getType(), Event.Transformation.TRANSLATION);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(0), 3f);
-        Assertions.assertEquals(eventAF.getTrigger().getValue().get(1), 0f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(0), 3f);
+        Assertions.assertEquals(eventAF.getTrigger().getTransformation().get(1), 0f);
         EventDataWithTrigger<ScaleFloatTransformation> eventSF = frame3.getEvents().get(1);
         Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(Math.round(eventSF.getTrigger().getValue() * 100) / 100f, 1.33f);
+        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 1.33f);
 
         Frame frame4 = frames.get(2);
         Assertions.assertArrayEquals(frame4.getTemporalRange().toArray(new Long[frame4.getTemporalRange().size()]), new Long[]{10L, 15L});
@@ -241,7 +241,7 @@ public class GetFramesTests extends GetFrames {
         eventSF = frame4.getEvents().get(0);
         Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(Math.round(eventSF.getTrigger().getValue() * 100) / 100f, 1.61f);
+        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 1.61f);
 
         Frame frame5 = frames.get(3);
         Assertions.assertArrayEquals(frame5.getTemporalRange().toArray(new Long[frame5.getTemporalRange().size()]), new Long[]{15L, 18L});
@@ -273,7 +273,7 @@ public class GetFramesTests extends GetFrames {
         EventDataWithTrigger<ScaleFloatTransformation> eventSF = frame2.getEvents().get(0);
         Assertions.assertEquals(eventSF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
         Assertions.assertEquals(eventSF.getType(), Event.Transformation.UNIFORM_SCALE);
-        Assertions.assertEquals(Math.round(eventSF.getTrigger().getValue() * 100) / 100f, 2.14f);
+        Assertions.assertEquals(Math.round(eventSF.getTrigger().getTransformation() * 100) / 100f, 2.14f);
 
         Frame frame3 = frames.get(2);
         Assertions.assertArrayEquals(frame3.getTemporalRange().toArray(new Long[frame3.getTemporalRange().size()]), new Long[]{15L, 18L});

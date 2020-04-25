@@ -54,8 +54,8 @@ public class ArrayFloatTransformation extends TransformationDataType<ArrayList<F
     @Override
     public boolean changeDirection(TransformationDataType<ArrayList<Float>> transformation) {
         float dotProduct = 0f;
-        ArrayList<Float> values = transformation.getValue(),
-                previousValues = this.getValue();
+        ArrayList<Float> values = transformation.getTransformation(),
+                previousValues = this.getTransformation();
 
         for (int i = 0; i < values.size(); i++)
             dotProduct += values.get(i) * previousValues.get(i);

@@ -70,6 +70,6 @@ public class Event<T extends TransformationDataType> {
                 toValue = pair.getSecond();
         }
 
-        return (T) toValue.subtract(fromValue.getValue());
+        return (T) toValue.subtract(fromValue.getTransformation());
     }
 }
