@@ -13,6 +13,7 @@ import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardMissingInformationExce
 import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardNotFoundException;
 import stfXCore.Models.Storyboard.Thresholds.Thresholds;
 import stfXCore.Repositories.StoryboardRepository;
+import stfXCore.Services.Frames.CoalescedFramedDataset;
 import stfXCore.Services.Frames.FramedDatasetWithUnimportantFrames;
 import stfXCore.Services.SnapshotsBuilder;
 import stfXCore.Services.Frames.Frame;
@@ -108,9 +109,10 @@ public class StoryboardController {
         if (thresholds.getParameters() == null)
             throw new StoryboardMissingInformationException();
 
-        return new FramedDatasetWithUnimportantFrames(
-                new FramedDataset(storyboard, thresholds)
-                        .restrictInterval(initalTimestamp, finalTimestamp))
+        return new CoalescedFramedDataset(
+                new FramedDatasetWithUnimportantFrames(
+                        new FramedDataset(storyboard, thresholds)
+                                .restrictInterval(initalTimestamp, finalTimestamp)))
                 .getFrames();
     }
 
