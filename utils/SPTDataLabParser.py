@@ -35,7 +35,7 @@ def process_line(line: str) -> list:
     """Process a line and return the respective list"""
     out = []
 
-    for match in re.findall(r"((\d|\.)+ (\d|\.)+)", line):
+    for match in re.findall(r"(-?(\d|\.)+ -?(\d|\.)+)", line):
         out.append(
             list(map(lambda x: float(x), match[0].split(' '))))
 
