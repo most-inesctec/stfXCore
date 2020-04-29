@@ -101,7 +101,7 @@ public class StoryboardController {
     @PostMapping("/storyboard/{id}")
     public ArrayList<Frame> getEventsOfInterest(@PathVariable Long id,
                                                 @RequestBody Thresholds thresholds,
-                                                @RequestParam(required = false) Long initalTimestamp,
+                                                @RequestParam(required = false) Long initialTimestamp,
                                                 @RequestParam(required = false) Long finalTimestamp) {
         Storyboard storyboard = repository.findById(id)
                 .orElseThrow(() -> new StoryboardNotFoundException(id));
@@ -112,7 +112,7 @@ public class StoryboardController {
         return new CoalescedFramedDataset(
                 new FramedDatasetWithUnimportantFrames(
                         new FramedDataset(storyboard, thresholds)
-                                .restrictInterval(initalTimestamp, finalTimestamp)))
+                                .restrictInterval(initialTimestamp, finalTimestamp)))
                 .getFrames();
     }
 
