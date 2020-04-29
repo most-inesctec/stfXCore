@@ -148,4 +148,13 @@ public class GetAffineFramesTests extends GetFrames {
         checkUnimportant(frames.get(5), new Long[]{18L, 20L});
     }
 
+    @Test
+    void verifySingleUnimportant() {
+        mockData();
+        ArrayList<Frame> frames = getFrames(storyboard, thresholds, 18L, 20L);
+        Assertions.assertEquals(frames.size(), 1);
+
+        // Verify retrivied frames
+        checkUnimportant(frames.get(0), new Long[]{18L, 20L});
+    }
 }
