@@ -14,13 +14,16 @@ public class FramedDatasetWithUnimportantFrames implements IFramedDataset {
     }
 
     private ArrayList<Frame> addUnimportantFrames(ArrayList<Frame> frames) {
-        if (frames.size() == 0)
-            return frames;
-
         StateList states = framedDataset.getStates();
         Pair<Long, Long> interval = framedDataset.getInterval();
         Long initialTimestamp = interval.getFirst();
         Long finalTimestamp = interval.getSecond();
+
+        if (frames.size() == 0) {
+            frames.add(0,
+                    new UnimportantFrame(states.getStates(initialTimestamp, finalTimestamp)));
+            return frames;
+        }
 
         // First element case
         if (initialTimestamp < frames.get(0).lowerBound())
