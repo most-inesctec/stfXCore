@@ -24,9 +24,8 @@ public abstract class NoiseEpsilonParser<T extends TransformationDataType> {
             return transformations;
 
         List<Pair<Snapshot, T>> filtered = new ArrayList<>();
-        Float deltaEpsilon = threshold.getDelta() * PERCENTAGE_AS_ERROR;
-        float filter = deltaEpsilon == null || deltaEpsilon < noiseEpsilon ?
-                noiseEpsilon : deltaEpsilon;
+        Float deltaEpsilon = threshold.getDelta() == null ? 0f : threshold.getDelta() * PERCENTAGE_AS_ERROR;
+        float filter = deltaEpsilon < noiseEpsilon ? noiseEpsilon : deltaEpsilon;
 
         for (Pair<Snapshot, T> transformation : transformations) {
             T transformationValue = transformation.getSecond();
