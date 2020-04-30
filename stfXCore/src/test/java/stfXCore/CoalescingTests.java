@@ -15,11 +15,10 @@ import stfXCore.Services.Events.EventDataWithTrigger;
 import stfXCore.Services.Frames.Frame;
 import stfXCore.Utils.Pair;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CoalescingTests extends GetFrames {
+public class CoalescingTests extends FramesAnalyser {
 
     Storyboard storyboard;
 
