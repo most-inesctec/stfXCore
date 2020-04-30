@@ -19,7 +19,7 @@ import stfXCore.Utils.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class GetFramesTests extends GetFrames {
+public class GetFramesTests extends FramesAnalyser {
 
     Storyboard storyboard;
 

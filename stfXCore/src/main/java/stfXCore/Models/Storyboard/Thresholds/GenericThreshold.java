@@ -11,5 +11,7 @@ public abstract class GenericThreshold<T> {
 
     private T absoluteAcc;
 
+    private T noiseEpsilon;
+
 //    public abstract Float typeParser(T value);
 }

@@ -17,7 +17,7 @@ import stfXCore.Utils.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class GetAffineFramesTests extends GetFrames {
+public class GetAffineFramesTests extends FramesAnalyser {
 
     Storyboard storyboard;
 
@@ -95,15 +95,6 @@ public class GetAffineFramesTests extends GetFrames {
         thresholds.setParameters(parameters);
     }
 
-    private void checkUnimportant(Frame frame, Long[] interval) {
-        Assertions.assertArrayEquals(frame.getTemporalRange().toArray(new Long[frame.getTemporalRange().size()]), interval);
-        Assertions.assertEquals(frame.getEvents().size(), 1);
-        EventDataWithTrigger<NullTransformation> eventAF = frame.getEvents().get(0);
-        Assertions.assertEquals(eventAF.getThreshold(), null);
-        Assertions.assertEquals(eventAF.getType(), Event.Transformation.UNIMPORTANT);
-        Assertions.assertEquals(eventAF.getTrigger(), null);
-    }
-
     @Test
     void verifyFramesParser() {
         mockData();
@@ -125,7 +116,7 @@ public class GetAffineFramesTests extends GetFrames {
         checkUnimportant(frames.get(2), new Long[]{9L, 12L});
 
         Frame frame4 = frames.get(3);
-        Assertions.assertArrayEquals(frame4.getTemporalRange().toArray(new Long[frame2.getTemporalRange().size()]), new Long[]{12L, 17L});
+        Assertions.assertArrayEquals(frame4.getTemporalRange().toArray(new Long[frame4.getTemporalRange().size()]), new Long[]{12L, 17L});
         Assertions.assertEquals(frame4.getEvents().size(), 1);
         EventDataWithTrigger<FloatTransformation> eventF = frame4.getEvents().get(0);
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);
@@ -133,7 +124,7 @@ public class GetAffineFramesTests extends GetFrames {
         Assertions.assertEquals(eventF.getTrigger().getTransformation(), 5f);
 
         Frame frame5 = frames.get(4);
-        Assertions.assertArrayEquals(frame5.getTemporalRange().toArray(new Long[frame2.getTemporalRange().size()]), new Long[]{17L, 18L});
+        Assertions.assertArrayEquals(frame5.getTemporalRange().toArray(new Long[frame5.getTemporalRange().size()]), new Long[]{17L, 18L});
         Assertions.assertEquals(frame5.getEvents().size(), 2);
         eventF = frame5.getEvents().get(0);
         Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.ABSOLUTE_ACC);

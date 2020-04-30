@@ -9,9 +9,7 @@ import stfXCore.Utils.Pair;
 
 import java.util.*;
 
-public abstract class TransformationsParser<T extends TransformationDataType> implements ITransformationParser {
-
-    protected GenericThreshold<Float> threshold;
+public abstract class TransformationsParser<T extends TransformationDataType> extends NoiseEpsilonParser<T> implements ITransformationParser {
     /**
      * First Element are timestamps
      * Second Element are triggerValues
@@ -21,7 +19,7 @@ public abstract class TransformationsParser<T extends TransformationDataType> im
     protected Float accAbsoluteValue;
 
     TransformationsParser(GenericThreshold<Float> threshold) {
-        this.threshold = threshold;
+        super(threshold);
     }
 
     private void resetDeltas() {
@@ -112,7 +110,7 @@ public abstract class TransformationsParser<T extends TransformationDataType> im
         if (threshold == null)
             return eventsOfInterest;
 
-        for (Pair<Snapshot, T> transformation : transformations) {
+        for (Pair<Snapshot, T> transformation : filterNoise(transformations)) {
             if (threshold.getDelta() != null) {
                 event = computeDelta(transformation, threshold.getDelta(), type);
                 if (event != null) {

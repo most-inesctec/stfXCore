@@ -18,7 +18,6 @@ public class RigidTransformation implements Serializable {
      */
     private float scale;
 
-    @Builder
     public RigidTransformation() {
     }
 
