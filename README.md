@@ -5,7 +5,7 @@
 
 The core microservice of the [___SpatioTemporal Feature eXtractor (stfX)___](https://github.com/EdgarACarneiro/stfX), contanining the Spring server that is presented to the end-user as an interface.
 
-This server's updated API can be consulted [here](https://app.swaggerhub.com/apis-docs/EdgarACarneiro/thesis/2.1.0).
+This server's updated API can be consulted [here](https://app.swaggerhub.com/apis-docs/EdgarACarneiro/thesis/2.1.1).
 
 ## Example requests
 
