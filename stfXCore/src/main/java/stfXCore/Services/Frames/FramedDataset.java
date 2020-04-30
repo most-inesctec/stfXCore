@@ -58,7 +58,10 @@ public class FramedDataset implements IFramedDataset {
 
         // Priority Queue of start and end events
         PriorityQueue<EventWrapper> orderedEvents = new PriorityQueue<>(
-                (e1, e2) -> Math.toIntExact(e1.getTimestamp() - e2.getTimestamp()));
+                (e1, e2) -> {
+                    long diff = e1.getTimestamp() - e2.getTimestamp();
+                    return diff > 0 ? 1 : (diff == 0 ? 0 : -1);
+                });
         for (Event<?> event : eventsOfInterest)
             orderedEvents.addAll(event.getWrappers());
 
