@@ -1,19 +1,18 @@
 package stfXCore.Services;
 
-import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.State;
-import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
-import stfXCore.Utils.Pair;
+import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class StateList {
 
     private ArrayList<State> states;
 
-    public StateList(ArrayList<Pair<Snapshot, RigidTransformation>> transformations) {
+    public StateList(List<SnapshotTransformationPair> transformations) {
         this.states = transformations.stream()
                 .map(pair -> pair.getFirst().getX())
                 .collect(Collectors.toCollection(ArrayList::new));

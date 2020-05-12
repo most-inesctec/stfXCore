@@ -6,6 +6,7 @@ import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.Storyboard;
 import stfXCore.Models.Storyboard.Thresholds.*;
 import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
+import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
 import stfXCore.Services.DataTypes.ArrayFloatTransformation;
 import stfXCore.Services.DataTypes.FloatTransformation;
 import stfXCore.Services.DataTypes.NullTransformation;
@@ -16,6 +17,7 @@ import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class GetAffineFramesTests extends FramesAnalyser {
 
@@ -45,27 +47,27 @@ public class GetAffineFramesTests extends FramesAnalyser {
         unimportant.setTranslation(new ArrayList<>(Arrays.asList(0f, 0f)));
         unimportant.setRotation(0f);
 
-        ArrayList<Pair<Snapshot, RigidTransformation>> data = new ArrayList<>(Arrays.asList(
-                new Pair<>(new Snapshot().setX(null, 0L).setY(null, 1L), unimportant),
-                new Pair<>(new Snapshot().setX(null, 1L).setY(null, 2L), unimportant),
-                new Pair<>(new Snapshot().setX(null, 2L).setY(null, 3L), unimportant),
-                new Pair<>(new Snapshot().setX(null, 3L).setY(null, 4L), unimportant),
-                new Pair<>(new Snapshot().setX(null, 4L).setY(null, 5L), shear),
-                new Pair<>(new Snapshot().setX(null, 5L).setY(null, 6L), shear),
-                new Pair<>(new Snapshot().setX(null, 6L).setY(null, 7L), shear),
-                new Pair<>(new Snapshot().setX(null, 7L).setY(null, 8L), shear),
-                new Pair<>(new Snapshot().setX(null, 8L).setY(null, 9L), shear),
-                new Pair<>(new Snapshot().setX(null, 9L).setY(null, 10L), unimportant),
-                new Pair<>(new Snapshot().setX(null, 10L).setY(null, 11L), unimportant),
-                new Pair<>(new Snapshot().setX(null, 11L).setY(null, 12L), unimportant),
-                new Pair<>(new Snapshot().setX(null, 12L).setY(null, 13L), skew),
-                new Pair<>(new Snapshot().setX(null, 13L).setY(null, 14L), skew),
-                new Pair<>(new Snapshot().setX(null, 14L).setY(null, 15L), skew),
-                new Pair<>(new Snapshot().setX(null, 15L).setY(null, 16L), skew),
-                new Pair<>(new Snapshot().setX(null, 16L).setY(null, 17L), skew),
-                new Pair<>(new Snapshot().setX(null, 17L).setY(null, 18L), skewAndShear),
-                new Pair<>(new Snapshot().setX(null, 18L).setY(null, 19L), unimportant),
-                new Pair<>(new Snapshot().setX(null, 19L).setY(null, 20L), unimportant)
+        List<SnapshotTransformationPair> data = new ArrayList<>(Arrays.asList(
+                new SnapshotTransformationPair(new Snapshot().setX(null, 0L).setY(null, 1L), unimportant),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 1L).setY(null, 2L), unimportant),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 2L).setY(null, 3L), unimportant),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 3L).setY(null, 4L), unimportant),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 4L).setY(null, 5L), shear),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 5L).setY(null, 6L), shear),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 6L).setY(null, 7L), shear),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 7L).setY(null, 8L), shear),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 8L).setY(null, 9L), shear),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 9L).setY(null, 10L), unimportant),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 10L).setY(null, 11L), unimportant),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 11L).setY(null, 12L), unimportant),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 12L).setY(null, 13L), skew),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 13L).setY(null, 14L), skew),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 14L).setY(null, 15L), skew),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 15L).setY(null, 16L), skew),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 16L).setY(null, 17L), skew),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 17L).setY(null, 18L), skewAndShear),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 18L).setY(null, 19L), unimportant),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 19L).setY(null, 20L), unimportant)
         ));
 
         storyboard = new Storyboard();

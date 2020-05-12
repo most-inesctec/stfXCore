@@ -1,8 +1,6 @@
 package stfXCore.Utils;
 
-import java.io.Serializable;
-
-public class Pair<K, V> implements Serializable {
+public class Pair<K, V> {
 
     private K first;
 

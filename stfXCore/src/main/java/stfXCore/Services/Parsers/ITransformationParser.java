@@ -1,14 +1,13 @@
 package stfXCore.Services.Parsers;
 
-import stfXCore.Models.Storyboard.Snapshot;
-import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
+import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
 import stfXCore.Services.Events.Event;
-import stfXCore.Utils.Pair;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface ITransformationParser {
 
-    ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations);
+    ArrayList<Event<?>> parse(@NotNull List<SnapshotTransformationPair> rigidTransformations);
 }

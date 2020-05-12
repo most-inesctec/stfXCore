@@ -1,29 +1,28 @@
 package stfXCore.Services.Parsers;
 
-import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.Thresholds.ThresholdParameters;
-import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
+import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
 import stfXCore.Services.Events.Event;
-import stfXCore.Utils.Pair;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class ParserFactory {
 
-    ArrayList<Pair<Snapshot, RigidTransformation>> transformations;
+    List<SnapshotTransformationPair> transformations;
 
     ThresholdParameters thresholds;
 
-    public ParserFactory(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> transformations, @NotNull ThresholdParameters thresholds) {
+    public ParserFactory(@NotNull List<SnapshotTransformationPair> transformations, @NotNull ThresholdParameters thresholds) {
         this.transformations = transformations;
         this.thresholds = thresholds;
     }
 
     public ParserFactory restrictInterval(Long lowerBound, Long upperBound) {
-        ArrayList<Pair<Snapshot, RigidTransformation>> trimmedTransformations = new ArrayList<>();
-        for (Pair<Snapshot, RigidTransformation> pair : transformations) {
+        ArrayList<SnapshotTransformationPair> trimmedTransformations = new ArrayList<>();
+        for (SnapshotTransformationPair pair : transformations) {
             if (pair.getFirst().getX().getTimestamp() >= lowerBound &&
                     pair.getFirst().getY().getTimestamp() <= upperBound)
                 trimmedTransformations.add(pair);
