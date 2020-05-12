@@ -1,7 +1,7 @@
 package stfXCore.Services.Parsers;
 
 import stfXCore.Models.Storyboard.Snapshot;
-import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
+import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
 import stfXCore.Services.DataTypes.LongTransformation;
 import stfXCore.Services.Events.Event;
 import stfXCore.Utils.Pair;
@@ -66,7 +66,7 @@ public class ImmutabilityParser implements ITransformationParser {
     }
 
     @Override
-    public ArrayList<Event<?>> parse(@NotNull ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations) {
+    public ArrayList<Event<?>> parse(@NotNull List<SnapshotTransformationPair> rigidTransformations) {
         return filterThreshold(
                 rigidTransformations.stream().map(
                         pair -> new Pair<>(pair.getFirst(), pair.getSecond().isNull()))

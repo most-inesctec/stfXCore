@@ -6,6 +6,7 @@ import stfXCore.Models.Storyboard.Snapshot;
 import stfXCore.Models.Storyboard.Storyboard;
 import stfXCore.Models.Storyboard.Thresholds.*;
 import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
+import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
 import stfXCore.Services.DataTypes.FloatTransformation;
 import stfXCore.Services.Events.Event;
 import stfXCore.Services.Events.EventDataWithTrigger;
@@ -14,6 +15,7 @@ import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class NoiseFilteringTests extends FramesAnalyser {
 
@@ -33,13 +35,13 @@ public class NoiseFilteringTests extends FramesAnalyser {
         noiseAllButRotation.setRotation(2f);
 
 
-        ArrayList<Pair<Snapshot, RigidTransformation>> data = new ArrayList<>(Arrays.asList(
-                new Pair<>(new Snapshot().setX(null, 0L).setY(null, 1L), noise),
-                new Pair<>(new Snapshot().setX(null, 1L).setY(null, 2L), noise),
-                new Pair<>(new Snapshot().setX(null, 2L).setY(null, 3L), noise),
-                new Pair<>(new Snapshot().setX(null, 3L).setY(null, 4L), noise),
-                new Pair<>(new Snapshot().setX(null, 4L).setY(null, 5L), noiseAllButRotation),
-                new Pair<>(new Snapshot().setX(null, 5L).setY(null, 6L), noiseAllButRotation)
+        List<SnapshotTransformationPair> data = new ArrayList<>(Arrays.asList(
+                new SnapshotTransformationPair(new Snapshot().setX(null, 0L).setY(null, 1L), noise),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 1L).setY(null, 2L), noise),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 2L).setY(null, 3L), noise),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 3L).setY(null, 4L), noise),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 4L).setY(null, 5L), noiseAllButRotation),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 5L).setY(null, 6L), noiseAllButRotation)
         ));
 
         storyboard = new Storyboard();

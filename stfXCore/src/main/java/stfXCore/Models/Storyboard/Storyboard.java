@@ -2,11 +2,12 @@ package stfXCore.Models.Storyboard;
 
 import lombok.Data;
 import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
+import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
 import stfXCore.Services.StateList;
-import stfXCore.Utils.Pair;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Lombok annotation to create all the getters, setters, equals, hash, and toString methods, based on the fields
@@ -28,12 +29,14 @@ public class Storyboard {
     /**
      * Attribute stored as BLOB
      */
-    @Lob
-    private ArrayList<Pair<Snapshot, RigidTransformation>> rigidTransformations;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<SnapshotTransformationPair> rigidTransformations;
 
+    @Column(length = 511)
     private DatasetMetadata metadata;
 
-    public Storyboard() {}
+    public Storyboard() {
+    }
 
     public Storyboard(DatasetMetadata metadata) {
         this.metadata = metadata;
@@ -41,7 +44,7 @@ public class Storyboard {
     }
 
     public void addRigidTransformation(Snapshot snapshot, RigidTransformation rt) {
-        rigidTransformations.add(new Pair<>(snapshot, rt));
+        rigidTransformations.add(new SnapshotTransformationPair(snapshot, rt));
     }
 
     public StateList getStates() {

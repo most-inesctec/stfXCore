@@ -1,6 +1,5 @@
 package stfXCore.Models.Storyboard.Transformations;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
