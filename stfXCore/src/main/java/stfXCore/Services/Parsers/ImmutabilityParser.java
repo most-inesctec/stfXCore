@@ -1,8 +1,13 @@
 package stfXCore.Services.Parsers;
 
 import stfXCore.Models.Storyboard.Snapshot;
+import stfXCore.Models.Storyboard.Thresholds.ThresholdParameters;
+import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
 import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
+import stfXCore.Services.DataTypes.ArrayFloatTransformation;
+import stfXCore.Services.DataTypes.FloatTransformation;
 import stfXCore.Services.DataTypes.LongTransformation;
+import stfXCore.Services.DataTypes.ScaleFloatTransformation;
 import stfXCore.Services.Events.Event;
 import stfXCore.Utils.Pair;
 
@@ -15,14 +20,14 @@ import static stfXCore.Services.Events.Event.Transformation.IMMUTABILITY;
 
 public class ImmutabilityParser implements ITransformationParser {
 
-    private Long threshold;
+    private ThresholdParameters thresholds;
 
     Long counter;
 
     ArrayList<Pair<Long, LongTransformation>> representations;
 
-    ImmutabilityParser(Long threshold) {
-        this.threshold = threshold;
+    ImmutabilityParser(ThresholdParameters threshold) {
+        this.thresholds = threshold;
     }
 
     private void resetCounters() {
@@ -32,6 +37,7 @@ public class ImmutabilityParser implements ITransformationParser {
 
     protected ArrayList<Event<?>> filterThreshold(List<Pair<Snapshot, Boolean>> transformations) {
         ArrayList<Event<?>> eventsOfInterest = new ArrayList<>();
+        Long threshold = thresholds.getImmutability();
         resetCounters();
 
         if (threshold != null) {
@@ -65,10 +71,49 @@ public class ImmutabilityParser implements ITransformationParser {
         return eventsOfInterest;
     }
 
+    // TODO this deserves a strong refactor
+    private List<SnapshotTransformationPair> applyNoiseFilters(List<SnapshotTransformationPair> rigidTransformations) {
+        List<Pair<Snapshot, ArrayFloatTransformation>> translations = new ArrayList<>();
+        List<Pair<Snapshot, ScaleFloatTransformation>> scales = new ArrayList<>();
+        List<Pair<Snapshot, FloatTransformation>> rotations = new ArrayList<>();
+
+        // Diving into list of correspondent TransformationsTypes
+        for (SnapshotTransformationPair transformation : rigidTransformations) {
+            Snapshot s = transformation.getFirst();
+            RigidTransformation t = transformation.getSecond();
+
+            translations.add(new Pair<>(s, new ArrayFloatTransformation(t.getTranslation())));
+            scales.add(new Pair<>(s, new ScaleFloatTransformation(t.getScale())));
+            rotations.add(new Pair<>(s, new FloatTransformation(t.getRotation())));
+        }
+
+        // Parse noise
+        if (thresholds.getTranslation() != null)
+            translations = new NoiseEpsilonParser<ArrayFloatTransformation>(thresholds.getTranslation()).filterNoise(translations);
+        if (thresholds.getScale() != null)
+            scales = new NoiseEpsilonParser<ScaleFloatTransformation>(thresholds.getScale()).filterNoise(scales);
+        if (thresholds.getRotation() != null)
+            rotations = new NoiseEpsilonParser<FloatTransformation>(thresholds.getRotation()).filterNoise(rotations);
+
+        // Creating new RigidTransformations
+        List<SnapshotTransformationPair> filtered = new ArrayList<>();
+        for (int i = 0; i < translations.size(); ++i) {
+            filtered.add(new SnapshotTransformationPair(
+                    translations.get(i).getFirst(),
+                    new RigidTransformation(
+                            translations.get(i).getSecond().getTransformation(),
+                            scales.get(i).getSecond().getTransformation(),
+                            rotations.get(i).getSecond().getTransformation())));
+        }
+        return filtered;
+    }
+
     @Override
     public ArrayList<Event<?>> parse(@NotNull List<SnapshotTransformationPair> rigidTransformations) {
+        //List<SnapshotTransformationPair> transformations = thresholds.get
+
         return filterThreshold(
-                rigidTransformations.stream().map(
+                applyNoiseFilters(rigidTransformations).stream().map(
                         pair -> new Pair<>(pair.getFirst(), pair.getSecond().isNull()))
                         .collect(Collectors.toList()));
     }

@@ -36,7 +36,7 @@ public class ParserFactory {
                 new TranslationParser(thresholds.getTranslation()),
                 new RotationParser(thresholds.getRotation()),
                 new UniformScaleParser(thresholds.getScale()),
-                new ImmutabilityParser(thresholds.getImmutability())
+                new ImmutabilityParser(thresholds)
         };
 
         ExecutorService service = Executors.newCachedThreadPool();

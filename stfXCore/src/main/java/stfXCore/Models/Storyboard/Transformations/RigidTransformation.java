@@ -8,8 +8,6 @@ import java.util.ArrayList;
 @Data
 public class RigidTransformation implements Serializable {
 
-    private float rotation;
-
     private ArrayList<Float> translation;
 
     /**
@@ -17,7 +15,15 @@ public class RigidTransformation implements Serializable {
      */
     private float scale;
 
+    private float rotation;
+
     public RigidTransformation() {
+    }
+
+    public RigidTransformation(ArrayList<Float> translation, float scale, float rotation) {
+        this.translation = translation;
+        this.scale = scale;
+        this.rotation = rotation;
     }
 
     public boolean isNull() {

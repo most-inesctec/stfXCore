@@ -8,7 +8,7 @@ import stfXCore.Utils.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class NoiseEpsilonParser<T extends TransformationDataType> {
+public class NoiseEpsilonParser<T extends TransformationDataType> {
 
     private final static float PERCENTAGE_AS_ERROR = 0.01f;
 
