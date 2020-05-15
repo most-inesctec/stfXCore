@@ -35,7 +35,7 @@ public class ScaleFloatTransformation extends TransformationDataType<Float> {
 
     @Override
     public boolean changeDirection(TransformationDataType<Float> transformation) {
-        return (transformation.numericalValue() > NULL_SCALE && this.numericalValue() < NULL_SCALE) ||
-                (transformation.numericalValue() < NULL_SCALE && this.numericalValue() > NULL_SCALE);
+        return (transformation.value > NULL_SCALE && this.value < NULL_SCALE) ||
+                (transformation.value < NULL_SCALE && this.value > NULL_SCALE);
     }
 }
