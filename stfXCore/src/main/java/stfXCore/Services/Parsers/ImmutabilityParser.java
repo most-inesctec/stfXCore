@@ -73,6 +73,9 @@ public class ImmutabilityParser implements ITransformationParser {
 
     // TODO this deserves a strong refactor
     private List<SnapshotTransformationPair> applyNoiseFilters(List<SnapshotTransformationPair> rigidTransformations) {
+        if (thresholds.getImmutability() == null)
+            return rigidTransformations;
+
         List<Pair<Snapshot, ArrayFloatTransformation>> translations = new ArrayList<>();
         List<Pair<Snapshot, ScaleFloatTransformation>> scales = new ArrayList<>();
         List<Pair<Snapshot, FloatTransformation>> rotations = new ArrayList<>();
@@ -110,8 +113,6 @@ public class ImmutabilityParser implements ITransformationParser {
 
     @Override
     public ArrayList<Event<?>> parse(@NotNull List<SnapshotTransformationPair> rigidTransformations) {
-        //List<SnapshotTransformationPair> transformations = thresholds.get
-
         return filterThreshold(
                 applyNoiseFilters(rigidTransformations).stream().map(
                         pair -> new Pair<>(pair.getFirst(), pair.getSecond().isNull()))

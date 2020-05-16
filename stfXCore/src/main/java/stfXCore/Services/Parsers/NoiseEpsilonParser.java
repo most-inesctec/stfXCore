@@ -29,7 +29,7 @@ public class NoiseEpsilonParser<T extends TransformationDataType> {
 
         for (Pair<Snapshot, T> transformation : transformations) {
             T transformationValue = transformation.getSecond();
-            filtered.add(transformationValue.numericalValue() < filter ?
+            filtered.add(Math.abs(transformationValue.numericalValue()) < filter ?
                     new Pair<>(transformation.getFirst(), (T) transformationValue.nullValue()) :
                     transformation);
         }
