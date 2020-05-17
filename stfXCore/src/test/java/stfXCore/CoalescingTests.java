@@ -14,7 +14,6 @@ import stfXCore.Services.DataTypes.ScaleFloatTransformation;
 import stfXCore.Services.Events.Event;
 import stfXCore.Services.Events.EventDataWithTrigger;
 import stfXCore.Services.Frames.Frame;
-import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -252,4 +251,52 @@ public class CoalescingTests extends FramesAnalyser {
         Assertions.assertEquals(eventSF.getTrigger().getTransformation(), 1.44f);
     }
 
+    @Test
+    public void verifyDirectedCoalescing() {
+        mockThresholds();
+
+        RigidTransformation positiveRotation = new RigidTransformation();
+        positiveRotation.setScale(1f);
+        positiveRotation.setTranslation(new ArrayList<>(Arrays.asList(0f, 0f)));
+        positiveRotation.setRotation(4f);
+
+        RigidTransformation negativeRotation = new RigidTransformation();
+        negativeRotation.setScale(1f);
+        negativeRotation.setTranslation(new ArrayList<>(Arrays.asList(0f, 0f)));
+        negativeRotation.setRotation(-4f);
+
+        List<SnapshotTransformationPair> data = new ArrayList<>(Arrays.asList(
+                new SnapshotTransformationPair(new Snapshot().setX(null, 0L).setY(null, 1L), positiveRotation),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 1L).setY(null, 2L), positiveRotation),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 2L).setY(null, 3L), positiveRotation),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 3L).setY(null, 4L), positiveRotation),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 4L).setY(null, 5L), negativeRotation),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 5L).setY(null, 6L), negativeRotation),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 6L).setY(null, 7L), negativeRotation),
+                new SnapshotTransformationPair(new Snapshot().setX(null, 7L).setY(null, 8L), negativeRotation)
+        ));
+
+        storyboard = new Storyboard();
+        storyboard.setRigidTransformations(data);
+
+        // Verify frames
+        ArrayList<Frame> frames = getCoalescedFrames(storyboard, thresholds, null, null);
+        Assertions.assertEquals(2, frames.size());
+
+        Frame frame1 = frames.get(0);
+        Assertions.assertArrayEquals(frame1.getTemporalRange().toArray(new Long[frame1.getTemporalRange().size()]), new Long[]{0L, 4L});
+        Assertions.assertEquals(frame1.getEvents().size(), 1);
+        EventDataWithTrigger<FloatTransformation> eventF = frame1.getEvents().get(0);
+        Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
+        Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), 16f);
+
+        Frame frame2 = frames.get(1);
+        Assertions.assertArrayEquals(frame2.getTemporalRange().toArray(new Long[frame2.getTemporalRange().size()]), new Long[]{4L, 8L});
+        Assertions.assertEquals(frame2.getEvents().size(), 1);
+        eventF = frame2.getEvents().get(0);
+        Assertions.assertEquals(eventF.getThreshold(), Event.ThresholdTrigger.DIRECTED_ACC);
+        Assertions.assertEquals(eventF.getType(), Event.Transformation.ROTATION);
+        Assertions.assertEquals(eventF.getTrigger().getTransformation(), -16f);
+    }
 }

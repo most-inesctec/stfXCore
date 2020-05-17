@@ -47,7 +47,9 @@ public class Frame {
 
         for (EventDataWithTrigger event : events) {
             if (event.getThreshold() == threshold &&
-                    event.getType() == type)
+                    event.getType() == type &&
+                    !(event.getThreshold() == Event.ThresholdTrigger.DIRECTED_ACC &&
+                            event.getTrigger().changeDirection(similarEvent.getTrigger())))
                 return event;
         }
         return null;
