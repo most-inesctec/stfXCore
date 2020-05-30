@@ -1,7 +1,7 @@
 package stfXCore.Services.Parsers;
 
-import stfXCore.Models.Storyboard.Snapshot;
-import stfXCore.Models.Storyboard.Thresholds.GenericThreshold;
+import stfXCore.Models.Snapshot;
+import stfXCore.Models.Thresholds.GenericThreshold;
 import stfXCore.Services.DataTypes.TransformationDataType;
 import stfXCore.Utils.Pair;
 

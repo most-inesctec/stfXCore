@@ -1,8 +1,8 @@
-package stfXCore.Models.Storyboard;
+package stfXCore.Models;
 
 import lombok.Data;
-import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
-import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
+import stfXCore.Models.Transformations.RigidTransformation;
+import stfXCore.Models.Transformations.SnapshotTransformationPair;
 import stfXCore.Services.StateList;
 
 import javax.persistence.*;

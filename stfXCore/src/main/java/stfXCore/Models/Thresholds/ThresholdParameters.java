@@ -1,4 +1,4 @@
-package stfXCore.Models.Storyboard.Thresholds;
+package stfXCore.Models.Thresholds;
 
 import lombok.Data;
 

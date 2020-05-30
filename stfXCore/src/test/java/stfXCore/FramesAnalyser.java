@@ -1,8 +1,8 @@
 package stfXCore;
 
 import org.junit.jupiter.api.Assertions;
-import stfXCore.Models.Storyboard.Storyboard;
-import stfXCore.Models.Storyboard.Thresholds.Thresholds;
+import stfXCore.Models.Storyboard;
+import stfXCore.Models.Thresholds.Thresholds;
 import stfXCore.Services.DataTypes.NullTransformation;
 import stfXCore.Services.Events.Event;
 import stfXCore.Services.Events.EventDataWithTrigger;

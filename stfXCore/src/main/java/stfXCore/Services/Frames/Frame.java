@@ -1,7 +1,7 @@
 package stfXCore.Services.Frames;
 
 import lombok.Data;
-import stfXCore.Models.Storyboard.State;
+import stfXCore.Models.State;
 import stfXCore.Services.Events.Event;
 import stfXCore.Services.Events.EventDataWithTrigger;
 

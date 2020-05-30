@@ -1,7 +1,7 @@
 package stfXCore.Repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import stfXCore.Models.Storyboard.Storyboard;
+import stfXCore.Models.Storyboard;
 
 /**
  * JPA Repository is the interface responsible for:

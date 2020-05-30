@@ -2,16 +2,15 @@ package stfXCore;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import stfXCore.Models.Storyboard.Snapshot;
-import stfXCore.Models.Storyboard.Storyboard;
-import stfXCore.Models.Storyboard.Thresholds.*;
-import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
-import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
+import stfXCore.Models.Snapshot;
+import stfXCore.Models.Storyboard;
+import stfXCore.Models.Thresholds.*;
+import stfXCore.Models.Transformations.RigidTransformation;
+import stfXCore.Models.Transformations.SnapshotTransformationPair;
 import stfXCore.Services.DataTypes.FloatTransformation;
 import stfXCore.Services.Events.Event;
 import stfXCore.Services.Events.EventDataWithTrigger;
 import stfXCore.Services.Frames.Frame;
-import stfXCore.Utils.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;

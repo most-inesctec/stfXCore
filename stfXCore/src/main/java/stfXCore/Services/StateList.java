@@ -1,7 +1,7 @@
 package stfXCore.Services;
 
-import stfXCore.Models.Storyboard.State;
-import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
+import stfXCore.Models.State;
+import stfXCore.Models.Transformations.SnapshotTransformationPair;
 
 import java.util.ArrayList;
 import java.util.Arrays;

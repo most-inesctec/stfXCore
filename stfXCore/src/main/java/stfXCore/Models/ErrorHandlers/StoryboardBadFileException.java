@@ -1,4 +1,4 @@
-package stfXCore.Models.Storyboard.ErrorHandlers;
+package stfXCore.Models.ErrorHandlers;
 
 public class StoryboardBadFileException extends RuntimeException {
 

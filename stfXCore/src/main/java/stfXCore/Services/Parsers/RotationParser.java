@@ -1,8 +1,8 @@
 package stfXCore.Services.Parsers;
 
-import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
+import stfXCore.Models.Transformations.SnapshotTransformationPair;
 import stfXCore.Services.Events.Event;
-import stfXCore.Models.Storyboard.Thresholds.GenericThreshold;
+import stfXCore.Models.Thresholds.GenericThreshold;
 import stfXCore.Services.DataTypes.FloatTransformation;
 import stfXCore.Utils.Pair;
 

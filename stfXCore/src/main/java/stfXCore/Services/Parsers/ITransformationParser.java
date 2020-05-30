@@ -1,6 +1,6 @@
 package stfXCore.Services.Parsers;
 
-import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
+import stfXCore.Models.Transformations.SnapshotTransformationPair;
 import stfXCore.Services.Events.Event;
 
 import javax.validation.constraints.NotNull;

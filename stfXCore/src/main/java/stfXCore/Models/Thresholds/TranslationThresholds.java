@@ -1,6 +1,4 @@
-package stfXCore.Models.Storyboard.Thresholds;
-
-import java.util.ArrayList;
+package stfXCore.Models.Thresholds;
 
 public class TranslationThresholds extends GenericThreshold<Float> {
 

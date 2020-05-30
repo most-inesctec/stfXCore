@@ -1,7 +1,7 @@
 package stfXCore.Services;
 
-import stfXCore.Models.Storyboard.Dataset;
-import stfXCore.Models.Storyboard.Snapshot;
+import stfXCore.Models.Dataset;
+import stfXCore.Models.Snapshot;
 
 import java.util.ArrayList;
 

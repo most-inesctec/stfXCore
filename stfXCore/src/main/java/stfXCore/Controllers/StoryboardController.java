@@ -1,4 +1,4 @@
-package stfXCore.Controllers.Storyboard;
+package stfXCore.Controllers;
 
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import stfXCore.Models.Storyboard.*;
-import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardBadFileException;
-import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardMissingInformationException;
-import stfXCore.Models.Storyboard.ErrorHandlers.StoryboardNotFoundException;
-import stfXCore.Models.Storyboard.Thresholds.Thresholds;
+import stfXCore.Models.*;
+import stfXCore.Models.ErrorHandlers.StoryboardBadFileException;
+import stfXCore.Models.ErrorHandlers.StoryboardMissingInformationException;
+import stfXCore.Models.ErrorHandlers.StoryboardNotFoundException;
+import stfXCore.Models.Thresholds.Thresholds;
 import stfXCore.Repositories.StoryboardRepository;
 import stfXCore.Services.Frames.CoalescedFramedDataset;
 import stfXCore.Services.Frames.FramedDatasetWithUnimportantFrames;
 import stfXCore.Services.SnapshotsBuilder;
 import stfXCore.Services.Frames.Frame;
 import stfXCore.Services.Frames.FramedDataset;
-import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
-import stfXCore.Models.Storyboard.Transformations.TransformationList;
+import stfXCore.Models.Transformations.RigidTransformation;
+import stfXCore.Models.Transformations.TransformationList;
 
 import java.io.IOException;
 import java.util.ArrayList;

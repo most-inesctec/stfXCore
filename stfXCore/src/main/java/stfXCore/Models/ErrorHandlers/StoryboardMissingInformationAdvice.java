@@ -1,4 +1,4 @@
-package stfXCore.Models.Storyboard.ErrorHandlers;
+package stfXCore.Models.ErrorHandlers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class StoryboardBadFileAdvice {
+public class StoryboardMissingInformationAdvice {
 
     @ResponseBody
-    @ExceptionHandler(StoryboardBadFileException.class)
+    @ExceptionHandler(StoryboardMissingInformationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String storyboardMissingInformationHandler(StoryboardBadFileException ex) {
+    String storyboardMissingInformationHandler(StoryboardMissingInformationException ex) {
         return ex.getMessage();
     }
 }

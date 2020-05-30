@@ -1,9 +1,9 @@
 package stfXCore.Services.Parsers;
 
-import stfXCore.Models.Storyboard.Snapshot;
-import stfXCore.Models.Storyboard.Thresholds.ThresholdParameters;
-import stfXCore.Models.Storyboard.Transformations.RigidTransformation;
-import stfXCore.Models.Storyboard.Transformations.SnapshotTransformationPair;
+import stfXCore.Models.Snapshot;
+import stfXCore.Models.Thresholds.ThresholdParameters;
+import stfXCore.Models.Transformations.RigidTransformation;
+import stfXCore.Models.Transformations.SnapshotTransformationPair;
 import stfXCore.Services.DataTypes.ArrayFloatTransformation;
 import stfXCore.Services.DataTypes.FloatTransformation;
 import stfXCore.Services.DataTypes.LongTransformation;

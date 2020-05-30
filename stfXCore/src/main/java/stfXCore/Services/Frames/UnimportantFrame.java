@@ -1,6 +1,6 @@
 package stfXCore.Services.Frames;
 
-import stfXCore.Models.Storyboard.State;
+import stfXCore.Models.State;
 import stfXCore.Services.Events.EventDataWithTrigger;
 import stfXCore.Services.Events.UnimportantEvent;
 
