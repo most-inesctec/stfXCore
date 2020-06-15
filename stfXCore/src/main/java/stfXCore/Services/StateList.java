@@ -1,6 +1,6 @@
 package stfXCore.Services;
 
-import stfXCore.Models.State;
+import stfXCore.Models.Snapshot;
 import stfXCore.Models.Transformations.SnapshotTransformationPair;
 
 import java.util.ArrayList;
@@ -10,44 +10,44 @@ import java.util.stream.Collectors;
 
 public class StateList {
 
-    private ArrayList<State> states;
+    private ArrayList<Snapshot> snapshots;
 
     public StateList(List<SnapshotTransformationPair> transformations) {
-        this.states = transformations.stream()
+        this.snapshots = transformations.stream()
                 .map(pair -> pair.getFirst().getX())
                 .collect(Collectors.toCollection(ArrayList::new));
         // Adding last representation
-        this.states.add(transformations.get(transformations.size() - 1).getFirst().getY());
+        this.snapshots.add(transformations.get(transformations.size() - 1).getFirst().getY());
     }
 
     public ArrayList<Long> getTemporalRange() {
         return new ArrayList<Long>(Arrays.asList(
-                states.get(0).getTimestamp(),
-                states.get(states.size() - 1).getTimestamp()
+                snapshots.get(0).getTimestamp(),
+                snapshots.get(snapshots.size() - 1).getTimestamp()
         ));
     }
 
-    public ArrayList<State> getStates(Long lowerBound) {
+    public ArrayList<Snapshot> getStates(Long lowerBound) {
         int lowerIndex = -1;
-        for (int i = 0; i < states.size(); ++i) {
-            if (lowerBound.equals(states.get(i).getTimestamp()))
+        for (int i = 0; i < snapshots.size(); ++i) {
+            if (lowerBound.equals(snapshots.get(i).getTimestamp()))
                 lowerIndex = i;
         }
 
-        return new ArrayList<>(states.subList(lowerIndex, states.size()));
+        return new ArrayList<>(snapshots.subList(lowerIndex, snapshots.size()));
     }
 
-    public ArrayList<State> getStates(Long lowerBound, Long upperBound) {
+    public ArrayList<Snapshot> getStates(Long lowerBound, Long upperBound) {
         int lowerIndex = -1;
         int upperIndex = -1;
 
-        for (int i = 0; i < states.size(); ++i) {
-            if (lowerBound.equals(states.get(i).getTimestamp()))
+        for (int i = 0; i < snapshots.size(); ++i) {
+            if (lowerBound.equals(snapshots.get(i).getTimestamp()))
                 lowerIndex = i;
-            else if (upperBound.equals(states.get(i).getTimestamp()))
+            else if (upperBound.equals(snapshots.get(i).getTimestamp()))
                 upperIndex = i + 1;
         }
 
-        return new ArrayList<>(states.subList(lowerIndex, upperIndex));
+        return new ArrayList<>(snapshots.subList(lowerIndex, upperIndex));
     }
 }

@@ -1,7 +1,7 @@
 package stfXCore.Services.Frames;
 
 import lombok.Data;
-import stfXCore.Models.State;
+import stfXCore.Models.Snapshot;
 import stfXCore.Services.Events.Event;
 import stfXCore.Services.Events.EventDataWithTrigger;
 
@@ -19,9 +19,9 @@ public class Frame {
     // Saving redudant data and as an array, for json
     private ArrayList<Long> temporalRange;
 
-    private List<State> phenomena;
+    private List<Snapshot> phenomena;
 
-    public Frame(List<State> phenomena) {
+    public Frame(List<Snapshot> phenomena) {
         this.phenomena = phenomena;
         this.temporalRange = new ArrayList<>();
         temporalRange.add(this.phenomena.get(0).getTimestamp());
@@ -71,7 +71,7 @@ public class Frame {
             }
         }
         // Merging phenomena
-        List<State> jointPhenomena = new ArrayList<>(this.phenomena);
+        List<Snapshot> jointPhenomena = new ArrayList<>(this.phenomena);
         jointPhenomena.remove(this.phenomena.size() - 1); // Removing last element common to both lists
         jointPhenomena.addAll(frame.phenomena);
 

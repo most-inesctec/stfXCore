@@ -3,7 +3,7 @@ package stfXCore;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import stfXCore.Models.Snapshot;
+import stfXCore.Models.SnapshotPair;
 import stfXCore.Models.Storyboard;
 import stfXCore.Models.Thresholds.*;
 import stfXCore.Models.Transformations.RigidTransformation;
@@ -61,12 +61,12 @@ public class CoalescingTests extends FramesAnalyser {
         translation.setRotation(0f);
 
         List<SnapshotTransformationPair> data = new ArrayList<>(Arrays.asList(
-                new SnapshotTransformationPair(new Snapshot().setX(null, 0L).setY(null, 1L), translation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 1L).setY(null, 2L), translation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 2L).setY(null, 3L), translation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 3L).setY(null, 4L), translation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 4L).setY(null, 5L), translation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 5L).setY(null, 6L), translation)
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 0L).setY(null, 1L), translation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 1L).setY(null, 2L), translation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 2L).setY(null, 3L), translation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 3L).setY(null, 4L), translation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 4L).setY(null, 5L), translation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 5L).setY(null, 6L), translation)
         ));
 
         storyboard = new Storyboard();
@@ -146,12 +146,12 @@ public class CoalescingTests extends FramesAnalyser {
         translationAndScaleAndAbsoluteRotationPositive.setRotation(4f);
 
         List<SnapshotTransformationPair> data = new ArrayList<>(Arrays.asList(
-                new SnapshotTransformationPair(new Snapshot().setX(null, 0L).setY(null, 1L), translationAndScaleAndRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 1L).setY(null, 2L), translationAndScaleAndRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 2L).setY(null, 3L), translationAndScaleAndRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 3L).setY(null, 4L), translationAndScaleAndRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 4L).setY(null, 5L), translationAndScaleAndAbsoluteRotationNegative),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 5L).setY(null, 6L), translationAndScaleAndAbsoluteRotationPositive)
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 0L).setY(null, 1L), translationAndScaleAndRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 1L).setY(null, 2L), translationAndScaleAndRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 2L).setY(null, 3L), translationAndScaleAndRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 3L).setY(null, 4L), translationAndScaleAndRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 4L).setY(null, 5L), translationAndScaleAndAbsoluteRotationNegative),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 5L).setY(null, 6L), translationAndScaleAndAbsoluteRotationPositive)
         ));
 
         storyboard = new Storyboard();
@@ -266,14 +266,14 @@ public class CoalescingTests extends FramesAnalyser {
         negativeRotation.setRotation(-4f);
 
         List<SnapshotTransformationPair> data = new ArrayList<>(Arrays.asList(
-                new SnapshotTransformationPair(new Snapshot().setX(null, 0L).setY(null, 1L), positiveRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 1L).setY(null, 2L), positiveRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 2L).setY(null, 3L), positiveRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 3L).setY(null, 4L), positiveRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 4L).setY(null, 5L), negativeRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 5L).setY(null, 6L), negativeRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 6L).setY(null, 7L), negativeRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 7L).setY(null, 8L), negativeRotation)
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 0L).setY(null, 1L), positiveRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 1L).setY(null, 2L), positiveRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 2L).setY(null, 3L), positiveRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 3L).setY(null, 4L), positiveRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 4L).setY(null, 5L), negativeRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 5L).setY(null, 6L), negativeRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 6L).setY(null, 7L), negativeRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 7L).setY(null, 8L), negativeRotation)
         ));
 
         storyboard = new Storyboard();

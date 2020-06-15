@@ -1,6 +1,6 @@
 package stfXCore.Services.Parsers;
 
-import stfXCore.Models.Snapshot;
+import stfXCore.Models.SnapshotPair;
 import stfXCore.Models.Thresholds.GenericThreshold;
 import stfXCore.Services.DataTypes.TransformationDataType;
 import stfXCore.Utils.Pair;
@@ -18,16 +18,16 @@ public class NoiseEpsilonParser<T extends TransformationDataType> {
         this.threshold = threshold;
     }
 
-    public List<Pair<Snapshot, T>> filterNoise(List<Pair<Snapshot, T>> transformations) {
+    public List<Pair<SnapshotPair, T>> filterNoise(List<Pair<SnapshotPair, T>> transformations) {
         Float noiseEpsilon = threshold.getNoiseEpsilon();
         if (noiseEpsilon == null)
             return transformations;
 
-        List<Pair<Snapshot, T>> filtered = new ArrayList<>();
+        List<Pair<SnapshotPair, T>> filtered = new ArrayList<>();
         Float deltaEpsilon = threshold.getDelta() == null ? 0f : threshold.getDelta() * PERCENTAGE_AS_ERROR;
         float filter = deltaEpsilon < noiseEpsilon ? noiseEpsilon : deltaEpsilon;
 
-        for (Pair<Snapshot, T> transformation : transformations) {
+        for (Pair<SnapshotPair, T> transformation : transformations) {
             T transformationValue = transformation.getSecond();
             filtered.add(Math.abs(transformationValue.numericalValue()) < filter ?
                     new Pair<>(transformation.getFirst(), (T) transformationValue.nullValue()) :

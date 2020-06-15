@@ -43,8 +43,8 @@ public class Storyboard {
         rigidTransformations = new ArrayList<>();
     }
 
-    public void addRigidTransformation(Snapshot snapshot, RigidTransformation rt) {
-        rigidTransformations.add(new SnapshotTransformationPair(snapshot, rt));
+    public void addRigidTransformation(SnapshotPair snapshotPair, RigidTransformation rt) {
+        rigidTransformations.add(new SnapshotTransformationPair(snapshotPair, rt));
     }
 
     public StateList getStates() {

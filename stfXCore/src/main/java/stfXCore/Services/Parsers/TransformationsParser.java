@@ -1,8 +1,8 @@
 package stfXCore.Services.Parsers;
 
 import stfXCore.Services.Events.Event;
+import stfXCore.Models.SnapshotPair;
 import stfXCore.Models.Snapshot;
-import stfXCore.Models.State;
 import stfXCore.Models.Thresholds.GenericThreshold;
 import stfXCore.Services.DataTypes.TransformationDataType;
 import stfXCore.Utils.Pair;
@@ -32,15 +32,15 @@ public abstract class TransformationsParser<T extends TransformationDataType> ex
         return accumulator == null && transformation.verifyNull();
     }
 
-    private Pair<Long, T> createPair(State state, T increment) {
-        return new Pair<Long, T>(state.getTimestamp(), increment);
+    private Pair<Long, T> createPair(Snapshot snapshot, T increment) {
+        return new Pair<Long, T>(snapshot.getTimestamp(), increment);
     }
 
     private T getLastSecond(ArrayList<Pair<Long, T>> list) {
         return list.get(list.size() - 1).getSecond();
     }
 
-    protected Event<T> computeDelta(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
+    protected Event<T> computeDelta(Pair<SnapshotPair, T> transformation, Float threshold, Event.Transformation type) {
         if (Math.abs(transformation.getSecond().numericalValue()) >= threshold) {
             ArrayList<Pair<Long, T>> values = new ArrayList<>();
             values.add(createPair(transformation.getFirst().getX(), (T) transformation.getSecond().nullValue()));
@@ -51,7 +51,7 @@ public abstract class TransformationsParser<T extends TransformationDataType> ex
         return null;
     }
 
-    protected Event<T> computeAccDirected(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
+    protected Event<T> computeAccDirected(Pair<SnapshotPair, T> transformation, Float threshold, Event.Transformation type) {
         T transformationValue = transformation.getSecond();
 
         if (verifyNullTransformation(accDirected, transformationValue))
@@ -72,7 +72,7 @@ public abstract class TransformationsParser<T extends TransformationDataType> ex
         return null;
     }
 
-    protected Event<T> computeAccAbsolute(Pair<Snapshot, T> transformation, Float threshold, Event.Transformation type) {
+    protected Event<T> computeAccAbsolute(Pair<SnapshotPair, T> transformation, Float threshold, Event.Transformation type) {
         T transformationValue = transformation.getSecond();
 
         if (verifyNullTransformation(accAbsolute, transformationValue))
@@ -103,14 +103,14 @@ public abstract class TransformationsParser<T extends TransformationDataType> ex
      * @param threshold       The thresholds to use
      * @param type            The type of the transformation being analyzed
      */
-    protected ArrayList<Event<?>> filterThreshold(List<Pair<Snapshot, T>> transformations, Event.Transformation type) {
+    protected ArrayList<Event<?>> filterThreshold(List<Pair<SnapshotPair, T>> transformations, Event.Transformation type) {
         ArrayList<Event<?>> eventsOfInterest = new ArrayList<>();
         Event<T> event;
 
         if (threshold == null)
             return eventsOfInterest;
 
-        for (Pair<Snapshot, T> transformation : filterNoise(transformations)) {
+        for (Pair<SnapshotPair, T> transformation : filterNoise(transformations)) {
             if (threshold.getDelta() != null) {
                 event = computeDelta(transformation, threshold.getDelta(), type);
                 if (event != null) {

@@ -46,9 +46,9 @@ public class StoryboardController {
      */
     private void computeTransformations(Dataset dataset, Storyboard storyboard) {
         String methodUri = env.getProperty("PSR_endpoint");
-        ArrayList<Snapshot> snapshots = SnapshotsBuilder.createSnapshots(dataset);
-        ArrayList<TimelessSnapshot> representations = snapshots.stream()
-                .map(TimelessSnapshot::new)
+        ArrayList<SnapshotPair> snapshotPairs = SnapshotsBuilder.createSnapshots(dataset);
+        ArrayList<TimelessSnapshotPair> representations = snapshotPairs.stream()
+                .map(TimelessSnapshotPair::new)
                 .collect(Collectors.toCollection(ArrayList::new));
 
         // For each snapshot exists a transformation
@@ -56,8 +56,8 @@ public class StoryboardController {
                 methodUri, representations, TransformationList.class).getTransformations();
 
         // Rather have two O(n) loops than performing n request to the API
-        for (int i = 0; i < snapshots.size(); ++i)
-            storyboard.addRigidTransformation(snapshots.get(i), transformations.get(i));
+        for (int i = 0; i < snapshotPairs.size(); ++i)
+            storyboard.addRigidTransformation(snapshotPairs.get(i), transformations.get(i));
     }
 
     private Long createStoryboard(Dataset dataset) {

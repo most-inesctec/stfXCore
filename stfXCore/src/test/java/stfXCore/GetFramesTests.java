@@ -2,7 +2,7 @@ package stfXCore;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import stfXCore.Models.Snapshot;
+import stfXCore.Models.SnapshotPair;
 import stfXCore.Models.Storyboard;
 import stfXCore.Models.Thresholds.*;
 import stfXCore.Models.Transformations.SnapshotTransformationPair;
@@ -53,26 +53,26 @@ public class GetFramesTests extends FramesAnalyser {
         translationAndScaleAndRotation.setRotation(1f);
 
         List<SnapshotTransformationPair> data = new ArrayList<>(Arrays.asList(
-                new SnapshotTransformationPair(new Snapshot().setX(null, 0L).setY(null, 1L), translation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 1L).setY(null, 2L), translation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 2L).setY(null, 3L), translation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 3L).setY(null, 4L), translation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 4L).setY(null, 5L), translation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 5L).setY(null, 6L), translationAndRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 6L).setY(null, 7L), translationAndRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 7L).setY(null, 8L), translationAndScaleAndRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 8L).setY(null, 9L), translationAndScaleAndRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 9L).setY(null, 10L), translationAndScaleAndRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 10L).setY(null, 11L), rotationAndScale),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 11L).setY(null, 12L), rotationAndScale),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 12L).setY(null, 13L), rotationAndScale),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 13L).setY(null, 14L), rotationAndScale),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 14L).setY(null, 15L), rotationAndScale),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 15L).setY(null, 16L), rotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 16L).setY(null, 17L), rotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 17L).setY(null, 18L), rotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 18L).setY(null, 19L), rotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 19L).setY(null, 20L), rotation)
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 0L).setY(null, 1L), translation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 1L).setY(null, 2L), translation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 2L).setY(null, 3L), translation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 3L).setY(null, 4L), translation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 4L).setY(null, 5L), translation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 5L).setY(null, 6L), translationAndRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 6L).setY(null, 7L), translationAndRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 7L).setY(null, 8L), translationAndScaleAndRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 8L).setY(null, 9L), translationAndScaleAndRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 9L).setY(null, 10L), translationAndScaleAndRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 10L).setY(null, 11L), rotationAndScale),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 11L).setY(null, 12L), rotationAndScale),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 12L).setY(null, 13L), rotationAndScale),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 13L).setY(null, 14L), rotationAndScale),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 14L).setY(null, 15L), rotationAndScale),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 15L).setY(null, 16L), rotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 16L).setY(null, 17L), rotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 17L).setY(null, 18L), rotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 18L).setY(null, 19L), rotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 19L).setY(null, 20L), rotation)
         ));
 
         storyboard = new Storyboard();

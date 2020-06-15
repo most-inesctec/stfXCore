@@ -1,7 +1,7 @@
 package stfXCore.Models.Transformations;
 
 import lombok.Data;
-import stfXCore.Models.Snapshot;
+import stfXCore.Models.SnapshotPair;
 
 import javax.persistence.*;
 
@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class SnapshotTransformationPair {
 
     @Lob
-    Snapshot first;
+    SnapshotPair first;
 
     @Column(length = 511)
     RigidTransformation second;
@@ -25,8 +25,8 @@ public class SnapshotTransformationPair {
     public SnapshotTransformationPair() {
     }
 
-    public SnapshotTransformationPair(Snapshot snapshot, RigidTransformation transformation) {
-        this.first = snapshot;
+    public SnapshotTransformationPair(SnapshotPair snapshotPair, RigidTransformation transformation) {
+        this.first = snapshotPair;
         this.second = transformation;
     }
 }

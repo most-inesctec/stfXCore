@@ -2,37 +2,22 @@ package stfXCore.Models;
 
 import lombok.Data;
 
+import javax.persistence.Lob;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 @Data
 public class Snapshot implements Serializable {
 
-    private State X;
-    private State Y;
+    @Lob
+    private ArrayList<ArrayList<Float>> representation;
 
-    public Snapshot() {
-    }
+    private Long timestamp;
 
-    public Snapshot(State X, State Y) {
-        this.X = X;
-        this.Y = Y;
-    }
+    Snapshot() {}
 
-    public Snapshot setX(ArrayList<ArrayList<Float>> X, Long timestamp) {
-        this.X = new State(X, timestamp);
-        return this;
-    }
-
-    public Snapshot setY(ArrayList<ArrayList<Float>> Y, Long timestamp) {
-        this.Y = new State(Y, timestamp);
-        return this;
-    }
-
-    public ArrayList<State> getStates() {
-        ArrayList<State> states = new ArrayList<>();
-        states.add(X);
-        states.add(Y);
-        return states;
+    Snapshot(ArrayList<ArrayList<Float>> representation, Long timestamp) {
+        this.representation = representation;
+        this.timestamp = timestamp;
     }
 }

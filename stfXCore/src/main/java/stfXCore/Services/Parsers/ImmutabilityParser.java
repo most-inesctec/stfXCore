@@ -1,6 +1,6 @@
 package stfXCore.Services.Parsers;
 
-import stfXCore.Models.Snapshot;
+import stfXCore.Models.SnapshotPair;
 import stfXCore.Models.Thresholds.ThresholdParameters;
 import stfXCore.Models.Transformations.RigidTransformation;
 import stfXCore.Models.Transformations.SnapshotTransformationPair;
@@ -35,15 +35,15 @@ public class ImmutabilityParser implements ITransformationParser {
         representations = new ArrayList<>();
     }
 
-    protected ArrayList<Event<?>> filterThreshold(List<Pair<Snapshot, Boolean>> transformations) {
+    protected ArrayList<Event<?>> filterThreshold(List<Pair<SnapshotPair, Boolean>> transformations) {
         ArrayList<Event<?>> eventsOfInterest = new ArrayList<>();
         Long threshold = thresholds.getImmutability();
         resetCounters();
 
         if (threshold != null) {
-            for (Pair<Snapshot, Boolean> transformation : transformations) {
+            for (Pair<SnapshotPair, Boolean> transformation : transformations) {
                 if (transformation.getSecond()) {
-                    Snapshot s = transformation.getFirst();
+                    SnapshotPair s = transformation.getFirst();
 
                     if (representations.size() == 0)
                         representations.add(new Pair<Long, LongTransformation>(
@@ -76,13 +76,13 @@ public class ImmutabilityParser implements ITransformationParser {
         if (thresholds.getImmutability() == null)
             return rigidTransformations;
 
-        List<Pair<Snapshot, ArrayFloatTransformation>> translations = new ArrayList<>();
-        List<Pair<Snapshot, ScaleFloatTransformation>> scales = new ArrayList<>();
-        List<Pair<Snapshot, FloatTransformation>> rotations = new ArrayList<>();
+        List<Pair<SnapshotPair, ArrayFloatTransformation>> translations = new ArrayList<>();
+        List<Pair<SnapshotPair, ScaleFloatTransformation>> scales = new ArrayList<>();
+        List<Pair<SnapshotPair, FloatTransformation>> rotations = new ArrayList<>();
 
         // Diving into list of correspondent TransformationsTypes
         for (SnapshotTransformationPair transformation : rigidTransformations) {
-            Snapshot s = transformation.getFirst();
+            SnapshotPair s = transformation.getFirst();
             RigidTransformation t = transformation.getSecond();
 
             translations.add(new Pair<>(s, new ArrayFloatTransformation(t.getTranslation())));

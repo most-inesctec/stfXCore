@@ -2,7 +2,7 @@ package stfXCore;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import stfXCore.Models.Snapshot;
+import stfXCore.Models.SnapshotPair;
 import stfXCore.Models.Storyboard;
 import stfXCore.Models.Thresholds.*;
 import stfXCore.Models.Transformations.RigidTransformation;
@@ -35,12 +35,12 @@ public class NoiseFilteringTests extends FramesAnalyser {
 
 
         List<SnapshotTransformationPair> data = new ArrayList<>(Arrays.asList(
-                new SnapshotTransformationPair(new Snapshot().setX(null, 0L).setY(null, 1L), noise),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 1L).setY(null, 2L), noise),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 2L).setY(null, 3L), noise),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 3L).setY(null, 4L), noise),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 4L).setY(null, 5L), noiseAllButRotation),
-                new SnapshotTransformationPair(new Snapshot().setX(null, 5L).setY(null, 6L), noiseAllButRotation)
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 0L).setY(null, 1L), noise),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 1L).setY(null, 2L), noise),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 2L).setY(null, 3L), noise),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 3L).setY(null, 4L), noise),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 4L).setY(null, 5L), noiseAllButRotation),
+                new SnapshotTransformationPair(new SnapshotPair().setX(null, 5L).setY(null, 6L), noiseAllButRotation)
         ));
 
         storyboard = new Storyboard();
