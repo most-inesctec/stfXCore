@@ -5,298 +5,39 @@
 
 The core microservice of the [___SpatioTemporal Feature eXtractor (stfX)___](https://github.com/EdgarACarneiro/stfX), contanining the Spring server that is presented to the end-user as an interface.
 
+The central microservice of the [___SpatioTemporal Feature eXtractor (stfX)___](https://github.com/EdgarACarneiro/stfX). This service, built using [spring](https://spring.io), is responsible for everything that is not the computation of spatiotemporal change features. More specifically, this service responsibilities include:
+- [x] aggregation of the spatiotemporal change features computed by the remaining services;
+- [x] storing temporal snapshots as well as the corresponding extracted spatiotemporal change features;
+- [x] filter the obtained spatiotemporal change features according to the user inputted thresholds, thus obtaining the features of interest;
+- [x] identification of immutability (feature presented in section~\ref{sol:novel-change-features});
+- [x] filtering of noise produced by the utilised computation methods;
+- [x] indexing of spatiotemporal change features according to the temporal range;
+- [x] identification of unimportant temporal ranges;
+- [x] coalescing of features of interest.
+
+
 This server's updated API can be consulted [here](https://app.swaggerhub.com/apis-docs/EdgarACarneiro/thesis/2.1.1).
 
-## Example requests
+Section 5.2.2 of the __[thesis](https://github.com/EdgarACarneiro/stfX/blob/master/docs/thesis.pdf)__ associated to the _stfX_ contains a detailed description of this microservice architecture and general guidelines.
 
-To provide stfX with a new storyboard one must call the `/storyboard` endpoint.
+# _stfXCore_ packages overview
 
-An example call to this endpoint is:
-```json
-{
-  "dataset": [
-    [
-      [0 ,0],
-      [0, 10],
-      [10, 10],
-      [10, 0]
-    ],
-    [
-      [3.4, 5.1],
-      [3.4, 15.1],
-      [13.4, 15.1],
-      [13.4, 5.1],
-    ],
-    ...
-    [
-      [100, 150],
-      [100, 160],
-      [110, 160],
-      [110, 150]
-    ]
-  ],
-  "metadata": {
-    "timePeriod": 3
-  }
-}
-```
+| __Package__ | __Description__ |
+|:-|:-|
+| __Models__ | CRUD interface for the data entities managed in the application. Models do not handle any business logic, solely entity self-contained logic. |
+| __Controllers__ | Responsible for handling the _stfX_ API endpoints and further delegate actions to the other architecture components. |
+| __Repositories__ | Specify persistence in the database using ORM |
+| __Services__ | Fetch data from the Models, handle it and then provide the processed data to the Controllers. The majority of the business logic is implemented here. |
 
-Storyboards can also be created using a file, rather than the raw json as the request body. An example of a call to the respective endpoint is presented below:
-```shell
-curl -F "dataset=@<absolute-path-to-json-dataset-and-metadata>" -X POST http://localhost:8080/storyboard/file
-``` 
+The figure below illustrates how different components of the _stfXCore_ interact to retrieve the spatiotemporal change features of interest to the end-user.
 
+<img width="830" alt="Screenshot 2020-08-01 at 16 15 43" src="https://user-images.githubusercontent.com/22712373/89104591-4cba5080-d412-11ea-8187-4e093caf5b8c.png">
 
-The respective example output (the storyboard ID):
-```json
-1
-```
-
----
-
-For getting the information of interest of a storyboard, one must call the `/storyboard/{id}` endpoint.
-
-An example call to this is endpoint is:
-```json
-{
-  "parameters": {
-    "translation": {
-      "delta": 1,
-      "directedAcc": 5,
-      "absoluteAcc": 10,
-    },
-    "rotation": {
-      "delta": 5,
-      "directedAcc": 30,
-      "absoluteAcc": 45
-    },
-    "scale": {
-      "delta":  0.05,
-      "directedAcc": 0.3
-    }
-  }
-}
-```
-
-And a possible respective output:
-```json
-[
-  {
-    "events": [
-      {
-        "trigger": "DIRECTED_ACC",
-        "type": "ROTATION",
-        "triggerValue": 0.061550736
-      },
-      {
-        "trigger": "DIRECTED_ACC",
-        "type": "TRANSLATION",
-        "triggerValue": 3.08966
-      },
-      {
-        "trigger": "DIRECTED_ACC",
-        "type": "UNIFORM_SCALE",
-        "triggerValue": -0.046621263
-      }
-    ],
-    "temporalRange": [
-      84,
-      99
-    ],
-    "phenomena": [
-      {
-        "representation": [
-          [
-            14.080577,
-            14.11513
-          ],
-          [
-            16.708536,
-            14.104435
-          ],
-          [
-            16.772493,
-            16.65774
-          ],
-          [
-            15.341294,
-            17.15984
-          ],
-          [
-            13.982059,
-            16.69499
-          ],
-          [
-            14.080577,
-            14.11513
-          ]
-        ],
-        "timestamp": 84
-      },
-      {
-        "representation": [
-          [
-            14.580127,
-            14.615127
-          ],
-          [
-            17.229578,
-            14.604353
-          ],
-          [
-            17.29503,
-            17.17758
-          ],
-          [
-            15.850552,
-            17.698574
-          ],
-          [
-            14.47946,
-            17.215542
-          ],
-          [
-            14.580127,
-            14.615127
-          ]
-        ],
-        "timestamp": 87
-      },
-      {
-        "representation": [
-          [
-            15.12965,
-            15.165091
-          ],
-          [
-            17.80268,
-            15.15425
-          ],
-          [
-            17.869707,
-            17.749409
-          ],
-          [
-            16.410786,
-            18.291265
-          ],
-          [
-            15.026731,
-            17.78811
-          ],
-          [
-            15.12965,
-            15.165091
-          ]
-        ],
-        "timestamp": 90
-      },
-      {
-        "representation": [
-          [
-            15.629235,
-            15.66503
-          ],
-          [
-            18.323635,
-            15.654145
-          ],
-          [
-            18.392036,
-            18.26926
-          ],
-          [
-            16.920135,
-            18.830154
-          ],
-          [
-            15.524367,
-            18.30859
-          ],
-          [
-            15.629235,
-            15.66503
-          ]
-        ],
-        "timestamp": 93
-      },
-      {
-        "representation": [
-          [
-            16.128838,
-            16.164942
-          ],
-          [
-            18.844551,
-            16.15403
-          ],
-          [
-            18.914263,
-            18.789116
-          ],
-          [
-            17.429527,
-            19.369116
-          ],
-          [
-            16.022116,
-            18.829037
-          ],
-          [
-            16.128838,
-            16.164942
-          ]
-        ],
-        "timestamp": 96
-      },
-      {
-        "representation": [
-          [
-            16.628456,
-            16.664831
-          ],
-          [
-            19.365423,
-            16.653904
-          ],
-          [
-            19.43639,
-            19.308979
-          ],
-          [
-            17.938961,
-            19.90815
-          ],
-          [
-            16.519976,
-            19.34945
-          ],
-          [
-            16.628456,
-            16.664831
-          ]
-        ],
-        "timestamp": 99
-      }
-    ]
-  },
-  ...
-]
-```
-
-The API definition is avaiable in [Swagger](https://app.swaggerhub.com/apis/EdgarACarneiro/thesis/1.0.0).
-
-## Dockerization
+# Getting started
 
 To run a container with the application, in a standalone manner, use:
 ```shell
+cd stfXCore
 sh docker-build.sh
 docker run -p 8080:8080 stfx-core
 ```
-
-## Utils
-
-This folder contains some useful scripts for the overall framework. A more detailed insight of each one is given below:
-|  Name | Functionality |
-|:-|:-|
-| __SPTDataLabParser__ | Parser of the format outputted by the _SPTDataLab_, to a valid json file. |
